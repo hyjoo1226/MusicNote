@@ -1,3 +1,4 @@
 rootProject.name = 'music-note'
 
-include('auth','gateway','discovery','main')
+include('auth','gateway','discovery','main',
+        'music-type-consumer', 'music-type-producer', 'music-crawler-consumer' )
