@@ -1,8 +1,9 @@
-# analysis_server/services/clustering.py
-
+# services/clustering.py
 import joblib
 import numpy as np
 import os
+
+from modelschemas.request_response import MusicScore
 
 # 모델 경로
 MODEL_PATH = "models/cluster_model.pkl"
@@ -13,7 +14,7 @@ if os.path.exists(MODEL_PATH):
 else:
     cluster_model = None  # 예외 처리용
 
-def predict_cluster(music_score: dict) -> int:
+def predict_cluster(music_score: MusicScore) -> int:
     """
     MUSIC score dict를 받아 클러스터 ID 예측
     """

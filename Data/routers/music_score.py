@@ -1,8 +1,7 @@
 # analysis_server/routers/music_score.py
 from fastapi import APIRouter
-from modelschemas.request_response import AudioFeatures, MusicScore, MultiTrackRequest
+from modelschemas.request_response import AudioFeatures, MultiTrackRequest
 from services.score_utils import calculate_music_score
-from typing import List
 
 router = APIRouter(prefix="/music-score", tags=["Music Score"])
 
@@ -18,6 +17,7 @@ def music_score_single(features: AudioFeatures):
 def music_score_multi(request: MultiTrackRequest):
     """
     여러 곡 오디오 피처 리스트 입력 → 곡별 MUSIC score + 평균 score 반환
+    평균 말고 다른걸 반환 할 수도 있음
     """
     all_scores = [calculate_music_score(track.dict()) for track in request.tracks]
 
