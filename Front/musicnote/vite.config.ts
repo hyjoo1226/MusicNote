@@ -2,10 +2,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 // @ts-ignore
 import eslint from "vite-plugin-eslint";
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     eslint({
       fix: true, // 자동으로 ESLint 오류 수정
     }),
