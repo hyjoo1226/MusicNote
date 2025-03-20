@@ -8,10 +8,10 @@
     "types": ["vite/client"],
     "noEmit": true,
     "skipLibCheck": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["./src/*"]
     }
   },
 
