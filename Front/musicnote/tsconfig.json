@@ -3,5 +3,17 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "noEmit": true,
+    "skipLibCheck": true,
+    "baseUrl": "src",
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": ["src/*"],
+    }
+  },
+
+  "exclude": ["node_modules", "dist", "build"]
 }
