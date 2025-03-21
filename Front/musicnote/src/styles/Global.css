@@ -1,1 +1,52 @@
 @import "tailwindcss";
+
+/* 폰트 파일 등록 */
+@font-face {
+  font-family: "GmarketSansLight";
+  src: url("../assets/fonts/GmarketSansLight.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GmarketSansMedium";
+  src: url("../assets/fonts/GmarketSansMedium.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GmarketSansBold";
+  src: url("../assets/fonts/GmarketSansBold.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 테마 변수 */
+@theme {
+    /* 폰트 */
+    --font-light: "GmarketSansLight";
+    --font-medium: "GmarketSansMedium";
+    --font-bold: "GmarketSansBold";
+    
+    /* 성격 특성 색상 */
+    --color-openness: #A97EFF;
+    --color-conscientiousness: #EF8AFF;
+    --color-extraversion: #FF7E81;
+    --color-agreeableness: #FFB683;
+    --color-neuroticism: #FFD883;
+
+    /* 텍스트 색상 */
+    --color-dark: #000000;
+    --color-gray: #7B7B7B;
+    --color-light-gray: #BEBEBE;
+
+    /* 배경색 */
+    --color-level1: #19171B;
+    --color-level2: #262329;
+    --color-level3: #3F3A44;
+
+    /* 강조색 */
+    --color-main: #FE365E;
+    --color-sub: #F78888;
+} 

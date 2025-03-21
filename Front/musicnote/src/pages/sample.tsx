@@ -8,7 +8,7 @@ export default function Home() {
 
       {/* 성격 특성 배경과 텍스트 조합 */}
       <div className="bg-openness p-4 rounded-lg">
-        <span className="text-[var(--color-sub)] text-2xl">개방성 배경에 연한 회색 텍스트</span>
+        <span className="text-[var(--color-sub)] text-2xl font-bold">개방성 배경에 연한 회색 텍스트</span>
       </div>
 
       {/* 투명도 조절 (color-mix 기능 활용) */}
@@ -18,7 +18,7 @@ export default function Home() {
 
       {/* 호버 효과 */}
       <div className="bg-[var(--color-sub)] hover:bg-[var(--color-main)] p-4 rounded-lg">
-        <span className="text-gray text-xl font-light">호버 시 색상 변경</span>
+        <span className="text-gray text-xl">호버 시 색상 변경</span>
       </div>
 
       {/* 그라디언트 사용 */}
@@ -28,7 +28,7 @@ export default function Home() {
 
       {/* 테두리 */}
       <div className="bg-level2 border-2 border-main p-4 rounded-lg">
-        <span className="text-extraversion font-medium text-xl">테두리와 그림자</span>
+        <span className="text-extraversion text-xl">테두리와 그림자</span>
       </div>
 
       {/* 반응형 디자인 */}
