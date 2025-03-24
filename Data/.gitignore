@@ -30,3 +30,6 @@ Thumbs.db
 # IDE configs
 .vscode/
 .idea/
+
+# datasets
+*.csv

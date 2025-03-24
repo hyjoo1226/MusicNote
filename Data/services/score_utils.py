@@ -1,5 +1,8 @@
 # analysis_server/services/score_utils.py
-def calculate_music_score(features: dict) -> dict:
+from modelschemas.request_response import AudioFeatures, MusicScore
+
+
+def calculate_music_score(features: AudioFeatures) -> MusicScore:
     """
     Spotify Audio Features → MUSIC 모델 5차원 점수 변환 함수
     :param features: valence, acousticness, instrumentalness, etc.
@@ -25,10 +28,8 @@ def calculate_music_score(features: dict) -> dict:
                    0.3 * features.get('speechiness', 0) + \
                    0.3 * features.get('energy', 0)
 
-    return {
-        "mellow": round(mellow, 4),
-        "unpretentious": round(unpretentious, 4),
-        "sophisticated": round(sophisticated, 4),
-        "intense": round(intense, 4),
-        "contemporary": round(contemporary, 4)
-    }
+    return MusicScore(mellow = round(mellow, 4),
+                      unpretentious = round(unpretentious, 4),
+                      sophisticated = round(sophisticated, 4),
+                      intense = round(intense, 4),
+                      contemporary = round(contemporary, 4))
