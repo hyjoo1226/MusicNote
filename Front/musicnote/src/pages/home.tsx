@@ -2,10 +2,12 @@ import UserTemperGraph from "../components/UserTemperGraph";
 import logo from "@/assets/logo/logo.png";
 import shortLogo from "@/assets/logo/short-logo.png";
 import recentPlayedList from "@/assets/data/recent-played-list.json";
+// import { useGetData } from "../hooks/useApi";
 
 export default function Home() {
   const wordOfToday = "오늘은 외향성이 높으시네요. 사람들과 어울리면서 많은 에너지를 얻기를 바라요!";
 
+  // const { data: recentPlayedList } = useGetData('recentPlayedList', '/api/v1/music/recent-played-list');
 
   return (
     <div className="flex flex-col items-center h-screen bg-level1 p-6 w-full">
@@ -31,7 +33,7 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
           <span className="text-white text-xl font-medium self-start">최근에 들은 음악</span>
           <div className="flex flex-col items-start justify-start w-full gap-y-3">
-            {Array.isArray(recentPlayedList.items) && recentPlayedList.items.slice(0, 3).map((item: any, index: number) => (
+            {Array.isArray(recentPlayedList.items) && recentPlayedList.items.slice(0, 3).map((item: Array<string>, index: number) => (
               <div key={index} className="recent-played-item flex flex-row items-center justify-start gap-x-2 w-full">
                 <div className="flex flex-row items-center justify-start gap-x-4 px-4 py-1 rounded-lg">
                   <img src={item.track?.album.images[0].url} alt={item.track?.name} className="w-12 h-12 rounded-lg" />
