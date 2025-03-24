@@ -1,39 +1,49 @@
+import UserTemperGraph from "../components/UserTemperGraph";
+import logo from "@/assets/logo/logo.png";
+import shortLogo from "@/assets/logo/short-logo.png";
+import recentPlayedList from "@/assets/data/recent-played-list.json";
+
 export default function Home() {
+  const wordOfToday = "오늘은 외향성이 높으시네요. 사람들과 어울리면서 많은 에너지를 얻기를 바라요!";
+
+
   return (
-    <div className="p-6 flex flex-col gap-6">
-      {/* 기본 배경색과 텍스트 색상 사용 */}
-      <div className="bg-level2 p-4 rounded-lg">
-        <span className="text-main text-4xl">기본 색상 사용</span>
+    <div className="flex flex-col items-center h-screen bg-level1 p-6 w-full">
+      {/* 로고 + 이름 */}
+      <div className="flex flex-row self-start justify-start mb-4">
+        <img src={logo} alt="logo" className="w-[54px] h-[54px] mb-4" />
+        <img src={shortLogo} alt="short-logo" className="h-[54px] mb-4" />
       </div>
-
-      {/* 성격 특성 배경과 텍스트 조합 */}
-      <div className="bg-openness p-4 rounded-lg">
-        <span className="text-[var(--color-sub)] text-2xl">개방성 배경에 연한 회색 텍스트</span>
-      </div>
-
-      {/* 투명도 조절 (color-mix 기능 활용) */}
-      <div className="bg-level1 p-4 rounded-lg">
-        <span className="text-main/75 text-2xl">투명도가 적용된 색상</span>
-      </div>
-
-      {/* 호버 효과 */}
-      <div className="bg-[var(--color-sub)] hover:bg-[var(--color-main)] p-4 rounded-lg">
-        <span className="text-gray text-xl font-light">호버 시 색상 변경</span>
-      </div>
-
-      {/* 그라디언트 사용 */}
-      <div className="bg-linear-to-t  from-main to-sub p-4 rounded-lg">
-        <span className="text-white/100 font-bold text-2xl">그라디언트 배경</span>
-      </div>
-
-      {/* 테두리 */}
-      <div className="bg-level2 border-2 border-main p-4 rounded-lg">
-        <span className="text-extraversion font-medium text-xl">테두리와 그림자</span>
-      </div>
-
-      {/* 반응형 디자인 */}
-      <div className="bg-level3 p-4 rounded-lg md:bg-conscientiousness lg:bg-agreeableness">
-        <span className="text-white text-sm md:text-xl lg:text-2xl">반응형 배경 및 텍스트</span>
+      {/* 메인 페이지 */}
+      <div className="flex flex-col gap-y-4 justify-between h-full">
+        <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
+          <span className="text-white text-xl font-medium self-start">오늘의 한 마디</span>
+          <div className="flex flex-row items-center justify-start gap-x-2">
+            <div className="flex-shrink-0 w-[30px] h-[30px]">
+              <svg width="30" height="30" viewBox="0 0 26 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.2181 16.9066V21.3835C15.2181 22.09 14.6503 22.6626 13.9499 22.6626H11.4135C10.7132 22.6626 10.1454 22.09 10.1454 21.3835V16.9066M19.0226 11.1505C19.0226 14.6827 16.1837 17.5462 12.6817 17.5462C9.17974 17.5462 6.34082 14.6827 6.34082 11.1505C6.34082 7.61835 9.17974 4.75494 12.6817 4.75494C16.1837 4.75494 19.0226 7.61835 19.0226 11.1505Z" stroke="#FE365E" strokeWidth="2"/>
+              </svg>
+            </div>
+            <span className="flex-1 text-light-gray text-[16px] font-medium whitespace-normal break-keep">{wordOfToday}</span>
+          </div>
+        </div>
+        <UserTemperGraph scores = {[75, 59, 85, 39, 51]}/>
+        <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
+          <span className="text-white text-xl font-medium self-start">최근에 들은 음악</span>
+          <div className="flex flex-col items-start justify-start w-full gap-y-3">
+            {Array.isArray(recentPlayedList.items) && recentPlayedList.items.slice(0, 3).map((item, index) => (
+              <div key={index} className="recent-played-item flex flex-row items-center justify-start gap-x-2 w-full">
+                <div className="flex flex-row items-center justify-start gap-x-4 px-4 py-1 rounded-lg">
+                  <img src={item.track?.album.images[0].url} alt={item.track?.name} className="w-12 h-12 rounded-lg" />
+                  <div className="flex flex-col">
+                    <span className="text-light-gray text-sm font-light">{item.track?.artists[0].name || "Unknown Artist"}</span>
+                    <span className="text-white text-sm font-medium">{item.track?.name || "Unknown Track"}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

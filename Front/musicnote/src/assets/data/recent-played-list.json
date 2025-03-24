@@ -1,0 +1,1771 @@
+{
+    "items": [
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/0q17j9OOmuQKxE8Lfoalz5"
+            },
+            "href": "https://api.spotify.com/v1/albums/0q17j9OOmuQKxE8Lfoalz5",
+            "id": "0q17j9OOmuQKxE8Lfoalz5",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b2730f5681bb4d92123b79a1ecef",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e020f5681bb4d92123b79a1ecef",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d000048510f5681bb4d92123b79a1ecef",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "여섯 번째 토요일",
+            "release_date": "2019-09-05",
+            "release_date_precision": "day",
+            "total_tracks": 11,
+            "type": "album",
+            "uri": "spotify:album:0q17j9OOmuQKxE8Lfoalz5"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 212334,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRMIM1915248"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/2THUOn004wDL0tU8sJMX0l"
+          },
+          "href": "https://api.spotify.com/v1/tracks/2THUOn004wDL0tU8sJMX0l",
+          "id": "2THUOn004wDL0tU8sJMX0l",
+          "is_local": false,
+          "is_playable": true,
+          "name": "이름",
+          "popularity": 13,
+          "preview_url": null,
+          "track_number": 3,
+          "type": "track",
+          "uri": "spotify:track:2THUOn004wDL0tU8sJMX0l"
+        },
+        "played_at": "2025-03-07T07:26:51.620Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/0q17j9OOmuQKxE8Lfoalz5"
+            },
+            "href": "https://api.spotify.com/v1/albums/0q17j9OOmuQKxE8Lfoalz5",
+            "id": "0q17j9OOmuQKxE8Lfoalz5",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b2730f5681bb4d92123b79a1ecef",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e020f5681bb4d92123b79a1ecef",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d000048510f5681bb4d92123b79a1ecef",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "여섯 번째 토요일",
+            "release_date": "2019-09-05",
+            "release_date_precision": "day",
+            "total_tracks": 11,
+            "type": "album",
+            "uri": "spotify:album:0q17j9OOmuQKxE8Lfoalz5"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 255430,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRMIM1915247"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/15UKEzGfL7RxP1oHVYrlfZ"
+          },
+          "href": "https://api.spotify.com/v1/tracks/15UKEzGfL7RxP1oHVYrlfZ",
+          "id": "15UKEzGfL7RxP1oHVYrlfZ",
+          "is_local": false,
+          "is_playable": true,
+          "name": "나에게서 당신에게",
+          "popularity": 37,
+          "preview_url": null,
+          "track_number": 2,
+          "type": "track",
+          "uri": "spotify:track:15UKEzGfL7RxP1oHVYrlfZ"
+        },
+        "played_at": "2025-03-07T06:26:33.712Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/0q17j9OOmuQKxE8Lfoalz5"
+            },
+            "href": "https://api.spotify.com/v1/albums/0q17j9OOmuQKxE8Lfoalz5",
+            "id": "0q17j9OOmuQKxE8Lfoalz5",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b2730f5681bb4d92123b79a1ecef",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e020f5681bb4d92123b79a1ecef",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d000048510f5681bb4d92123b79a1ecef",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "여섯 번째 토요일",
+            "release_date": "2019-09-05",
+            "release_date_precision": "day",
+            "total_tracks": 11,
+            "type": "album",
+            "uri": "spotify:album:0q17j9OOmuQKxE8Lfoalz5"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 356483,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRMIM1915246"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/4Vqu5GSemNMR8mmM62rRa0"
+          },
+          "href": "https://api.spotify.com/v1/tracks/4Vqu5GSemNMR8mmM62rRa0",
+          "id": "4Vqu5GSemNMR8mmM62rRa0",
+          "is_local": false,
+          "is_playable": true,
+          "name": "꽃이 진다면",
+          "popularity": 20,
+          "preview_url": null,
+          "track_number": 1,
+          "type": "track",
+          "uri": "spotify:track:4Vqu5GSemNMR8mmM62rRa0"
+        },
+        "played_at": "2025-03-07T06:22:17.793Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 246880,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353191"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/5pS2ZW6D1aRYWIg5UsfWnR"
+          },
+          "href": "https://api.spotify.com/v1/tracks/5pS2ZW6D1aRYWIg5UsfWnR",
+          "id": "5pS2ZW6D1aRYWIg5UsfWnR",
+          "is_local": false,
+          "is_playable": true,
+          "name": "Crack",
+          "popularity": 17,
+          "preview_url": null,
+          "track_number": 10,
+          "type": "track",
+          "uri": "spotify:track:5pS2ZW6D1aRYWIg5UsfWnR"
+        },
+        "played_at": "2025-03-07T06:16:21.124Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 256781,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353190"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/00C5vokdGAAR7LOiNVwspp"
+          },
+          "href": "https://api.spotify.com/v1/tracks/00C5vokdGAAR7LOiNVwspp",
+          "id": "00C5vokdGAAR7LOiNVwspp",
+          "is_local": false,
+          "is_playable": true,
+          "name": "허물",
+          "popularity": 28,
+          "preview_url": null,
+          "track_number": 9,
+          "type": "track",
+          "uri": "spotify:track:00C5vokdGAAR7LOiNVwspp"
+        },
+        "played_at": "2025-03-07T06:12:14.060Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 123999,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353189"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/0CnOti7A33rQsmiVmSVVn0"
+          },
+          "href": "https://api.spotify.com/v1/tracks/0CnOti7A33rQsmiVmSVVn0",
+          "id": "0CnOti7A33rQsmiVmSVVn0",
+          "is_local": false,
+          "is_playable": true,
+          "name": "Gust / Interlude",
+          "popularity": 16,
+          "preview_url": null,
+          "track_number": 8,
+          "type": "track",
+          "uri": "spotify:track:0CnOti7A33rQsmiVmSVVn0"
+        },
+        "played_at": "2025-03-07T06:07:57.114Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 247288,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353188"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/74jI0giiJ4ElfIlED8RSSw"
+          },
+          "href": "https://api.spotify.com/v1/tracks/74jI0giiJ4ElfIlED8RSSw",
+          "id": "74jI0giiJ4ElfIlED8RSSw",
+          "is_local": false,
+          "is_playable": true,
+          "name": "Strangers",
+          "popularity": 17,
+          "preview_url": null,
+          "track_number": 7,
+          "type": "track",
+          "uri": "spotify:track:74jI0giiJ4ElfIlED8RSSw"
+        },
+        "played_at": "2025-03-07T06:05:52.822Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 209074,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353187"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/4933tuFwQeRWIE7BxgCTcy"
+          },
+          "href": "https://api.spotify.com/v1/tracks/4933tuFwQeRWIE7BxgCTcy",
+          "id": "4933tuFwQeRWIE7BxgCTcy",
+          "is_local": false,
+          "is_playable": true,
+          "name": "충동 1분",
+          "popularity": 22,
+          "preview_url": null,
+          "track_number": 6,
+          "type": "track",
+          "uri": "spotify:track:4933tuFwQeRWIE7BxgCTcy"
+        },
+        "played_at": "2025-03-07T06:01:45.306Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 182931,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353186"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/1lqLcgZkwL2iCMFkMwhQJl"
+          },
+          "href": "https://api.spotify.com/v1/tracks/1lqLcgZkwL2iCMFkMwhQJl",
+          "id": "1lqLcgZkwL2iCMFkMwhQJl",
+          "is_local": false,
+          "is_playable": true,
+          "name": "JUVENILE",
+          "popularity": 31,
+          "preview_url": null,
+          "track_number": 5,
+          "type": "track",
+          "uri": "spotify:track:1lqLcgZkwL2iCMFkMwhQJl"
+        },
+        "played_at": "2025-03-07T05:58:16.026Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 215441,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353185"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/4MBxYOetGDZUDJ02zHDMkW"
+          },
+          "href": "https://api.spotify.com/v1/tracks/4MBxYOetGDZUDJ02zHDMkW",
+          "id": "4MBxYOetGDZUDJ02zHDMkW",
+          "is_local": false,
+          "is_playable": true,
+          "name": "클라우드 쿠쿠 랜드",
+          "popularity": 34,
+          "preview_url": null,
+          "track_number": 4,
+          "type": "track",
+          "uri": "spotify:track:4MBxYOetGDZUDJ02zHDMkW"
+        },
+        "played_at": "2025-03-07T05:55:12.757Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 242922,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2341698"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/6SGISb2p5ebnvpRUtIaXlr"
+          },
+          "href": "https://api.spotify.com/v1/tracks/6SGISb2p5ebnvpRUtIaXlr",
+          "id": "6SGISb2p5ebnvpRUtIaXlr",
+          "is_local": false,
+          "is_playable": true,
+          "name": "낡은 괴담",
+          "popularity": 29,
+          "preview_url": null,
+          "track_number": 3,
+          "type": "track",
+          "uri": "spotify:track:6SGISb2p5ebnvpRUtIaXlr"
+        },
+        "played_at": "2025-03-07T05:51:37.209Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 185045,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353184"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/0YfvNcf3TDTseh1kANH898"
+          },
+          "href": "https://api.spotify.com/v1/tracks/0YfvNcf3TDTseh1kANH898",
+          "id": "0YfvNcf3TDTseh1kANH898",
+          "is_local": false,
+          "is_playable": true,
+          "name": "들불",
+          "popularity": 24,
+          "preview_url": null,
+          "track_number": 2,
+          "type": "track",
+          "uri": "spotify:track:0YfvNcf3TDTseh1kANH898"
+        },
+        "played_at": "2025-03-07T05:47:33.968Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 219999,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353183"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/0CnBwFJ9uurdNmliYVFHxh"
+          },
+          "href": "https://api.spotify.com/v1/tracks/0CnBwFJ9uurdNmliYVFHxh",
+          "id": "0CnBwFJ9uurdNmliYVFHxh",
+          "is_local": false,
+          "is_playable": true,
+          "name": "Toss and turn",
+          "popularity": 18,
+          "preview_url": null,
+          "track_number": 1,
+          "type": "track",
+          "uri": "spotify:track:0CnBwFJ9uurdNmliYVFHxh"
+        },
+        "played_at": "2025-03-07T05:44:28.718Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "single",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/6uOACaKB5uG9o3mV41FJgJ"
+            },
+            "href": "https://api.spotify.com/v1/albums/6uOACaKB5uG9o3mV41FJgJ",
+            "id": "6uOACaKB5uG9o3mV41FJgJ",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27371bcf0dd9989a28195332423",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0271bcf0dd9989a28195332423",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485171bcf0dd9989a28195332423",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "누군가를 사랑한다는 것",
+            "release_date": "2024-08-13",
+            "release_date_precision": "day",
+            "total_tracks": 1,
+            "type": "album",
+            "uri": "spotify:album:6uOACaKB5uG9o3mV41FJgJ"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 283928,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRMIM2453610"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/4egcdhIJIx8KulcPT1Wi5o"
+          },
+          "href": "https://api.spotify.com/v1/tracks/4egcdhIJIx8KulcPT1Wi5o",
+          "id": "4egcdhIJIx8KulcPT1Wi5o",
+          "is_local": false,
+          "is_playable": true,
+          "name": "누군가를 사랑한다는 것",
+          "popularity": 24,
+          "preview_url": null,
+          "track_number": 1,
+          "type": "track",
+          "uri": "spotify:track:4egcdhIJIx8KulcPT1Wi5o"
+        },
+        "played_at": "2025-03-07T05:40:17.762Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 185045,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353184"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/0YfvNcf3TDTseh1kANH898"
+          },
+          "href": "https://api.spotify.com/v1/tracks/0YfvNcf3TDTseh1kANH898",
+          "id": "0YfvNcf3TDTseh1kANH898",
+          "is_local": false,
+          "is_playable": true,
+          "name": "들불",
+          "popularity": 24,
+          "preview_url": null,
+          "track_number": 2,
+          "type": "track",
+          "uri": "spotify:track:0YfvNcf3TDTseh1kANH898"
+        },
+        "played_at": "2025-03-07T05:35:33.789Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/0q17j9OOmuQKxE8Lfoalz5"
+            },
+            "href": "https://api.spotify.com/v1/albums/0q17j9OOmuQKxE8Lfoalz5",
+            "id": "0q17j9OOmuQKxE8Lfoalz5",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b2730f5681bb4d92123b79a1ecef",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e020f5681bb4d92123b79a1ecef",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d000048510f5681bb4d92123b79a1ecef",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "여섯 번째 토요일",
+            "release_date": "2019-09-05",
+            "release_date_precision": "day",
+            "total_tracks": 11,
+            "type": "album",
+            "uri": "spotify:album:0q17j9OOmuQKxE8Lfoalz5"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 328248,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRMIM1915253"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/2712T8qgYMjV2tk1U50XlG"
+          },
+          "href": "https://api.spotify.com/v1/tracks/2712T8qgYMjV2tk1U50XlG",
+          "id": "2712T8qgYMjV2tk1U50XlG",
+          "is_local": false,
+          "is_playable": true,
+          "name": "공중댄스",
+          "popularity": 24,
+          "preview_url": null,
+          "track_number": 8,
+          "type": "track",
+          "uri": "spotify:track:2712T8qgYMjV2tk1U50XlG"
+        },
+        "played_at": "2025-03-07T05:32:28.369Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 256781,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353190"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/00C5vokdGAAR7LOiNVwspp"
+          },
+          "href": "https://api.spotify.com/v1/tracks/00C5vokdGAAR7LOiNVwspp",
+          "id": "00C5vokdGAAR7LOiNVwspp",
+          "is_local": false,
+          "is_playable": true,
+          "name": "허물",
+          "popularity": 28,
+          "preview_url": null,
+          "track_number": 9,
+          "type": "track",
+          "uri": "spotify:track:00C5vokdGAAR7LOiNVwspp"
+        },
+        "played_at": "2025-03-07T05:26:59.910Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 242922,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2341698"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/6SGISb2p5ebnvpRUtIaXlr"
+          },
+          "href": "https://api.spotify.com/v1/tracks/6SGISb2p5ebnvpRUtIaXlr",
+          "id": "6SGISb2p5ebnvpRUtIaXlr",
+          "is_local": false,
+          "is_playable": true,
+          "name": "낡은 괴담",
+          "popularity": 29,
+          "preview_url": null,
+          "track_number": 3,
+          "type": "track",
+          "uri": "spotify:track:6SGISb2p5ebnvpRUtIaXlr"
+        },
+        "played_at": "2025-03-07T05:22:42.907Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "single",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/49rN57egnPmN4ZonhNUKv5"
+            },
+            "href": "https://api.spotify.com/v1/albums/49rN57egnPmN4ZonhNUKv5",
+            "id": "49rN57egnPmN4ZonhNUKv5",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27375bb8fafeda64a4e5817a957",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0275bb8fafeda64a4e5817a957",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485175bb8fafeda64a4e5817a957",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "연가",
+            "release_date": "2020-05-22",
+            "release_date_precision": "day",
+            "total_tracks": 1,
+            "type": "album",
+            "uri": "spotify:album:49rN57egnPmN4ZonhNUKv5"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 168862,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRMIM2012436"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/5ikqSCxv0XzfZWW5x0xI75"
+          },
+          "href": "https://api.spotify.com/v1/tracks/5ikqSCxv0XzfZWW5x0xI75",
+          "id": "5ikqSCxv0XzfZWW5x0xI75",
+          "is_local": false,
+          "is_playable": true,
+          "name": "연가",
+          "popularity": 30,
+          "preview_url": null,
+          "track_number": 1,
+          "type": "track",
+          "uri": "spotify:track:5ikqSCxv0XzfZWW5x0xI75"
+        },
+        "played_at": "2025-03-07T05:18:39.847Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      },
+      {
+        "track": {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+                },
+                "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+                "id": "3tvnuk98r2VOv9ygTK8cjs",
+                "name": "JUNGWOO",
+                "type": "artist",
+                "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1JsmKt5IsgxgqkIVNsjuuz"
+            },
+            "href": "https://api.spotify.com/v1/albums/1JsmKt5IsgxgqkIVNsjuuz",
+            "id": "1JsmKt5IsgxgqkIVNsjuuz",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b27315e86c06309cad4f62f9dbdc",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e0215e86c06309cad4f62f9dbdc",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d0000485115e86c06309cad4f62f9dbdc",
+                "width": 64
+              }
+            ],
+            "is_playable": true,
+            "name": "클라우드 쿠쿠 랜드",
+            "release_date": "2023-11-09",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1JsmKt5IsgxgqkIVNsjuuz"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+              },
+              "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+              "id": "3tvnuk98r2VOv9ygTK8cjs",
+              "name": "JUNGWOO",
+              "type": "artist",
+              "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 182931,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "KRNAR2353186"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/1lqLcgZkwL2iCMFkMwhQJl"
+          },
+          "href": "https://api.spotify.com/v1/tracks/1lqLcgZkwL2iCMFkMwhQJl",
+          "id": "1lqLcgZkwL2iCMFkMwhQJl",
+          "is_local": false,
+          "is_playable": true,
+          "name": "JUVENILE",
+          "popularity": 31,
+          "preview_url": null,
+          "track_number": 5,
+          "type": "track",
+          "uri": "spotify:track:1lqLcgZkwL2iCMFkMwhQJl"
+        },
+        "played_at": "2025-03-07T05:15:50.854Z",
+        "context": {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3tvnuk98r2VOv9ygTK8cjs"
+          },
+          "href": "https://api.spotify.com/v1/artists/3tvnuk98r2VOv9ygTK8cjs",
+          "type": "artist",
+          "uri": "spotify:artist:3tvnuk98r2VOv9ygTK8cjs"
+        }
+      }
+    ],
+    "next": "https://api.spotify.com/v1/me/player/recently-played?before=1741324550854",
+    "cursors": {
+      "after": "1741332411620",
+      "before": "1741324550854"
+    },
+    "limit": 20,
+    "href": "https://api.spotify.com/v1/me/player/recently-played"
+  }
