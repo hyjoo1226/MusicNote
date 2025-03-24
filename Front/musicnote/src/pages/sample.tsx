@@ -22,7 +22,7 @@ export default function Home() {
       </div>
 
       {/* 그라디언트 사용 */}
-      <div className="bg-linear-to-t  from-main to-sub p-4 rounded-lg">
+      <div className="bg-linear-to-t text-openness text-conscientiousness text-agreeableness text-neuroticism text-extraversion bg-conscientiousness bg-extraversion bg-openness bg-agreeableness bg-neuroticism bg-neuroticism from-main to-sub p-4 rounded-lg">
         <span className="text-white/100 font-bold text-2xl">그라디언트 배경</span>
       </div>
 
