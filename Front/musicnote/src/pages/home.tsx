@@ -31,7 +31,7 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
           <span className="text-white text-xl font-medium self-start">최근에 들은 음악</span>
           <div className="flex flex-col items-start justify-start w-full gap-y-3">
-            {Array.isArray(recentPlayedList.items) && recentPlayedList.items.slice(0, 3).map((item, index) => (
+            {Array.isArray(recentPlayedList.items) && recentPlayedList.items.slice(0, 3).map((item: any, index: number) => (
               <div key={index} className="recent-played-item flex flex-row items-center justify-start gap-x-2 w-full">
                 <div className="flex flex-row items-center justify-start gap-x-4 px-4 py-1 rounded-lg">
                   <img src={item.track?.album.images[0].url} alt={item.track?.name} className="w-12 h-12 rounded-lg" />
