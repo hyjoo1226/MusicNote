@@ -6,7 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 # ==== 1. Load Spotify Features Dataset ====
 INPUT_PATH = "datasets/SpotifyFeatures_scaled.csv"
-OUTPUT_PATH = "datasets/training_data_scaled.csv"
+OUTPUT_PATH = "datasets/training_data.csv"
 
 features_required = [
     'valence', 'acousticness', 'instrumentalness',
