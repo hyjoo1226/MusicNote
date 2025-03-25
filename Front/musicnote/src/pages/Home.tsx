@@ -8,7 +8,6 @@ import DetailButton from "../components/buttons/DetailButton";
 export default function Home() {
   const wordOfToday =
     "오늘은 외향성이 높으시네요. 사람들과 어울리면서 많은 에너지를 얻기를 바라요!";
-  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center min-h-screen w-full overflow-y-auto bg-level1 md:p-6">
       {/* 로고 + 이름 */}
