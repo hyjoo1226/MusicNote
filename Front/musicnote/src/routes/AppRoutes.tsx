@@ -3,11 +3,14 @@ import Home from "../pages/Home";
 import Analysis from "../pages/Analysis";
 import Discover from "../pages/Discover";
 import Recommendations from "../pages/Recommendations";
+import Login from "../pages/Login";
 import MusicList from "../pages/MusicList";
 
 export default function AppRoutes(): React.ReactElement {
   return (
     <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/callback" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/musiclist/:title/" element={<MusicList />} />
       <Route path="/analysis" element={<Analysis />} />
