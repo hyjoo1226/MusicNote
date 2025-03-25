@@ -5,7 +5,7 @@ export default function DetailButton({ url }: { url: string }) {
 
   return (
     <button className="flex items-center justify-center w-[65px] h-[30px] bg-main rounded-2xl cursor-pointer" onClick={() => navigate(url)}>
-      <span className="text-white text-base font-bold">더보기</span>
+      <span className="text-white text-base font-bold text-center mt-1">더보기</span>
     </button>
   );
 }

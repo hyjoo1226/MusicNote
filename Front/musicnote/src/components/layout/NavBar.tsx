@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import HomeIcon from "../../assets/icon/home-icon.svg?react";
 import ReportIcon from "../../assets/icon/report-icon.svg?react";
@@ -6,10 +6,18 @@ import PreferenceIcon from "../../assets/icon/preference-icon.svg?react";
 import RecommendIcon from "../../assets/icon/recommend-icon.svg?react";
 
 export default function NavBar() {
-  // // Navbar 안보이는 경로 추가
-  const hiddenPaths = ["/"];
+  const location = useLocation();
 
-  if (hiddenPaths.includes(location.pathname)) {
+  // 정확히 일치해야 하는 경로들
+  const exactHiddenPaths = ["/"];
+  
+  // 특정 경로로 시작하는 모든 페이지를 숨길 경로들
+  const patternHiddenPaths = ["/musiclist"];
+  
+  if (
+    exactHiddenPaths.includes(location.pathname) || 
+    patternHiddenPaths.some(path => location.pathname.startsWith(path + '/'))
+  ) {
     return null;
   }
 
