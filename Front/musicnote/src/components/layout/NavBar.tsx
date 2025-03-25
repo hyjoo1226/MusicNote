@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import HomeIcon from "../../assets/icon/home-icon.svg?react";
 import ReportIcon from "../../assets/icon/report-icon.svg?react";

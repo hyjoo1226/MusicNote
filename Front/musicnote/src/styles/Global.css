@@ -49,6 +49,12 @@
     /* 강조색 */
     --color-main: #FE365E;
     --color-sub: #F78888;
+
+    /* 구분선 색 */
+    --color-border: #443A3A;
+
+    /* 브레이크 포인트 */
+    --breakpoint-xs: 400px;
 } 
 
 body {
@@ -69,4 +75,27 @@ body {
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+}
+
+/* 모든 스크롤바 숨기기 */
+html, body, #root {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Chrome, Safari 등 Webkit 기반 브라우저용 */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar {
+  display: none;
+}
+
+/* 앱 내의 모든 요소에 스크롤바 숨기기 (선택적) */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }

@@ -8,16 +8,16 @@ export default function UserTemperGraph({ scores }: { scores: number[] }) {
     ];
     
     return (
-      <div className="p-4 bg-level2 rounded-lg w-full">
+      <div className="p-2 xs:p-4 bg-level2 rounded-lg w-full">
         <h1 className="text-xl text-white font-medium mb-2">음악이 말해주는 당신</h1>
         <div className="space-y-3">
           {traits.map((trait, index) => (
-            <div key={trait.key} className="flex items-center justify-center gap-x-4 pl-4">
-              <div className="flex-sm-3 flex-md-2 text-[16px] font-medium text-light-gray">{trait.name}</div>
-              <div className={`flex-sm-2 flex-md-1 text-[16px] font-medium text-${trait.key}`}>
+            <div key={trait.key} className="flex items-center justify-between gap-x-2 pl-2 xs:gap-x-4 xs:pl-4">
+              <div className="width-[30px] xs:width-[50px] text-[12px] xs:text-[16px] font-medium text-light-gray">{trait.name}</div>
+              <div className={`width-[20px] xs:width-[30px] text-[12px] xs:text-[16px] font-medium text-${trait.key}`}>
                 {scores[index]}%
               </div>
-              <div className="flex-8 bg-level3 rounded-full h-6 overflow-hidden">
+              <div className="flex-5 xs:flex-9 bg-level3 rounded-full h-6 overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-1000 bg-${trait.key}`}
                   style={{
