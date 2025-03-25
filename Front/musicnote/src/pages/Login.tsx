@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logo-large.png";
 import logoName from "../assets/logo/long-logo.png";
@@ -42,7 +42,6 @@ export default function Login() {
   const [tokenData, setTokenData] = useState<TokenData | null>(null);
   const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID!;
   const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URL;
-  const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
   // Spotify 로그인
   const handleSpotifyLogin = () => {
@@ -79,33 +78,7 @@ export default function Login() {
     getHashParams().then(setParams);
   }, []);
 
-  // 토큰 검증 및 로그인 처리
-  useEffect(() => {
-    if (!params) return;
-
-    const storedState = localStorage.getItem("spotify_auth_state");
-
-    validateToken(params, storedState)
-      .then(() => {
-        setTokenData({
-          access_token: params.access_token,
-          token_type: params.token_type,
-          expires_in: params.expires_in,
-          state: params.state,
-        });
-        // 사용자 정보 가져오기
-        fetchUserProfile(params.access_token);
-        localStorage.removeItem("spotify_auth_state");
-        window.history.replaceState(null, "", window.location.pathname);
-        navigate("/home");
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  }, [params, navigate]);
-
-  // 사용자 프로필 정보 가져오기
-  const fetchUserProfile = async (accessToken: string) => {
+  const fetchUserProfile = useCallback(async (accessToken: string) => {
     try {
       const response = await fetch("https://api.spotify.com/v1/me", {
         headers: {
@@ -120,26 +93,44 @@ export default function Login() {
       const profileData = await response.json();
       console.log("사용자 프로필:", profileData);
 
-      // 프로필 정보를 토큰 데이터에 추가
-      setTokenData((prevData) => {
-        if (!prevData) {
-          return {
-            access_token: params.access_token,
-            token_type: params.token_type,
-            expires_in: params.expires_in,
-            state: params.state,
-            profile: profileData,
-          };
-        }
-        return {
-          ...prevData,
+      setTokenData((prevTokenData) => {
+        const updatedTokenData = {
+          ...prevTokenData!,
           profile: profileData,
         };
+        localStorage.setItem('spotify_token_data', JSON.stringify(updatedTokenData));
+        return updatedTokenData;
       });
     } catch (err) {
       console.error("프로필 요청 오류:", err);
     }
-  };
+  }, []);
+
+  // 토큰 검증 및 로그인 처리
+  useEffect(() => {
+    if (!params) return;
+
+    const storedState = localStorage.getItem("spotify_auth_state");
+
+    validateToken(params, storedState)
+      .then(() => {
+        const newTokenData = {
+          access_token: params.access_token,
+          token_type: params.token_type,
+          expires_in: params.expires_in,
+          state: params.state,
+        };
+        setTokenData(newTokenData);
+        localStorage.setItem('spotify_token_data', JSON.stringify(newTokenData));
+        fetchUserProfile(params.access_token);
+        localStorage.removeItem("spotify_auth_state");
+        window.history.replaceState(null, "", window.location.pathname);
+        navigate("/home");
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, [params, navigate, fetchUserProfile]);
 
   return (
     <div>
