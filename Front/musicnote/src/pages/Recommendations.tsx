@@ -22,7 +22,7 @@ interface Genre {
 
 export default function Recommendations() {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [selectedDomain, setSelectedDomain] = useState<'movie' | 'music' | 'activity'>('movie');
+  const [selectedDomain, setSelectedDomain] = useState<'영화' | '음악' | '활동'>('영화');
   const genreMap = new Map(genreData.genres.map((genre: Genre) => [genre.id, genre.name]));
 
   const getGenreNames = (genreIds: number[]) => {
@@ -54,19 +54,19 @@ export default function Recommendations() {
 
   const renderContent = () => {
     switch (selectedDomain) {
-      case 'movie':
+      case '영화':
         return (
           <div className="w-full px-2 rounded-lg overflow-hidden">
             <MovieCarousel movies={movies} getGenreNames={getGenreNames} />
           </div>
         );
-      case 'music':
+      case '음악':
         return (
           <div className="w-full px-2 mb-8 text-white text-center">
             음악 추천 컴포넌트가 들어갈 자리입니다
           </div>
         );
-      case 'activity':
+      case '활동':
         return (
           <div className="w-full px-2 mb-8 text-white text-center">
             활동 추천 컴포넌트가 들어갈 자리입니다
@@ -97,9 +97,9 @@ export default function Recommendations() {
         <div className="w-full flex flex-row grid grid-cols-4">
           <div 
             className={`bg-level2 py-1 flex flex-col items-center justify-center cursor-pointer rounded-tl-lg transition-all ${
-              selectedDomain === 'movie' ? 'bg-main' : 'hover:bg-level3 border-r border-b border-border '
+              selectedDomain === '영화' ? 'bg-main' : 'hover:bg-level3 border-r border-b border-border '
             }`}
-            onClick={() => setSelectedDomain('movie')}
+            onClick={() => setSelectedDomain('영화')}
           >
             <span className="text-xl xs:text-2xl">🎬</span>
             <span className="text-white font-bold text-base">영화</span>
@@ -107,9 +107,9 @@ export default function Recommendations() {
           
           <div 
             className={`bg-level2 py-1 flex flex-col items-center justify-center cursor-pointer transition-all ${
-              selectedDomain === 'music' ? 'bg-main' : 'hover:bg-level3 border-r border-b border-border '
+              selectedDomain === '음악' ? 'bg-main' : 'hover:bg-level3 border-r border-b border-border '
             }`}
-            onClick={() => setSelectedDomain('music')}
+            onClick={() => setSelectedDomain('음악')}
           >
             <span className="text-light-gray text-xl xs:text-2xl">♬</span>
             <span className="text-white font-bold text-base">음악</span>
@@ -117,15 +117,15 @@ export default function Recommendations() {
 
           <div 
             className={`bg-level2 py-1 flex flex-col items-center justify-center cursor-pointer rounded-tr-lg transition-all ${
-              selectedDomain === 'activity' ? 'bg-main' : 'hover:bg-level3 border-b border-border'
+              selectedDomain === '활동' ? 'bg-main' : 'hover:bg-level3 border-b border-border'
             }`}
-            onClick={() => setSelectedDomain('activity')}
+            onClick={() => setSelectedDomain('활동')}
           >
             <span className="text-xl xs:text-2xl">🎮</span>
             <span className="text-white font-bold text-base">활동</span>
           </div>
         </div>
-        <DetailButton url="#"/>
+        <DetailButton url={`/recommendationlist/${selectedDomain}`}/>
       </div>
       <div className="w-full bg-level2 flex flex-row p-2 justify-between items-center rounded-b-lg">
         {renderContent()}

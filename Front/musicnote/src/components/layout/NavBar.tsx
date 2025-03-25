@@ -12,7 +12,7 @@ export default function NavBar() {
   const exactHiddenPaths = ["/"];
   
   // 특정 경로로 시작하는 모든 페이지를 숨길 경로들
-  const patternHiddenPaths = ["/musiclist"];
+  const patternHiddenPaths = ["/musiclist", "/recommendationlist"];
   
   if (
     exactHiddenPaths.includes(location.pathname) || 

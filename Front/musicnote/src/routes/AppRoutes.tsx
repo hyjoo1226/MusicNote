@@ -5,7 +5,7 @@ import Discover from "../pages/Discover";
 import Recommendations from "../pages/Recommendations";
 import Login from "../pages/Login";
 import MusicList from "../pages/MusicList";
-
+import RecommendationDetail from "../pages/RecommendationDetail";
 export default function AppRoutes(): React.ReactElement {
   return (
     <Routes>
@@ -16,6 +16,7 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/analysis" element={<Analysis />} />
       <Route path="/discover" element={<Discover />} />
       <Route path="/recommendations" element={<Recommendations />} />
+      <Route path="/recommendation-detail/:domain" element={<RecommendationDetail />} />
     </Routes>
   );
 }
