@@ -3,12 +3,6 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logo-large.png";
 import logoName from "../assets/logo/long-logo.png";
 
-interface TokenData {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  state: string;
-}
 
 // 해시 파라미터 가져오기
 async function getHashParams() {
@@ -39,7 +33,6 @@ async function validateToken(params: any, storedState: string | null) {
 export default function Login() {
   const navigate = useNavigate();
   const [params, setParams] = useState<any | null>(null);
-  const [tokenData, setTokenData] = useState<TokenData | null>(null);
   const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID!;
   const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URL;
 
@@ -92,15 +85,14 @@ export default function Login() {
 
       const profileData = await response.json();
       console.log("사용자 프로필:", profileData);
-
-      setTokenData((prevTokenData) => {
-        const updatedTokenData = {
-          ...prevTokenData!,
-          profile: profileData,
-        };
-        localStorage.setItem('spotify_token_data', JSON.stringify(updatedTokenData));
-        return updatedTokenData;
-      });
+      
+      // 프로필 데이터만 로컬 스토리지에 저장
+      const tokenData = JSON.parse(localStorage.getItem('spotify_token_data') || '{}');
+      const updatedTokenData = {
+        ...tokenData,
+        profile: profileData,
+      };
+      localStorage.setItem('spotify_token_data', JSON.stringify(updatedTokenData));
     } catch (err) {
       console.error("프로필 요청 오류:", err);
     }
@@ -109,7 +101,6 @@ export default function Login() {
   // 토큰 검증 및 로그인 처리
   useEffect(() => {
     if (!params) return;
-
     const storedState = localStorage.getItem("spotify_auth_state");
 
     validateToken(params, storedState)
@@ -120,7 +111,6 @@ export default function Login() {
           expires_in: params.expires_in,
           state: params.state,
         };
-        setTokenData(newTokenData);
         localStorage.setItem('spotify_token_data', JSON.stringify(newTokenData));
         fetchUserProfile(params.access_token);
         localStorage.removeItem("spotify_auth_state");
