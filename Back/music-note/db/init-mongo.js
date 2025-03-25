@@ -1,6 +1,13 @@
 // init-mongo.js
 print("MongoDB 초기 사용자 설정 시작...");
 
+db = db.getSiblingDB("admin");
+db.createUser({
+    user: "music",
+    pwd: "note",
+    roles: [{ role: "readWrite", db: "musicdb" }]
+});
+
 // test 데이터베이스 USER 생성
 db = db.getSiblingDB("test");
 db.createUser({
