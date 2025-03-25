@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: gateway
@@ -21,7 +24,7 @@ spring:
         - id: main-route
           uri: lb://main-server
           predicates:
-            - Path=/api/v1/main/**
+            - Path=/api/main/**
           filters:
             - RewritePath=/api/main/(?<segment>/.*)?, /${segment}
 
