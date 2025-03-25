@@ -54,7 +54,7 @@
     --color-border: #443A3A;
 
     /* 브레이크 포인트 */
-    --breakpoint-xs: 400px;
+    --breakpoint-xs: 360px;
 } 
 
 body {
@@ -75,6 +75,10 @@ body {
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+}
+
+#root {
+  font-family: var(--font-medium);
 }
 
 /* 모든 스크롤바 숨기기 */
