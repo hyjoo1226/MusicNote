@@ -2,7 +2,7 @@ import UserTemperGraph from "../components/UserTemperGraph";
 import logo from "@/assets/logo/logo.png";
 import shortLogo from "@/assets/logo/short-logo.png";
 import recentPlayedList from "../assets/data/recent-played-list.json";
-import { useNavigate } from "react-router-dom";
+import DetailButton from "../components/buttons/DetailButton";
 // import { useGetData } from "../hooks/useApi";
 
 export default function Home() {
@@ -45,13 +45,13 @@ export default function Home() {
         </div>
         <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
         <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
-          <span className="text-white text-xl font-medium self-start">
-            최근에 들은 음악
-          </span>
-          <div 
-            className="flex flex-col md:flex-row md:flex-wrap items-start justify-start w-full gap-y-3 md:gap-x-2"
-            onClick={() => navigate("/musiclist/최근에-들은-음악")}
-            >
+          <div className="flex flex-row items-center justify-between w-full">
+            <span className="text-white text-xl font-medium self-start">
+              최근에 들은 음악
+            </span>
+            <DetailButton url="/musiclist/최근에-들은-음악" />
+          </div>
+          <div className="flex flex-col items-start justify-start w-full gap-y-3">
             {Array.isArray(recentPlayedList.items) &&
               recentPlayedList.items
                 .slice(0, 6)
