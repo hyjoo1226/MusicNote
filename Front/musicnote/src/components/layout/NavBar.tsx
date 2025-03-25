@@ -6,15 +6,12 @@ import PreferenceIcon from "../../assets/icon/preference-icon.svg?react";
 import RecommendIcon from "../../assets/icon/recommend-icon.svg?react";
 
 export default function NavBar() {
-  // const location = useLocation();
-
   // // Navbar 안보이는 경로 추가
-  // const hiddenPaths = [];
-  // // const hiddenPaths = ["/analysis"];
+  const hiddenPaths = ["/"];
 
-  // if (hiddenPaths.includes(location.pathname)) {
-  //   return null;
-  // }
+  if (hiddenPaths.includes(location.pathname)) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-0 w-full max-w-[600px] h-[80px] bg-level1 z-10">
