@@ -3,7 +3,7 @@ import os
 import joblib
 
 # ==== 설정 ====
-RAW_INPUT_PATH = "datasets/new_raw_audio_data.csv"
+RAW_INPUT_PATH = "datasets/2025-03-25.csv"
 SCALER_PATH = "models/scaler.pkl"
 MODEL_DIR = "models"
 REPORT_PATH = "reports/daily/report_predicted.csv"

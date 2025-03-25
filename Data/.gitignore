@@ -19,6 +19,7 @@ dist/
 
 # Model files
 models/*.pkl
+!models/personality_model_rf_multi.pkl
 
 # OS-specific files
 .DS_Store
@@ -32,4 +33,5 @@ Thumbs.db
 .idea/
 
 # datasets
+*.json
 *.csv

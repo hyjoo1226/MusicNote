@@ -13,7 +13,6 @@ class AudioFeatures(BaseModel):
     energy: float
     loudness: float
     danceability: float
-    time_signature: int
 
 class MusicScore(BaseModel):
     mellow: float
@@ -25,7 +24,7 @@ class MusicScore(BaseModel):
 class MusicScoreWithCluster(MusicScore):
     cluster_id: int
 
-class PersonalityScore(BaseModel):
+class BigFiveScore(BaseModel):
     openness: float
     conscientiousness: float
     extraversion: float
@@ -33,5 +32,5 @@ class PersonalityScore(BaseModel):
     neuroticism: float
 
 # 다중 곡 처리용 요청 모델
-class MultiTrackRequest(BaseModel):
+class FeatureList(BaseModel):
     tracks: List[AudioFeatures]

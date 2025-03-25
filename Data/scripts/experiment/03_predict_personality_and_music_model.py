@@ -2,15 +2,14 @@
 import pandas as pd
 import joblib
 import os
+from datetime import date
 
-from sklearn.preprocessing import MinMaxScaler
-
-INPUT_PATH = "datasets/new_raw_audio_data.csv"
+INPUT_PATH = f"data/inputs/{date.today()}.csv"
 MODEL_DIR = "models"
 FEATURE_SCALER_PATH = f"{MODEL_DIR}/feature_scaler.pkl"
 MUSIC_SCALER_PATH = f"{MODEL_DIR}/music_score_scaler.pkl"
-OUTPUT_PATH = "outputs/prediction_result.csv"
-os.makedirs("outputs", exist_ok=True)
+OUTPUT_PATH = f"data/outputs/{date.today()}_scores.csv"
+os.makedirs("data/outputs", exist_ok=True)
 
 data = pd.read_csv(INPUT_PATH)
 features = ['valence', 'acousticness', 'instrumentalness',

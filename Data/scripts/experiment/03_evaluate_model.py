@@ -5,7 +5,7 @@ import os
 from sklearn.metrics import mean_absolute_error, r2_score
 from tqdm import tqdm
 
-INPUT_PATH = "datasets/training_data.csv"
+INPUT_PATH = "data/datasets/training_data.csv"
 MODEL_DIR = "models"
 
 data = pd.read_csv(INPUT_PATH)

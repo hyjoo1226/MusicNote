@@ -4,8 +4,8 @@ import os
 import joblib
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-INPUT_PATH = "datasets/SpotifyFeatures.csv"
-OUTPUT_PATH = "datasets/training_data.csv"
+INPUT_PATH = "data/datasets/SpotifyFeatures.csv"
+OUTPUT_PATH = "data/datasets/training_data.csv"
 FEATURE_SCALER_PATH = "models/feature_scaler.pkl"
 LABEL_SCALER_PATH = "models/label_scaler.pkl"
 MUSIC_SCALER_PATH = "models/music_score_scaler.pkl"
