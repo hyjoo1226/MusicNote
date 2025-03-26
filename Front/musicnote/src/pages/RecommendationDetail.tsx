@@ -1,7 +1,7 @@
 import TopBar from "../components/layout/TopBar";
 import { useParams } from "react-router-dom";
 import genreData from "@/assets/data/tmdb-genre-id.json";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import '@/styles/RecommendationList.css';
 
 interface Movie {
@@ -101,7 +101,7 @@ export default function RecommendationDetail() {
   };
 
   const updateCardPosition = (newOffset: number) => {
-    const maxOffset = cardWidth.current * 0.05;
+    const maxOffset = cardWidth.current * 0.2;
     const limitedOffset = Math.max(-maxOffset, Math.min(maxOffset, newOffset));
     
     if (newOffset > 10) {
@@ -248,10 +248,30 @@ export default function RecommendationDetail() {
     setTimeout(() => setIsAnimating(false), 500);
   };
 
+  // 이미지 프리로딩을 위한 함수 추가
+  
+
+  // 현재 영화가 바뀔 때마다 다음 영화 이미지 미리 로드
+  useEffect(() => {
+    const preloadImages = (startIdx: number, count: number) => {
+      for (let i = 0; i < count; i++) {
+        const idx = startIdx + i;
+        if (idx < movies.length) {
+          const img = new Image();
+          img.src = `https://image.tmdb.org/t/p/w780${movies[idx].poster_path}`;
+        }
+      }
+    };
+    if (movies.length > 0 && currentIndex < movies.length) {
+      // 현재 영화 이후 3개 영화 이미지 미리 로드
+      preloadImages(currentIndex + 1, 3);
+    }
+  }, [currentIndex, movies]);
+
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
       <TopBar title={titleText} />
-      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-40px)] xs:w-[calc(100%-80px)] p-4">
+      <div className="recommendation-container overflow-hidden bg-level2 rounded-2xl w-[calc(100%-30px)] xs:w-[calc(100%-60px)] p-4">
         {currentMovie ? (
           <>
             <div
@@ -283,18 +303,18 @@ export default function RecommendationDetail() {
                 </div>
               )}
               <div 
-                className={`relative w-full h-[70vh] transition-transform duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : 'rotate-y-0'}`}
-                style={{ pointerEvents: 'none' }}
+                className={`relative w-full h-[calc(100vh-290px)] transition-transform duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : 'rotate-y-0'}`}
+                style={{ pointerEvents: isFlipped ? 'auto' : 'none' }}
               >
                 {/* 앞면 */}
                 <div className={`absolute w-full h-full backface-hidden ${isFlipped ? 'card-hidden' : 'card-visible'}`}>
                   <img
-                    src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}
+                    src={`https://image.tmdb.org/t/p/w780${currentMovie.poster_path}`}
                     alt={currentMovie.title}
                     className="w-full h-full object-cover rounded-lg"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
-                    <div className="flex flex-col gap-1">
+                  <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
+                    <div className="flex flex-col gap-0">
                       <span className="text-light-gray text-sm font-light">
                         {getGenreNames(currentMovie.genre_ids).join(', ')}
                       </span>
@@ -310,8 +330,11 @@ export default function RecommendationDetail() {
                   </div>
                 </div>
                 {/* 뒷면 */}
-                <div className={`absolute w-full h-full bg-level1 rounded-lg p-6 overflow-y-auto backface-hidden rotate-y-180 ${!isFlipped ? 'card-hidden' : 'card-visible'}`}>
-                  <div className="flex flex-col gap-4">
+                <div 
+                  className={`absolute w-full h-full bg-level1 rounded-lg p-6 overflow-y-auto backface-hidden rotate-y-180 ${!isFlipped ? 'card-hidden' : 'card-visible'}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex flex-col gap-2">
                     <h3 className="text-white text-2xl font-bold">{currentMovie.title}</h3>
                     <div className="flex items-center gap-2 text-light-gray text-sm">
                       <span>{currentMovie.release_date.split('-')[0]}</span>

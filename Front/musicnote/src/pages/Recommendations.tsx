@@ -125,7 +125,7 @@ export default function Recommendations() {
             <span className="text-white font-bold text-base">활동</span>
           </div>
         </div>
-        <DetailButton url={`/recommendationlist/${selectedDomain}`}/>
+        <DetailButton url={`/recommendation-detail/${selectedDomain}`}/>
       </div>
       <div className="w-full bg-level2 flex flex-row p-2 justify-between items-center rounded-b-lg">
         {renderContent()}
