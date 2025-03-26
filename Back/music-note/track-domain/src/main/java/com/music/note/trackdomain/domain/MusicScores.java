@@ -1,4 +1,4 @@
-package com.music.note.musictype.service.domain;
+package com.music.note.trackdomain.domain;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 

@@ -13,7 +13,9 @@ if (db.system.users.find({user: "music"}).count() === 0) {
     print("music 사용자 이미 존재함");
 }
 
-db.tracks.insertMany([
+const musicDB = db.getSiblingDB("musicdb");
+
+musicDB.tracks.insertMany([
     {
         spotifyId: "a123456789",
         title: "music1",

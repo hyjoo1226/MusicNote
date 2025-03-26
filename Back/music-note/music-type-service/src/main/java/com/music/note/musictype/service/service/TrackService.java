@@ -10,10 +10,10 @@ import com.music.note.kafkaeventmodel.dto.MusicDto;
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.MusicListWithMissingEvent;
 import com.music.note.kafkaeventmodel.dto.RequestEvent;
-import com.music.note.musictype.service.domain.Track;
 import com.music.note.musictype.service.kafka.producer.CrawlingEventProducer;
 import com.music.note.musictype.service.kafka.producer.TypeEventProducer;
 import com.music.note.musictype.service.repository.TrackRepository;
+import com.music.note.trackdomain.domain.Track;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
