@@ -69,7 +69,7 @@ export default function Chart({ bigFiveScore }: ChartProps) {
     <div>
       <RadarChart
         outerRadius={90}
-        width={730}
+        width={300}
         height={300}
         data={bigFiveScore}
         margin={{ top: 30, right: 30, left: 30, bottom: 30 }}
