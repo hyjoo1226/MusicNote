@@ -9,9 +9,9 @@ export default function Home() {
   const wordOfToday =
     "오늘은 외향성이 높으시네요. 사람들과 어울리면서 많은 에너지를 얻기를 바라요!";
   return (
-    <div className="flex flex-col items-center min-h-screen w-full overflow-y-auto bg-level1 md:p-6">
+    <div className="flex flex-col items-center min-h-screen w-full overflow-y-auto bg-level1 xs:p-6">
       {/* 로고 + 이름 */}
-      <div className="flex flex-row self-start justify-start my-3">
+      <div className="flex flex-row self-start justify-start my-3 gap-x-1">
         <img src={logo} alt="logo" className="w-[54px] h-[54px] mb-3" />
         <img src={shortLogo} alt="short-logo" className="h-[54px] mb-3" />
       </div>
