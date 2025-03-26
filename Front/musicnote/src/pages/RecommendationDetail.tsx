@@ -1,8 +1,9 @@
 import TopBar from "../components/layout/TopBar";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import mascot from "@/assets/logo/mascot.webp";
 import genreData from "@/assets/data/tmdb-genre-id.json";
-import { useState, useEffect, useRef, useCallback } from "react";
-import '@/styles/RecommendationList.css';
+import { useState, useEffect, useRef } from "react";
+import '@/styles/RecommendationDetail.css';
 
 interface Movie {
     id: number;
@@ -22,18 +23,20 @@ interface Genre {
 export default function RecommendationDetail() {
   const { domain } = useParams();
   const titleText = `${domain} 추천`;
-
+  const navigate = useNavigate();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState('');
-  const [likedMovies, setLikedMovies] = useState<number[]>([]);
-  const [dislikedMovies, setDislikedMovies] = useState<number[]>([]);
   const [startX, setStartX] = useState(0);
   const [offsetX, setOffsetX] = useState(0);
   const [swiping, setSwiping] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isDraggedRecently, setIsDraggedRecently] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollStartY = useRef(0);
+  const [isVerticalScrolling, setIsVerticalScrolling] = useState(false);
+  const startY = useRef(0);
 
   const cardRef = useRef(null);
   const cardWidth = useRef(0);
@@ -125,6 +128,8 @@ export default function RecommendationDetail() {
       cancelAnimationFrame(animationRef.current);
     }
     setStartX(e.touches[0].clientX);
+    startY.current = e.touches[0].clientY;
+    setIsVerticalScrolling(false);
     isDragging.current = true;
     setSwiping(true);
     setIsDraggedRecently(false);
@@ -134,9 +139,23 @@ export default function RecommendationDetail() {
     if (!isDragging.current) return;
     
     const currentX = e.touches[0].clientX;
-    const diff = currentX - startX;
+    const currentY = e.touches[0].clientY;
+    const diffX = currentX - startX;
+    const diffY = currentY - startY.current;
     
-    if (Math.abs(diff) > 5) {
+    // 처음 움직임이 감지될 때 방향 결정
+    if (!isVerticalScrolling && (Math.abs(diffX) > 5 || Math.abs(diffY) > 5)) {
+      // 세로 방향 움직임이 가로보다 큰 경우
+      if (Math.abs(diffY) > Math.abs(diffX)) {
+        setIsVerticalScrolling(true);
+        return;
+      }
+    }
+    
+    // 세로 스크롤 중이면 가로 스와이프 처리 안함
+    if (isVerticalScrolling) return;
+    
+    if (Math.abs(diffX) > 5) {
       setIsDraggedRecently(true);
     }
     
@@ -145,7 +164,7 @@ export default function RecommendationDetail() {
     }
     
     animationRef.current = requestAnimationFrame(() => {
-      updateCardPosition(diff);
+      updateCardPosition(diffX);
     });
   };
 
@@ -154,11 +173,16 @@ export default function RecommendationDetail() {
     
     isDragging.current = false;
     setSwiping(false);
+    setIsVerticalScrolling(false);
     
-    if (direction === 'right') {
-      handleLike();
-    } else if (direction === 'left') {
-      handleDislike();
+    if (!isVerticalScrolling) {
+      if (direction === 'right') {
+        handleLike();
+      } else if (direction === 'left') {
+        handleDislike();
+      } else {
+        resetSwipeState();
+      }
     } else {
       resetSwipeState();
     }
@@ -170,6 +194,8 @@ export default function RecommendationDetail() {
       cancelAnimationFrame(animationRef.current);
     }
     setStartX(e.clientX);
+    startY.current = e.clientY;
+    setIsVerticalScrolling(false);
     isDragging.current = true;
     setSwiping(true);
     setIsDraggedRecently(false);
@@ -179,9 +205,23 @@ export default function RecommendationDetail() {
     if (!isDragging.current) return;
     
     const currentX = e.clientX;
-    const diff = currentX - startX;
+    const currentY = e.clientY;
+    const diffX = currentX - startX;
+    const diffY = currentY - startY.current;
     
-    if (Math.abs(diff) > 5) {
+    // 처음 움직임이 감지될 때 방향 결정
+    if (!isVerticalScrolling && (Math.abs(diffX) > 5 || Math.abs(diffY) > 5)) {
+      // 세로 방향 움직임이 가로보다 큰 경우
+      if (Math.abs(diffY) > Math.abs(diffX)) {
+        setIsVerticalScrolling(true);
+        return;
+      }
+    }
+    
+    // 세로 스크롤 중이면 가로 스와이프 처리 안함
+    if (isVerticalScrolling) return;
+    
+    if (Math.abs(diffX) > 5) {
       setIsDraggedRecently(true);
     }
     
@@ -190,7 +230,7 @@ export default function RecommendationDetail() {
     }
     
     animationRef.current = requestAnimationFrame(() => {
-      updateCardPosition(diff);
+      updateCardPosition(diffX);
     });
   };
 
@@ -199,11 +239,16 @@ export default function RecommendationDetail() {
     
     isDragging.current = false;
     setSwiping(false);
+    setIsVerticalScrolling(false);
     
-    if (direction === 'right') {
-      handleLike();
-    } else if (direction === 'left') {
-      handleDislike();
+    if (!isVerticalScrolling) {
+      if (direction === 'right') {
+        handleLike();
+      } else if (direction === 'left') {
+        handleDislike();
+      } else {
+        resetSwipeState();
+      }
     } else {
       resetSwipeState();
     }
@@ -218,18 +263,42 @@ export default function RecommendationDetail() {
   const handleLike = () => {
     if (!currentMovie) return;
     resetSwipeState();
-    setLikedMovies(prev => [...prev, currentMovie.id]);
+    
+    // 카드가 뒤집혀 있다면 다시 앞면으로 전환
+    if (isFlipped) {
+      setIsFlipped(false);
+    }
+    
     setTimeout(() => {
       goToNextMovie();
+      // 스크롤 위치 초기화
+      if (cardRef.current) {
+        const backContent = (cardRef.current as HTMLElement).querySelector('.bg-level1');
+        if (backContent) {
+          (backContent as HTMLElement).scrollTop = 0;
+        }
+      }
     }, 300);
   };
 
   const handleDislike = () => {
     if (!currentMovie) return;
     resetSwipeState();
-    setDislikedMovies(prev => [...prev, currentMovie.id]);
+    
+    // 카드가 뒤집혀 있다면 다시 앞면으로 전환
+    if (isFlipped) {
+      setIsFlipped(false);
+    }
+    
     setTimeout(() => {
       goToNextMovie();
+      // 스크롤 위치 초기화
+      if (cardRef.current) {
+        const backContent = (cardRef.current as HTMLElement).querySelector('.bg-level1');
+        if (backContent) {
+          (backContent as HTMLElement).scrollTop = 0;
+        }
+      }
     }, 300);
   };
 
@@ -248,8 +317,23 @@ export default function RecommendationDetail() {
     setTimeout(() => setIsAnimating(false), 500);
   };
 
-  // 이미지 프리로딩을 위한 함수 추가
-  
+  const handleBackContentMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    scrollStartY.current = e.clientY;
+    setIsScrolling(false);
+  };
+
+  const handleBackContentMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (Math.abs(e.clientY - scrollStartY.current) > 5) {
+      setIsScrolling(true);
+    }
+  };
+
+  const handleBackContentMouseUp = () => {
+    if (!isScrolling) {
+      handleCardClick();
+    }
+    setIsScrolling(false);
+  };
 
   // 현재 영화가 바뀔 때마다 다음 영화 이미지 미리 로드
   useEffect(() => {
@@ -258,13 +342,24 @@ export default function RecommendationDetail() {
         const idx = startIdx + i;
         if (idx < movies.length) {
           const img = new Image();
-          img.src = `https://image.tmdb.org/t/p/w780${movies[idx].poster_path}`;
+          img.src = `https://image.tmdb.org/t/p/w500${movies[idx].poster_path}`;
         }
       }
     };
     if (movies.length > 0 && currentIndex < movies.length) {
       // 현재 영화 이후 3개 영화 이미지 미리 로드
       preloadImages(currentIndex + 1, 3);
+    }
+  }, [currentIndex, movies]);
+
+  // useEffect를 추가하여 영화가 바뀔 때마다 스크롤 위치 초기화
+  useEffect(() => {
+    // 스크롤 위치 초기화
+    if (cardRef.current) {
+      const backContent = (cardRef.current as HTMLElement).querySelector('.bg-level1');
+      if (backContent) {
+        (backContent as HTMLElement).scrollTop = 0;
+      }
     }
   }, [currentIndex, movies]);
 
@@ -303,7 +398,7 @@ export default function RecommendationDetail() {
                 </div>
               )}
               <div 
-                className={`relative w-full h-[calc(100vh-290px)] transition-transform duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : 'rotate-y-0'}`}
+                className={`relative w-full h-[calc(100vh-240px)] transition-transform duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : 'rotate-y-0'}`}
                 style={{ pointerEvents: isFlipped ? 'auto' : 'none' }}
               >
                 {/* 앞면 */}
@@ -332,6 +427,10 @@ export default function RecommendationDetail() {
                 {/* 뒷면 */}
                 <div 
                   className={`absolute w-full h-full bg-level1 rounded-lg p-6 overflow-y-auto backface-hidden rotate-y-180 ${!isFlipped ? 'card-hidden' : 'card-visible'}`}
+                  style={{ userSelect: 'none' }}
+                  onMouseDown={handleBackContentMouseDown}
+                  onMouseMove={handleBackContentMouseMove}
+                  onMouseUp={handleBackContentMouseUp}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex flex-col gap-2">
@@ -365,58 +464,12 @@ export default function RecommendationDetail() {
             </div>
           </>
         ) : (
-          <div className="grid grid-cols-2 gap-4">
-            {/* 좋아요 목록 */}
-            <div className="flex flex-col gap-2">
-              <h3 className="text-xl font-bold">좋아요한 영화</h3>
-              <div className="h-[600px] overflow-y-auto pr-2">
-                {likedMovies.map(movieId => {
-                  const movie = movies.find(m => m.id === movieId);
-                  if (!movie) return null;
-                  return (
-                    <div key={movie.id} className="flex items-center gap-3 p-2 bg-level1 rounded-lg mb-2">
-                      <img 
-                        src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
-                        alt={movie.title}
-                        className="w-12 h-16 object-cover rounded"
-                      />
-                      <div className="flex flex-col">
-                        <span className="font-medium">{movie.title}</span>
-                        <span className="text-sm text-light-gray">
-                          {movie.release_date.split('-')[0]} • ⭐ {movie.vote_average.toFixed(1)}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* 싫어요 목록 */}
-            <div className="flex flex-col gap-2">
-              <h3 className="text-xl font-bold">싫어요한 영화</h3>
-              <div className="h-[600px] overflow-y-auto pr-2">
-                {dislikedMovies.map(movieId => {
-                  const movie = movies.find(m => m.id === movieId);
-                  if (!movie) return null;
-                  return (
-                    <div key={movie.id} className="flex items-center gap-3 p-2 bg-level1 rounded-lg mb-2">
-                      <img 
-                        src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
-                        alt={movie.title}
-                        className="w-12 h-16 object-cover rounded"
-                      />
-                      <div className="flex flex-col">
-                        <span className="font-medium">{movie.title}</span>
-                        <span className="text-sm text-light-gray">
-                          {movie.release_date.split('-')[0]} • ⭐ {movie.vote_average.toFixed(1)}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+          <div className="flex flex-col items-center justify-center  gap-4">
+            <img src={mascot} alt="mascot" className="w-[200px] h-[200px] object-cover rounded-lg" />
+            <h3 className="text-white text-2xl font-bold text-center">추천을 다봤짹.<br/>보관함으로 갈짹?</h3>
+            <button className="bg-main text-white text-lg font-bold px-4 py-2 rounded-lg cursor-pointer" onClick={() => navigate(`/my-recommendation/${domain}`)}>
+              보관함으로 가기
+            </button>
           </div>
         )}
       </div>
