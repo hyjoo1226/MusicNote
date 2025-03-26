@@ -9,6 +9,6 @@ import lombok.Getter;
 @Builder
 public class MusicListWithMissingEvent {
 	private Long userId;
-	private List<String> musicList;
-	private List<String> missingTracks;
+	private List<MusicDto> musicList;
+	private List<MusicDto> missingTracks;
 }

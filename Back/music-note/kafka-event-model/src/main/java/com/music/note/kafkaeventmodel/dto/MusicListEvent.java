@@ -9,5 +9,5 @@ import lombok.Getter;
 @Builder
 public class MusicListEvent {
 	private Long userId;
-	private List<String> musicList;
+	private List<MusicDto> musicList;
 }
