@@ -2,9 +2,11 @@ package com.music.note.musictype.service.domain;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class AudioFeatures {
 	@Field("valence")
 	private double valence;
@@ -23,7 +25,7 @@ public class AudioFeatures {
 
 	@Field("tempo")
 	private double tempo;
-	
+
 	@Field("energy")
 	private double energy;
 

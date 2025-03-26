@@ -4,9 +4,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "tracks") // 컬렉션 이름: "tracks"
 public class Track {
 
@@ -20,5 +24,6 @@ public class Track {
 	private String artist;
 
 	private AudioFeatures audioFeatures;
+
 	// private MusicScores musicScores;
 }
