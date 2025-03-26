@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.music.note.kafkaeventmodel.dto.MusicDto;
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.MusicListWithMissingEvent;
 import com.music.note.kafkaeventmodel.dto.RequestEvent;
@@ -25,11 +26,23 @@ public class TrackService {
 	private final TypeEventProducer typeEventProducer;
 	private final CrawlingEventProducer crawlingEventProducer;
 
+	public List<MusicDto> findMissingTracks(List<MusicDto> musicList) {
+		List<String> titles = musicList.stream()
+			.map(MusicDto::getTitle)
+			.toList();
+
+		Set<String> foundTitles = trackRepository.findByTitleIn(titles).stream()
+			.map(Track::getTitle)
+			.collect(Collectors.toSet());
+
+		return musicList.stream()
+			.filter(music -> !foundTitles.contains(music.getTitle()))
+			.toList();
+	}
+
 	public void handleTrackCheck(RequestEvent event) {
-		List<String> musicList = event.getMusicList();
-		List<String> missingTracks = findMissingTracks(musicList);
-		log.info("[Track Check] -> userId={}, musicListSize={}, missingTracksSize={}",
-			event.getUserId(), musicList.size(), missingTracks.size());
+		List<MusicDto> musicList = event.getMusicList();
+		List<MusicDto> missingTracks = findMissingTracks(musicList);
 		if (missingTracks.isEmpty()) {
 			// DB에 전부 존재하는 경우 - 성향 분석 Event 발생
 			typeEventProducer.sendMusicListEvent(MusicListEvent.builder()
@@ -44,15 +57,5 @@ public class TrackService {
 				.missingTracks(missingTracks)
 				.build());
 		}
-	}
-
-	private List<String> findMissingTracks(List<String> musicList) {
-		Set<String> foundTitles = trackRepository.findByTitleIn(musicList).stream()
-			.map(Track::getTitle)
-			.collect(Collectors.toSet());
-
-		return musicList.stream()
-			.filter(title -> !foundTitles.contains(title))
-			.toList();
 	}
 }

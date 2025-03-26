@@ -1,7 +1,5 @@
 package com.music.note.kafkaeventmodel.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestEvent {
-	private Long userId;
-	private List<MusicDto> musicList;
+public class MusicDto {
+	private String spotifyId;
+	private String title;
+	private String artist;
 }
