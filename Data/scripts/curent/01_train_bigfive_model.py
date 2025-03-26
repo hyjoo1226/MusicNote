@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.ensemble import RandomForestRegressor
-from xgboost import XGBRegressor
 
 # 설정
 DATA_PATH = "data/datasets/training_data.csv"
@@ -25,7 +24,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_
 # 공통 모델 파라미터
 N_ESTIMATORS = 30
 MAX_DEPTH = 10
-MIN_SAMPLES_LEAF = 5  # only for RandomForest
+MIN_SAMPLES_LEAF = 5
 
 
 def evaluate_and_save(model, name):
@@ -55,15 +54,3 @@ rf_base = RandomForestRegressor(
 )
 rf_model = MultiOutputRegressor(rf_base)
 evaluate_and_save(rf_model, "personality_model_rf_multi")
-
-# ✅ 2. XGBoost
-xgb_base = XGBRegressor(
-    n_estimators=N_ESTIMATORS,
-    max_depth=MAX_DEPTH,
-    learning_rate=0.1,
-    verbosity=0,
-    n_jobs=-1,
-    random_state=42
-)
-xgb_model = MultiOutputRegressor(xgb_base)
-evaluate_and_save(xgb_model, "personality_model_xgb_multi")

@@ -1,4 +1,4 @@
-# .gitignore for FastAPI analysis server
+# .gitignore for FastAPI
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -20,6 +20,9 @@ dist/
 # Model files
 models/*.pkl
 !models/personality_model_rf_multi.pkl
+!models/feature_scaler.pkl
+!models/music_score_scaler.pkl
+!models/label_scaler.pkl
 
 # OS-specific files
 .DS_Store
@@ -35,3 +38,6 @@ Thumbs.db
 # datasets
 *.json
 *.csv
+
+# past scripts
+scripts/past/
