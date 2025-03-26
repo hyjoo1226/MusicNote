@@ -15,6 +15,7 @@ const weeklyReports = [
 ];
 const monthlyReports = [
   { from: new Date(2025, 1, 1), to: new Date(2025, 1, 28) },
+  { from: new Date(2025, 2, 1), to: new Date(2025, 2, 25) },
 ];
 
 export default function Calendar() {
@@ -41,48 +42,80 @@ export default function Calendar() {
     }
   };
 
-  function CustomHeader() {
-    return (
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex gap-2">
+  // function CustomHeader() {
+  //   const { dropdowns, month = new Date() } = useDayPicker();
+  //   return (
+  //     <div className="flex justify-between items-center mb-4">
+  //       <span className="header-month">
+  //         {month.toLocaleDateString("ko-KR", {
+  //           year: "numeric",
+  //           month: "long",
+  //         })}
+  //       </span>
+  //       <div className="flex gap-2">
+  //         <button
+  //           onClick={() => setReportCycle("daily")}
+  //           className={reportCycle === "daily" ? "active" : ""}
+  //         >
+  //           일간
+  //         </button>
+  //         <button
+  //           onClick={() => setReportCycle("weekly")}
+  //           className={reportCycle === "weekly" ? "active" : ""}
+  //         >
+  //           주간
+  //         </button>
+  //         <button
+  //           onClick={() => setReportCycle("monthly")}
+  //           className={reportCycle === "monthly" ? "active" : ""}
+  //         >
+  //           월간
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  return (
+    <div>
+      <div className="flex justify-end text-white text-[12px] font-medium">
+        <div className="bg-level1 m-2">
           <button
             onClick={() => setReportCycle("daily")}
-            className={reportCycle === "daily" ? "active" : ""}
+            className={reportCycle === "daily" ? "bg-sub" : ""}
           >
             일간
           </button>
           <button
             onClick={() => setReportCycle("weekly")}
-            className={reportCycle === "weekly" ? "active" : ""}
+            className={reportCycle === "weekly" ? "bg-sub" : ""}
           >
             주간
           </button>
           <button
             onClick={() => setReportCycle("monthly")}
-            className={reportCycle === "monthly" ? "active" : ""}
+            className={reportCycle === "monthly" ? "bg-sub" : ""}
           >
             월간
           </button>
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="text-white">
-      <DayPicker
-        mode="single"
-        selected={selected}
-        onSelect={setSelected}
-        defaultMonth={currentDate}
-        components={{ MonthCaption: CustomHeader }}
-        modifiers={{
-          report: getReportDays(),
-        }}
-        modifiersClassNames={{
-          report: "report-day",
-        }}
-      />
+      <div className="text-white">
+        <DayPicker
+          mode="single"
+          selected={selected}
+          onSelect={setSelected}
+          defaultMonth={currentDate}
+          captionLayout="dropdown"
+          // components={{ MonthCaption: CustomHeader }}
+          modifiers={{
+            report: getReportDays(),
+          }}
+          modifiersClassNames={{
+            report: "report-day",
+          }}
+        />
+      </div>
     </div>
   );
 }
