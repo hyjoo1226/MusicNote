@@ -1,5 +1,5 @@
 import Chart from "./Chart";
-import Calender from "./Calender";
+import Calender from "./Calendar";
 
 export default function Analysis() {
   // 데이터 예시 하드코딩
@@ -16,7 +16,7 @@ export default function Analysis() {
 
   return (
     <div>
-      <div className="flex flex-col w-full items-center justify-center">
+      {/* <div className="flex flex-col w-full items-center justify-center">
         <div className="flex flex-col w-full items-center bg-level2 rounded-lg">
           <Chart bigFiveScore={bigFiveScore} />
           <button className="flex items-center justify-center w-[160px] h-[40px] mt-2 mb-[16px] bg-main rounded-lg cursor-pointer">
@@ -25,8 +25,8 @@ export default function Analysis() {
             </span>
           </button>
         </div>
-      </div>
-      <div className="mt-5 w-[300px] h-[300px] bg-level2">
+      </div> */}
+      <div className="bg-level2">
         <Calender />
       </div>
     </div>
