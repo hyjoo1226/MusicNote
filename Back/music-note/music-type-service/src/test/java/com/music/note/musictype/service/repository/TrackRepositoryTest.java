@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
-import com.music.note.musictype.service.domain.AudioFeatures;
-import com.music.note.musictype.service.domain.Track;
+import com.music.note.trackdomain.domain.AudioFeatures;
+import com.music.note.trackdomain.domain.Track;
 
 @DataMongoTest
 class TrackRepositoryTest {

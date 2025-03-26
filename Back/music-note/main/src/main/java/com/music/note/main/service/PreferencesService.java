@@ -25,19 +25,19 @@ public class PreferencesService {
 		//TODO: 스포티파이 API 호출 후 musicList 생성
 		return List.of(
 			MusicDto.builder()
-				.spotifyId("id1")
-				.title("music1")
-				.artist("artist1")
+				.spotifyId("3dI59jLoFMjMAyUAyRZnkE")
+				.title("BANG BANG BANG")
+				.artist("BIGBANG")
 				.build(),
 			MusicDto.builder()
-				.spotifyId("id2")
-				.title("music2")
-				.artist("artist2")
+				.spotifyId("1L4d2lafz1odpIMe8va21X")
+				.title("Haru Haru")
+				.artist("BIGBANG")
 				.build(),
 			MusicDto.builder()
-				.spotifyId("id3")
-				.title("music3")
-				.artist("artist3")
+				.spotifyId("4LOLvDtzykDC7y9WehFoOi")
+				.title("Blue")
+				.artist("BIGBANG")
 				.build()
 		);
 	}
