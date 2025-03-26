@@ -15,27 +15,21 @@ import com.music.note.musictype.service.kafka.producer.TypeEventProducer;
 import com.music.note.musictype.service.repository.TrackRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TrackService {
 	private final TrackRepository trackRepository;
 	private final TypeEventProducer typeEventProducer;
 	private final CrawlingEventProducer crawlingEventProducer;
 
-	public List<String> findMissingTracks(List<String> musicList) {
-		Set<String> foundTitles = trackRepository.findByTitleIn(musicList).stream()
-			.map(Track::getTitle)
-			.collect(Collectors.toSet());
-
-		return musicList.stream()
-			.filter(title -> !foundTitles.contains(title))
-			.toList();
-	}
-
 	public void handleTrackCheck(RequestEvent event) {
 		List<String> musicList = event.getMusicList();
 		List<String> missingTracks = findMissingTracks(musicList);
+		log.info("[Track Check] -> userId={}, musicListSize={}, missingTracksSize={}",
+			event.getUserId(), musicList.size(), missingTracks.size());
 		if (missingTracks.isEmpty()) {
 			// DB에 전부 존재하는 경우 - 성향 분석 Event 발생
 			typeEventProducer.sendMusicListEvent(MusicListEvent.builder()
@@ -50,5 +44,15 @@ public class TrackService {
 				.missingTracks(missingTracks)
 				.build());
 		}
+	}
+
+	private List<String> findMissingTracks(List<String> musicList) {
+		Set<String> foundTitles = trackRepository.findByTitleIn(musicList).stream()
+			.map(Track::getTitle)
+			.collect(Collectors.toSet());
+
+		return musicList.stream()
+			.filter(title -> !foundTitles.contains(title))
+			.toList();
 	}
 }
