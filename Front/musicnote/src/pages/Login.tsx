@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo/logo-large.png";
 import logoName from "../assets/logo/long-logo.png";
-
+import SpotifyIcon from "../assets/icon/spotify-icon.svg?react";
 
 // 해시 파라미터 가져오기
 async function getHashParams() {
@@ -85,14 +85,19 @@ export default function Login() {
 
       const profileData = await response.json();
       console.log("사용자 프로필:", profileData);
-      
+
       // 프로필 데이터만 로컬 스토리지에 저장
-      const tokenData = JSON.parse(localStorage.getItem('spotify_token_data') || '{}');
+      const tokenData = JSON.parse(
+        localStorage.getItem("spotify_token_data") || "{}"
+      );
       const updatedTokenData = {
         ...tokenData,
         profile: profileData,
       };
-      localStorage.setItem('spotify_token_data', JSON.stringify(updatedTokenData));
+      localStorage.setItem(
+        "spotify_token_data",
+        JSON.stringify(updatedTokenData)
+      );
     } catch (err) {
       console.error("프로필 요청 오류:", err);
     }
@@ -111,7 +116,10 @@ export default function Login() {
           expires_in: params.expires_in,
           state: params.state,
         };
-        localStorage.setItem('spotify_token_data', JSON.stringify(newTokenData));
+        localStorage.setItem(
+          "spotify_token_data",
+          JSON.stringify(newTokenData)
+        );
         fetchUserProfile(params.access_token);
         localStorage.removeItem("spotify_auth_state");
         window.history.replaceState(null, "", window.location.pathname);
@@ -124,15 +132,19 @@ export default function Login() {
 
   return (
     <div>
-      <div className="flex flex-col min-w-[280px] max-w-[560px] items-center justify-center">
+      <div className="flex flex-col max-w-[560px] m-[20px] items-center justify-center">
         <div className="p-12 bg-[#262329] rounded-full w-fit">
           <img className="max-w-full" src={logo} alt="로고" />
         </div>
-        <img className="max-w-full mt-12" src={logoName} alt="로고이름" />
+        <img className="w-5/6 mt-[30px]" src={logoName} alt="로고이름" />
+        <button
+          className="flex w-[calc(100%-40px)] mt-[100px] px-4 items-center bg-main text-white text-[20px] xs:text-[24px] font-bold rounded-lg"
+          onClick={handleSpotifyLogin}
+        >
+          <SpotifyIcon className="w-[45px] h-[45px] pt-1 mr-3 flex-shrink-0" />
+          <span className="flex-1 text-center">Spotify 로그인</span>
+        </button>
       </div>
-      <button className="bg-main w-[200px]" onClick={handleSpotifyLogin}>
-        로그인
-      </button>
     </div>
   );
 }
