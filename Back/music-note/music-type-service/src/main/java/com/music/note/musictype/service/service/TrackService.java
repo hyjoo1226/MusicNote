@@ -56,7 +56,7 @@ public class TrackService {
 		return musicList.stream()
 			.map(MusicDto::getSpotifyId)
 			.map(trackRepository::findBySpotifyId)
-			.filter(Objects::nonNull) // 혹시 못 찾은 트랙이 있는 경우 제외
+			.filter(Objects::nonNull)
 			.toList();
 	}
 
