@@ -1,4 +1,4 @@
-# analysis_server/modelschemas/request_response.py
+# modelschemas/request_response.py
 from pydantic import BaseModel
 from typing import List
 
@@ -34,3 +34,11 @@ class BigFiveScore(BaseModel):
 # 다중 곡 처리용 요청 모델
 class FeatureList(BaseModel):
     tracks: List[AudioFeatures]
+
+# BigFive 점수와 Report 같이 반환
+class BigFiveReport(BaseModel):
+    top_score: str
+    top_text: str
+    low_score: str
+    low_text: str
+    summary: str
