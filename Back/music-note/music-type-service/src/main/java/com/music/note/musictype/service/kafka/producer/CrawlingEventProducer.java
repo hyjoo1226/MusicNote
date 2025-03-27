@@ -16,7 +16,7 @@ public class CrawlingEventProducer {
 
 	public void sendCrawlingEvent(MusicListWithMissingEvent event) {
 		log.info("[Producing Type Event] -> userId={}, musicListSize={}, missingTracks={}",
-			event.getUserId(), event.getMusicList().size(), event.getMissingTracks().size());
+			event.getUserId(), event.getExistingTracks().size(), event.getMissingTracks().size());
 		kafkaTemplate.send("music-crawl", event);
 	}
 }

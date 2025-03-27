@@ -19,7 +19,7 @@ public class CrawlingEventConsumer {
 	@KafkaListener(topics = "music-crawl", groupId = "music-crawl-group")
 	public void consumeCrawlingEvent(MusicListWithMissingEvent event) {
 		log.info("[Consuming Crawling Event] -> userId={}, musicListSize={}, missingTracksSize={}",
-			event.getUserId(), event.getMusicList().size(), event.getMissingTracks().size());
+			event.getUserId(), event.getExistingTracks().size(), event.getMissingTracks().size());
 		crawlingService.handleMissingTrackEvent(event);
 	}
 }
