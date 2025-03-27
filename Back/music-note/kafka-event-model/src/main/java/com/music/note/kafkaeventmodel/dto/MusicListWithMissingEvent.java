@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MusicListWithMissingEvent {
 	private Long userId;
-	private List<MusicDto> musicList;
+	// private List<MusicDto> musicList;
+	private List<MusicDto> existingTracks;
 	private List<MusicDto> missingTracks;
 }
