@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import genreData from "@/assets/data/tmdb-genre-id.json";
 import MovieCarousel from "@/components/MovieCarousel";
-import DetailButton from "@/components/buttons/DetailButton";
 
 interface Movie {
   id: number;
