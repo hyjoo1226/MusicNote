@@ -35,9 +35,7 @@ export default function Calendar() {
       isWithinInterval(selected, { start: range.from, end: range.to })
     );
 
-    return targetRange
-      ? eachDayOfInterval({ start: targetRange.from, end: targetRange.to })
-      : [];
+    return targetRange ? eachDayOfInterval({ start: targetRange.from, end: targetRange.to }) : [];
   };
 
   // 오늘 날짜
@@ -77,13 +75,13 @@ export default function Calendar() {
         <div className="flex w-[100px] m-2 bg-level1 rounded-full">
           <button
             onClick={() => setReportCycle("daily")}
-            className={`flex flex-grow h-[20px] pt-[2px] justify-center items-center text-center rounded-full ${reportCycle === "daily" ? "bg-sub" : ""}`}
+            className={`flex flex-grow h-[25px] pt-[2px] justify-center items-center text-center rounded-full ${reportCycle === "daily" ? "bg-main" : ""}`}
           >
             일간
           </button>
           <button
             onClick={() => setReportCycle("weekly")}
-            className={`flex flex-grow h-[20px] pt-[2px] justify-center items-center text-center rounded-full ${reportCycle === "weekly" ? "bg-sub" : ""}`}
+            className={`flex flex-grow h-[25px] pt-[2px] justify-center items-center text-center rounded-full ${reportCycle === "weekly" ? "bg-main" : ""}`}
           >
             주간
           </button>
@@ -97,10 +95,7 @@ export default function Calendar() {
                 ? ""
                 : reportCycle === "daily" &&
                     selected &&
-                    dailyReports.some(
-                      (report) =>
-                        selected >= report.from && selected <= report.to
-                    )
+                    dailyReports.some((report) => selected >= report.from && selected <= report.to)
                   ? "rounded-full bg-main text-white"
                   : "",
             // selected: `rounded-full bg-main`,
@@ -120,7 +115,9 @@ export default function Calendar() {
           showOutsideDays
           selected={selected}
           onSelect={setSelected}
+          startMonth={new Date(2025, 1)}
           defaultMonth={currentDate}
+          fixedWeeks={true}
           captionLayout="dropdown-months"
           disabled={{ after: currentDate }}
           locale={ko}
