@@ -19,23 +19,17 @@ const weeklyReports = [
   { from: new Date(2025, 2, 9), to: new Date(2025, 2, 15) },
   { from: new Date(2025, 2, 16), to: new Date(2025, 2, 22) },
 ];
-const monthlyReports = [
-  { from: new Date(2025, 1, 1), to: new Date(2025, 1, 28) },
-  // { from: new Date(2025, 2, 1), to: new Date(2025, 2, 25) },
-];
 
 export default function Calendar() {
   // 선택 날짜
   const [selected, setSelected] = useState<Date>();
   // 리포트 주기
-  const [reportCycle, setReportCycle] = useState<
-    "daily" | "weekly" | "monthly"
-  >("daily");
+  const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
 
   const getSelectedRangeDays = () => {
     if (!selected || reportCycle === "daily") return [];
 
-    const ranges = reportCycle === "weekly" ? weeklyReports : monthlyReports;
+    const ranges = weeklyReports;
 
     const targetRange = ranges.find((range) =>
       isWithinInterval(selected, { start: range.from, end: range.to })
@@ -56,8 +50,6 @@ export default function Calendar() {
         return dailyReports;
       case "weekly":
         return weeklyReports;
-      case "monthly":
-        return monthlyReports;
       default:
         return [];
     }
@@ -68,9 +60,6 @@ export default function Calendar() {
     if (reportCycle === "weekly") {
       return weeklyReports.map((range) => range.from);
     }
-    if (reportCycle === "monthly") {
-      return monthlyReports.map((range) => range.from);
-    }
     return []; // 일간은 빈 배열 반환
   };
 
@@ -79,16 +68,13 @@ export default function Calendar() {
     if (reportCycle === "weekly") {
       return weeklyReports.map((range) => range.to);
     }
-    if (reportCycle === "monthly") {
-      return monthlyReports.map((range) => range.to);
-    }
     return []; // 일간은 빈 배열 반환
   };
 
   return (
     <div className="flex flex-col">
       <div className="flex justify-end text-white text-[12px] font-medium">
-        <div className="flex w-[160px] m-2 bg-level1 rounded-full">
+        <div className="flex w-[100px] m-2 bg-level1 rounded-full">
           <button
             onClick={() => setReportCycle("daily")}
             className={`flex flex-grow h-[20px] pt-[2px] justify-center items-center text-center rounded-full ${reportCycle === "daily" ? "bg-sub" : ""}`}
@@ -101,19 +87,13 @@ export default function Calendar() {
           >
             주간
           </button>
-          <button
-            onClick={() => setReportCycle("monthly")}
-            className={`flex flex-grow h-[20px] pt-[2px] justify-center items-center text-center rounded-full ${reportCycle === "monthly" ? "bg-sub" : ""}`}
-          >
-            월간
-          </button>
         </div>
       </div>
       <div className="flex justify-center text-white text-[12px]">
         <DayPicker
           classNames={{
             selected:
-              reportCycle === "weekly" || reportCycle === "monthly"
+              reportCycle === "weekly"
                 ? ""
                 : reportCycle === "daily" &&
                     selected &&
@@ -160,13 +140,6 @@ export default function Calendar() {
                   );
                 case "weekly":
                   return !weeklyReports.some((report) =>
-                    isWithinInterval(day, {
-                      start: report.from,
-                      end: report.to,
-                    })
-                  );
-                case "monthly":
-                  return !monthlyReports.some((report) =>
                     isWithinInterval(day, {
                       start: report.from,
                       end: report.to,
