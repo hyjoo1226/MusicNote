@@ -3,7 +3,7 @@ package com.music.note.musiccrawler.consumer.kafka.producer;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import com.music.note.kafkaeventmodel.dto.MusicListEvent;
+import com.music.note.kafkaeventmodel.dto.RequestEvent;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,11 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class TypeEventProducer {
-	private final KafkaTemplate<String, MusicListEvent> kafkaTemplate;
+	private final KafkaTemplate<String, RequestEvent> kafkaTemplate;
 
-	public void sendMusicListEvent(MusicListEvent event) {
-		log.info("[Producing Type Event] -> userId={}, musicListSize={}",
+	public void sendMusicListEvent(RequestEvent event) {
+		log.info("[Producing request Event from crawl server] -> userId={}, musicListSize={}",
 			event.getUserId(), event.getMusicList().size());
-		kafkaTemplate.send("music-type", event);
+		kafkaTemplate.send("music-request", event);
 	}
 }
