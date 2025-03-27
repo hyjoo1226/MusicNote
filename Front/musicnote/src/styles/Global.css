@@ -24,57 +24,78 @@
 
 /* 테마 변수 */
 @theme {
-    /* 폰트 */
-    --font-light: "GmarketSansLight";
-    --font-medium: "GmarketSansMedium";
-    --font-bold: "GmarketSansBold";
-    
-    /* 성격 특성 색상 */
-    --color-openness: #A97EFF;
-    --color-conscientiousness: #EF8AFF;
-    --color-extraversion: #FF7E81;
-    --color-agreeableness: #FFB683;
-    --color-neuroticism: #FFD883;
+  /* 폰트 */
+  --font-light: "GmarketSansLight";
+  --font-medium: "GmarketSansMedium";
+  --font-bold: "GmarketSansBold";
 
-    /* 텍스트 색상 */
-    --color-dark: #000000;
-    --color-gray: #7B7B7B;
-    --color-light-gray: #BEBEBE;
+  /* 성격 특성 색상 */
+  --color-openness: #a97eff;
+  --color-conscientiousness: #ef8aff;
+  --color-extraversion: #ff7e81;
+  --color-agreeableness: #ffb683;
+  --color-neuroticism: #ffd883;
 
-    /* 배경색 */
-    --color-level1: #19171B;
-    --color-level2: #262329;
-    --color-level3: #3F3A44;
+  /* 텍스트 색상 */
+  --color-dark: #000000;
+  --color-gray: #7b7b7b;
+  --color-light-gray: #bebebe;
 
-    /* 강조색 */
-    --color-main: #FE365E;
-    --color-sub: #F78888;
+  /* 배경색 */
+  --color-level1: #19171b;
+  --color-level2: #262329;
+  --color-level3: #3f3a44;
 
-    /* 구분선 색 */
-    --color-border: #443A3A;
+  /* 강조색 */
+  --color-main: #fe365e;
+  --color-sub: #f78888;
 
-    /* 브레이크 포인트 */
-    --breakpoint-xs: 360px;
-} 
+  /* 구분선 색 */
+  --color-border: #443a3a;
+
+  /* 브레이크 포인트 */
+  --breakpoint-xs: 360px;
+
+  /* 애니메이션 */
+  --animate-fade-in: fade-in 0.2s ease-in forwards;
+  @keyframes fade-in {
+    from {
+      background-color: rgb(0 0 0 / 0);
+    }
+    to {
+      background-color: rgb(0 0 0 / 0.5);
+    }
+  }
+
+  --animate-slide-up: slide-up 0.5s ease-in-out;
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
 
 body {
-    width: 100vw;
-    height: 100vh;
-    background-color: white
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
 }
 
 #root {
-    width: 100%;
-    height: 100vh;
-    min-width: 320px;
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: var(--color-level1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow-x: hidden;
+  width: 100%;
+  height: 100vh;
+  min-width: 320px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--color-level1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
 }
 
 #root {
@@ -82,7 +103,9 @@ body {
 }
 
 /* 모든 스크롤바 숨기기 */
-html, body, #root {
+html,
+body,
+#root {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }

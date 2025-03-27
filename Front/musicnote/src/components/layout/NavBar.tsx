@@ -9,14 +9,19 @@ export default function NavBar() {
   const location = useLocation();
 
   // 정확히 일치해야 하는 경로들
-  const exactHiddenPaths = ["/"];
-  
+  const exactHiddenPaths = ["/", "/my-recommendation"];
+
   // 특정 경로로 시작하는 모든 페이지를 숨길 경로들
-  const patternHiddenPaths = ["/musiclist", "/recommendationlist", "/my-recommendation", "/recommendation-detail"];
-  
+  const patternHiddenPaths = [
+    "/musiclist",
+    "/recommendationlist",
+    "/my-recommendation",
+    "/recommendations",
+  ];
+
   if (
-    exactHiddenPaths.includes(location.pathname) || 
-    patternHiddenPaths.some(path => location.pathname.startsWith(path + '/'))
+    exactHiddenPaths.includes(location.pathname) ||
+    patternHiddenPaths.some((path) => location.pathname.startsWith(path + "/"))
   ) {
     return null;
   }
@@ -33,11 +38,7 @@ export default function NavBar() {
           >
             {({ isActive }) => (
               <>
-                <HomeIcon
-                  className="mb-[6px]"
-                  stroke={isActive ? "text-main" : "text-gray"}
-                />
-                홈
+                <HomeIcon className="mb-[6px]" stroke={isActive ? "text-main" : "text-gray"} />홈
               </>
             )}
           </NavLink>
@@ -51,10 +52,7 @@ export default function NavBar() {
           >
             {({ isActive }) => (
               <>
-                <ReportIcon
-                  className="mb-[6px]"
-                  stroke={isActive ? "text-main" : "text-gray"}
-                />
+                <ReportIcon className="mb-[6px]" stroke={isActive ? "text-main" : "text-gray"} />
                 성향분석
               </>
             )}
@@ -87,10 +85,7 @@ export default function NavBar() {
           >
             {({ isActive }) => (
               <>
-                <RecommendIcon
-                  className="mb-[6px]"
-                  stroke={isActive ? "text-main" : "text-gray"}
-                />
+                <RecommendIcon className="mb-[6px]" stroke={isActive ? "text-main" : "text-gray"} />
                 추천컨텐츠
               </>
             )}
