@@ -9,8 +9,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.music.note.kafkaeventmodel.dto.MusicDto;
-import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.MusicListWithMissingEvent;
+import com.music.note.kafkaeventmodel.dto.RequestEvent;
 import com.music.note.musiccrawler.consumer.converter.TrackConverter;
 import com.music.note.musiccrawler.consumer.dto.RawTrackDataResponse;
 import com.music.note.musiccrawler.consumer.dto.TrackDataResponse;
@@ -41,16 +41,16 @@ public class CrawlingService {
 		saveMissingTracks(event.getMissingTracks());
 		log.info(" ==> Missing tracks saved: userId={}, missingTracksSize={}", event.getUserId(),
 			event.getMissingTracks().size());
-		publishCombinedMusicListEvent(event);
+		publishRequestEvent(event);
 	}
 
-	private void publishCombinedMusicListEvent(MusicListWithMissingEvent event) {
-		MusicListEvent musicListEvent = MusicListEvent.builder()
+	private void publishRequestEvent(MusicListWithMissingEvent event) {
+		RequestEvent requestEvent = RequestEvent.builder()
 			.userId(event.getUserId())
 			.musicList(event.getMusicList())
 			.build();
 
-		typeEventProducer.sendMusicListEvent(musicListEvent);
+		typeEventProducer.sendMusicListEvent(requestEvent);
 	}
 
 	public void saveMissingTracks(List<MusicDto> missingTracks) {
