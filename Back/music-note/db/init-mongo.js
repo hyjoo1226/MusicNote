@@ -6,7 +6,10 @@ if (db.system.users.find({user: "music"}).count() === 0) {
     db.createUser({
         user: "music",
         pwd: "note",
-        roles: [{role: "readWrite", db: "musicdb"}]
+        roles: [
+            {role: "readWrite", db: "musicdb"},
+            {role: "readWrite", db: "typedb"}
+        ]
     });
     print("사용자 생성 완료");
 } else {
