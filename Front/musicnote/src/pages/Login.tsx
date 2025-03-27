@@ -57,8 +57,7 @@ export default function Login() {
   // 랜덤 문자열 생성
   const generateRandomString = (length: number) => {
     let text = "";
-    const possible =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -87,17 +86,12 @@ export default function Login() {
       console.log("사용자 프로필:", profileData);
 
       // 프로필 데이터만 로컬 스토리지에 저장
-      const tokenData = JSON.parse(
-        localStorage.getItem("spotify_token_data") || "{}"
-      );
+      const tokenData = JSON.parse(localStorage.getItem("spotify_token_data") || "{}");
       const updatedTokenData = {
         ...tokenData,
         profile: profileData,
       };
-      localStorage.setItem(
-        "spotify_token_data",
-        JSON.stringify(updatedTokenData)
-      );
+      localStorage.setItem("spotify_token_data", JSON.stringify(updatedTokenData));
     } catch (err) {
       console.error("프로필 요청 오류:", err);
     }
@@ -116,10 +110,7 @@ export default function Login() {
           expires_in: params.expires_in,
           state: params.state,
         };
-        localStorage.setItem(
-          "spotify_token_data",
-          JSON.stringify(newTokenData)
-        );
+        localStorage.setItem("spotify_token_data", JSON.stringify(newTokenData));
         fetchUserProfile(params.access_token);
         localStorage.removeItem("spotify_auth_state");
         window.history.replaceState(null, "", window.location.pathname);
@@ -133,16 +124,18 @@ export default function Login() {
   return (
     <div>
       <div className="flex flex-col max-w-[560px] m-[20px] items-center justify-center">
-        <div className="p-12 bg-[#262329] rounded-full w-fit">
-          <img className="max-w-full" src={logo} alt="로고" />
+        <div className="bg-level2 rounded-full max-h-[40vh] max-w-[calc(80%-40px)] w-auto h-auto aspect-square p-2 flex items-center justify-center">
+          <img className="w-full h-full object-contain" src={logo} alt="로고" />
         </div>
-        <img className="w-5/6 mt-[30px]" src={logoName} alt="로고이름" />
+        <img className="max-w-7/12 max-h-[1h] w-auto mt-[3vh]" src={logoName} alt="로고이름" />
         <button
-          className="flex w-[calc(100%-40px)] mt-[100px] px-4 items-center bg-main text-white text-[20px] xs:text-[24px] font-bold rounded-lg"
+          className="flex w-[calc(90%-40px)] h-[70px] mt-[20vh] px-2 items-center bg-main rounded-lg"
           onClick={handleSpotifyLogin}
         >
-          <SpotifyIcon className="w-[45px] h-[45px] pt-1 mr-3 flex-shrink-0" />
-          <span className="flex-1 text-center">Spotify 로그인</span>
+          <SpotifyIcon className="w-[45px] h-[45px] pt-1 flex-shrink-0" />
+          <span className="flex-1 text-white text-[20px] xs:text-[24px] font-bold text-center cursor-pointer">
+            Spotify 로그인
+          </span>
         </button>
       </div>
     </div>
