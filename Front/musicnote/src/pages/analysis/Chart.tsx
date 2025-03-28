@@ -26,13 +26,7 @@ export default function Chart({ bigFiveScore }: ChartProps) {
     .map((item) => factorToLetter[item.bigFive]);
 
   // radar chart 커스텀 라벨링 함수
-  const renderCustomAxisLabel = ({
-    payload,
-    cx,
-    cy,
-    x,
-    y,
-  }: CustomTickProps) => {
+  const renderCustomAxisLabel = ({ payload, cx, cy, x, y }: CustomTickProps) => {
     const radiusOffset = 20; // 축에서 떨어진 거리
     const newX = cx + (x - cx) * ((90 + radiusOffset) / 90); // 좌표계산
     const newY = cy + (y - cy) * ((90 + radiusOffset) / 90);
@@ -83,10 +77,7 @@ export default function Chart({ bigFiveScore }: ChartProps) {
         />
 
         {/* 커스텀 라벨 적용 */}
-        <PolarAngleAxis
-          dataKey="bigFive"
-          tick={(props) => renderCustomAxisLabel(props)}
-        />
+        <PolarAngleAxis dataKey="bigFive" tick={(props) => renderCustomAxisLabel(props)} />
 
         <Radar
           name="성향점수"
