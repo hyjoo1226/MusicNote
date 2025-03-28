@@ -1,5 +1,5 @@
 # MusicNote
-<img src="https://file.notion.so/f/f/67172ab3-1ffe-45b9-9991-16e57a7e836f/9b7fc04f-111b-4a60-a1e5-1b06e6c5a8c4/logo-large.png?table=block&id=1c4327e9-f1c4-8032-9f7f-ddbd98539dbb&spaceId=67172ab3-1ffe-45b9-9991-16e57a7e836f&expirationTimestamp=1743148800000&signature=8aF3c7T5-ZoZjeli1zECdAcQAT9n_rKNu_jrZQ0NVIE&downloadName=logo-large.png" width="300" alt="로고 이미지">  
+<img src="https://file.notion.so/f/f/67172ab3-1ffe-45b9-9991-16e57a7e836f/9b7fc04f-111b-4a60-a1e5-1b06e6c5a8c4/logo-large.png?table=block&id=1c4327e9-f1c4-8032-9f7f-ddbd98539dbb&spaceId=67172ab3-1ffe-45b9-9991-16e57a7e836f&expirationTimestamp=1743148800000&signature=8aF3c7T5-ZoZjeli1zECdAcQAT9n_rKNu_jrZQ0NVIE&downloadName=logo-large.png" width="300" alt="로고 이미지"><br/>
 ## 프로젝트 소개
 - 당신이 듣는 음악이 당신을 말하다. 유저들이 들은 음악을 바탕으로 사람들의 성향을 분석하고, 성향에 어울리는 크로스 도메인을 추천하는 프로젝트입니다.
 
