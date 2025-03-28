@@ -17,7 +17,7 @@
 3. 분석한 성향을 바탕으로 유저가 좋아할만한 영화와 음악을 추천합니다.
 
 ## 시스템 구성도
-![시스템 아키텍처](https://file.notion.so/f/f/67172ab3-1ffe-45b9-9991-16e57a7e836f/dd13667e-6c0c-496f-a7ea-472eb1563514/Section_2.png?table=block&id=1c4327e9-f1c4-80e3-b777-f11f848c635f&spaceId=67172ab3-1ffe-45b9-9991-16e57a7e836f&expirationTimestamp=1743148800000&signature=zrLuGsorTE8U1kKJOKe5cVjzKn-mj5LWN6WerSN9BKw&downloadName=Section+2.png)
+![시스템 아키텍처](Back/img/SystemArchitecture.png)
 
 ## 기술 스택
 ### Frontend
@@ -27,7 +27,7 @@
 
 ### Backend
 - Java 17, Spring Boot
-- Redis, Kafka 3.7 (KRaft 기반반)
+- Redis, Kafka 3.7 (KRaft 기반)
 - MySQL, MongoDB
 
 ### DataAnalysis
