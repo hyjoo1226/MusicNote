@@ -1,14 +1,65 @@
-# 삼성소프트웨어 아카데미 특화 프로젝트 A308 - 빅데이터 추천
+# MusicNote
+![로고 이미지](https://file.notion.so/f/f/67172ab3-1ffe-45b9-9991-16e57a7e836f/9b7fc04f-111b-4a60-a1e5-1b06e6c5a8c4/logo-large.png?table=block&id=1c4327e9-f1c4-8032-9f7f-ddbd98539dbb&spaceId=67172ab3-1ffe-45b9-9991-16e57a7e836f&expirationTimestamp=1743148800000&signature=8aF3c7T5-ZoZjeli1zECdAcQAT9n_rKNu_jrZQ0NVIE&downloadName=logo-large.png)
+## 프로젝트 소개
+- 당신이 듣는 음악이 당신을 말하다. 유저들이 들은 음악을 바탕으로 사람들의 성향을 분석하고, 성향에 어울리는 크로스 도메인을 추천하는 프로젝트입니다.
 
-🔹Branch Convention
+### 배경 소개
+- 삼성소프트웨어 아카데미 특화 프로젝트로 진행된 프로젝트로, 2025년 3월 3일부터 4월 11일까지 6주 간 진행된 프로젝트입니다.
+- 6명이 진행하였으며, 프론트엔더 2명, 백엔더 4명(빅데이터 담당 2명, DB담당 프론트 소통 2명)으로 진행했습니다.
+
+### 배포 주소
+- 25년 4월 18일까지 유효합니다.
+- [배포주소](http://j12a308.p.ssafy.io/) 
+
+## 주요 기능
+1. Spotify API를 활용하여 최근 들은 음악을 기준으로 성향을 분석합니다.
+2. 분석한 성향 (Big Five 기반)을 일간, 주간 기준으로 레포트를 제공합니다.
+3. 분석한 성향을 바탕으로 유저가 좋아할만한 영화와 음악을 추천합니다.
+
+## 시스템 구성도
+![시스템 아키텍처](https://file.notion.so/f/f/67172ab3-1ffe-45b9-9991-16e57a7e836f/dd13667e-6c0c-496f-a7ea-472eb1563514/Section_2.png?table=block&id=1c4327e9-f1c4-80e3-b777-f11f848c635f&spaceId=67172ab3-1ffe-45b9-9991-16e57a7e836f&expirationTimestamp=1743148800000&signature=zrLuGsorTE8U1kKJOKe5cVjzKn-mj5LWN6WerSN9BKw&downloadName=Section+2.png)
+
+## 기술 스택
+### Frontend
+- React
+- TypeScript
+- Tailwind.css
+
+### Backend
+- Spring Boot
+
+### DataAnalysis
+- Fast API
+- Pytorch
+- scikit-learn
+
+## 팀원 소개
+- 프론트엔드: 민경현, 주현호
+- 백엔드(API): 문인규, 손승범
+- 백엔드(데이터분석): 남기운, 윤상흠
+
+## 개발 규칙
+### Branch Convention
 ```
-    master  
-    └dev  
-    └front  
-     └fe/feat/signup  
-    └backend  
-     └be/auth/feat/signup  
-	 └be/music/feat/  
-    └data  
-     └da/feat/charecter  
+master  
+└dev  
+└front  
+  └fe/feat/signup  
+└backend  
+  └be/auth/feat/signup  
+  └be/music/feat/  
+└data  
+  └da/feat/charecter  
+```
+
+### Commit Convention
+```
+feat : 기능 추가
+style : CSS 디자인 추가, 수정
+fix : 에러 수정, 버그 수정
+docs : README, 문서
+refactor : 코드 리펙토링 (기능 변경 없이 코드만 수정할 때)
+modify : 코드 수정 (기능의 변화가 있을 때)
+chore : gradle 세팅, 빌드 업무 수정, 패키지 매니저 수정
+ex) feat user api 구현
 ```
