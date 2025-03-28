@@ -26,7 +26,9 @@
 - Tailwind.css
 
 ### Backend
-- Spring Boot
+- Java 17, Spring Boot
+- Redis, Kafka 3.7 (KRaft 기반반)
+- MySQL, MongoDB
 
 ### DataAnalysis
 - Fast API
@@ -35,7 +37,7 @@
 
 ## 팀원 소개
 - 프론트엔드: 민경현, 주현호
-- 백엔드(API): 문인규, 손승범
+- 백엔드(서버): 문인규, 손승범
 - 백엔드(데이터분석): 남기운, 윤상흠
 
 ## 개발 규칙
