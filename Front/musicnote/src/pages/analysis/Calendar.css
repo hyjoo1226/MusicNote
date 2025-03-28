@@ -76,9 +76,7 @@ padding-bottom: 1px; */
   background: linear-gradient(to left, #fe365e 20%, #f78888 100%);
 }
 
-.report-day:not(.report-start-day):not(.report-end-day):not(
-    [aria-selected="true"]
-  ) {
+.report-day:not(.report-start-day):not(.report-end-day):not([aria-selected="true"]) {
   border-left: none;
   border-right: none;
 }
@@ -141,13 +139,13 @@ padding-bottom: 1px; */
   border-right: none;
 } */
 
-@media (width > 400px) {
+@media (width > 300px) {
   .rdp-root {
     --rdp-day_button-width: 40px;
   }
 }
 
-@media (width > 500px) {
+@media (width > 400px) {
   .rdp-root {
     --rdp-day_button-width: 48px;
   }

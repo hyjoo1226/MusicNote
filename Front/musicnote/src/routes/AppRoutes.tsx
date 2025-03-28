@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Analysis from "../pages/analysis/Analysis";
+import Report from "../pages/analysis/Report";
 import Discover from "../pages/Discover";
 import Recommendations from "../pages/Recommendations";
 import Login from "../pages/Login";
@@ -16,6 +17,7 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/home" element={<Home />} />
       <Route path="/musiclist/:title/" element={<MusicList />} />
       <Route path="/analysis" element={<Analysis />} />
+      <Route path="/analysis/report" element={<Report />} />
       <Route path="/discover" element={<Discover />} />
       <Route path="/recommendations" element={<Recommendations />} />
       <Route path="/recommendations/:domain" element={<RecommendationDetail />} />
