@@ -1,4 +1,4 @@
-import TopBar from "../components/layout/TopBar";
+import TopBar from "@/components/layout/TopBar";
 import { useParams, useNavigate } from "react-router-dom";
 import mascot from "@/assets/logo/mascot.webp";
 import genreData from "@/assets/data/tmdb-genre-id.json";
@@ -368,7 +368,7 @@ export default function RecommendationDetail() {
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
       <TopBar title={titleText} />
-      <div className="recommendation-container overflow-hidden bg-level2 rounded-2xl w-[calc(100%-30px)] xs:w-[calc(100%-60px)] p-4">
+      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100vh-140px)]">
         {currentMovie ? (
           <>
             <div
@@ -469,7 +469,7 @@ export default function RecommendationDetail() {
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center  gap-4">
+          <div className="flex flex-col w-full h-full items-center justify-center gap-4">
             <img
               src={mascot}
               alt="mascot"

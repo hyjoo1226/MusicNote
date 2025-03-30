@@ -3,12 +3,12 @@ import Home from "../pages/Home";
 import Analysis from "../pages/analysis/Analysis";
 import Report from "../pages/analysis/Report";
 import Discover from "../pages/Discover";
-import Recommendations from "../pages/Recommendations";
+import Recommendations from "../pages/recommend/Recommendations";
 import Login from "../pages/Login";
 import MusicList from "../pages/MusicList";
-import RecommendationDetail from "../pages/RecommendationDetail";
-import MyRecommendationDetail from "../pages/MyRecommendationDetail";
-import MyRecommendation from "../pages/MyRecommendation";
+import RecommendationDetail from "../pages/recommend/RecommendationDetail";
+import MyRecommendationDetail from "../pages/recommend/MyRecommendationDetail";
+import MyRecommendation from "../pages/recommend/MyRecommendation";
 export default function AppRoutes(): React.ReactElement {
   return (
     <Routes>
