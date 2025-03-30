@@ -1,10 +1,10 @@
-import TopBar from "../components/layout/TopBar";
+import TopBar from "@/components/layout/TopBar";
 import genreData from "@/assets/data/tmdb-genre-id.json";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import EmptyHeart from "@/assets/icon/empty-heart.svg?react";
 import FilledHeart from "@/assets/icon/filled-heart.svg?react";
-import RecommandModal from "@/components/layout/RecommandModal";
+import RecommandModal from "@/features/recommend/RecommandModal";
 
 interface Movie {
   id: number;
@@ -77,7 +77,7 @@ export default function MyRecommendationDetail() {
   return (
     <div className="text-white w-full min-h-screen">
       <TopBar title={`${domain} 추천`} />
-      <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-2 pb-0 mx-3 xs:mx-5 border border-solid border-border overflow-y-auto">
+      <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-2 pb-0 mx-3 xs:mx-5 border border-solid border-border min-h-[calc(100vh-120px)] overflow-y-auto">
         {movies.map((movie: Movie, index: number) => (
           <div
             key={index}

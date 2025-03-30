@@ -52,7 +52,7 @@ export default function MyRecommendation() {
   }, []);
 
   return (
-    <div className="text-white w-full min-h-screen flex flex-col items-center">
+    <div className="text-white w-full min-h-screen max-h-full flex flex-col items-center">
       <TopBar title="추천 보관함" />
       <div className="flex flex-col items-center justify-center w-auto mx-3 xs:mx-5 mb-3 xs:mb-5 p-2 pb-0 bg-level2 rounded-md">
         <div className="flex flex-row items-end justify-between w-full px-2">
@@ -67,7 +67,7 @@ export default function MyRecommendation() {
           )}
         </div>
         {movies.length > 0 ? (
-          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level3 rounded-sm m-1 p-2">
+          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level3 rounded-sm m-1 p-2 min-h-[290px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             {movies.map(
               (movie, index) =>
                 index < 6 && (
@@ -81,7 +81,7 @@ export default function MyRecommendation() {
             )}
           </div>
         ) : (
-          <div className="flex grid grid-cols-2 gap-x-2 gap-y-2 items-center justify-center w-full h-full">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[290px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             <img
               src={Mascot}
               alt="mascot"
@@ -107,7 +107,7 @@ export default function MyRecommendation() {
         )}
       </div>
 
-      <div className="flex flex-col items-center justify-center w-auto mx-3 xs:mx-5 mb-3 xs:mb-5 p-2 bg-level2 rounded-2xl">
+      <div className="flex flex-col items-center justify-center w-auto mx-3 xs:mx-5 mb-3 xs:mb-5 p-2 bg-level2 rounded-sm">
         <div className="flex flex-row items-end justify-between w-full px-2">
           <h3 className="text-[20px] h-[26px] xs:h-[30px] xs:text-2xl font-bold">음악</h3>
           {recentPlayedList.items.length > 0 && (
@@ -120,7 +120,7 @@ export default function MyRecommendation() {
           )}
         </div>
         {recentPlayedList.items.length > 0 ? (
-          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level2 rounded-sm m-1 p-2">
+          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level2 rounded-sm m-1 p-2 min-h-[280px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             {recentPlayedList.items.map(
               (music, index) =>
                 index < 6 && (
@@ -144,7 +144,7 @@ export default function MyRecommendation() {
             )}
           </div>
         ) : (
-          <div className="flex grid grid-cols-2 gap-x-2 gap-y-2 items-center justify-center w-full h-full">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[280px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             <img
               src={Mascot}
               alt="mascot"
@@ -170,7 +170,7 @@ export default function MyRecommendation() {
         )}
       </div>
 
-      <div className="flex flex-col items-center justify-center w-auto mx-3 xs:mx-5 mb-3 xs:mb-5 p-2 bg-level2 rounded-2xl">
+      <div className="flex flex-col items-center justify-center w-auto mx-3 xs:mx-5 mb-3 xs:mb-5 p-2 bg-level2 rounded-sm">
         <div className="flex flex-row items-end justify-between w-full px-2">
           <h3 className="text-[20px] h-[26px] xs:h-[30px] xs:text-2xl font-bold">활동</h3>
           {activities.length > 0 && (
@@ -183,7 +183,7 @@ export default function MyRecommendation() {
           )}
         </div>
         {activities.length > 0 ? (
-          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level3 rounded-sm m-1 p-2">
+          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level3 rounded-sm m-1 p-2 min-h-[280px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             {activities.map((activity) => (
               <img
                 src={activity.poster_path}
@@ -193,7 +193,7 @@ export default function MyRecommendation() {
             ))}
           </div>
         ) : (
-          <div className="flex grid grid-cols-2 gap-x-2 gap-y-2 items-center justify-center w-full h-full">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[280px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             <img
               src={Mascot}
               alt="mascot"
