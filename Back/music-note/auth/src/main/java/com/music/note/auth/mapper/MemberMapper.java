@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
 import com.music.note.auth.domain.Member;
-import com.music.note.auth.dto.SpotifyMemberDto;
+import com.music.note.auth.dto.login.SpotifyMemberDto;
 
 @Component
 public class MemberMapper {
