@@ -17,11 +17,13 @@
   font-size: 16px;
 }
 
-/* .rdp-years_dropdown {
-  position: relative;
+.rdp-dropdowns {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
 }
-
-.rdp-months_dropdown {
+/* /* .rdp-years_dropdown {
   position: relative;
 } */
 

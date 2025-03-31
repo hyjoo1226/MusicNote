@@ -42,7 +42,7 @@ export default function Report() {
   // 공유 아이콘 핸들러
   const handleShare = async () => {
     const shareData = {
-      title: `${title} 리포트`,
+      title: "일일 리포트",
       text: "나의 성향 리포트를 확인해보세요!",
       url: window.location.href,
     };
@@ -59,7 +59,7 @@ export default function Report() {
     }
   };
 
-  const [title, setTitle] = useState("일일");
+  // const [title, setTitle] = useState("일일");
 
   return (
     <div className="text-white w-full h-full">
@@ -85,7 +85,7 @@ export default function Report() {
               />
             </svg>
           </div>
-          <span className="text-white text-xl xs:text-2xl font-bold mt-1">{title} 리포트</span>
+          <span className="text-white text-xl xs:text-2xl font-bold mt-1">일일 리포트</span>
           <div className="absolute right-0 flex cursor-pointer">
             <NoteIcon onClick={handleMusicListClick} className="mr-3" />
             <ShareIcon onClick={handleShare} />
@@ -96,7 +96,7 @@ export default function Report() {
         <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
         <ReportDetail />
       </div>
-      {/* {isCopied && <span className="text-sm text-green-500">복사 완료!</span>} */}
+      {isCopied && <span className="text-sm text-green-500">복사 완료!</span>}
     </div>
   );
 }
