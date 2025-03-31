@@ -1,6 +1,6 @@
 # utils/report_generator.py
 
-from modelschemas.request_response import BigFiveScore, BigFiveReport
+from modelschemas.request_response import BigFiveScore, Report
 
 top_score_text = {
     "openness": "새로움과 창의성을 즐기며 예술적 감수성이 풍부한 편입니다.",
@@ -28,8 +28,8 @@ def daily_report(data: BigFiveScore):
 
     summary = f"{top_text} 반면, {low_text} 따라서 전체적으로 {top_score} 성향이 두드러지며, {low_score} 성향은 낮은 편으로 보입니다."
 
-    return BigFiveReport(top_score=top_score,
-                         top_text=top_text,
-                         low_score=low_score,
-                         low_text=low_text,
-                         summary=summary)
+    return Report(top_score=top_score,
+                  top_text=top_text,
+                  low_score=low_score,
+                  low_text=low_text,
+                  summary=summary)
