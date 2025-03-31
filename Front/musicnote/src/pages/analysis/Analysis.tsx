@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import Chart from "./Chart";
-import Calendar from "./Calendar";
+import Chart from "../../features/analysis/Chart";
+import Calendar from "../../features/analysis/Calendar";
 
 export default function Analysis() {
   const navigate = useNavigate();

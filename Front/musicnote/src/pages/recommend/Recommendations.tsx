@@ -3,7 +3,7 @@ import logoRec from "@/assets/logo/logo-rec.png";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import genreData from "@/assets/data/tmdb-genre-id.json";
-import MovieCarousel from "@/components/MovieCarousel";
+import MovieCarousel from "@/features/recommend/MovieCarousel";
 
 interface Movie {
   id: number;
@@ -79,7 +79,7 @@ export default function Recommendations() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen w-full overflow-y-auto bg-level1 p-2 xs:p-6 mb-[10px]">
+    <div className="flex flex-col items-center min-h-screen w-full overflow-y-auto bg-level1 p-2 xs:p-6">
       <div className="flex flex-row w-full justify-between items-center">
         <div className="flex self-start justify-start mt-3 mb-1 gap-x-1">
           <img src={logo} alt="logo" className="w-[54px] h-[54px] mb-3" />
@@ -147,9 +147,8 @@ export default function Recommendations() {
             <span className="text-white font-bold text-base">활동</span>
           </div>
         </div>
-        {/* <DetailButton url={`/recommendations/${selectedDomain}`} /> */}
       </div>
-      <div className="w-full bg-level2 flex flex-col p-2 justify-between items-center rounded-b-lg">
+      <div className="w-full bg-level2 flex flex-col p-2 justify-evenly items-center rounded-b-lg h-[calc(100vh-260px)]">
         {renderContent()}
         <button
           className="bg-main w-[200px] text-white text-xl font-bold p-2 rounded-full"

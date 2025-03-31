@@ -54,7 +54,8 @@
   --color-border: #443a3a;
 
   /* 브레이크 포인트 */
-  --breakpoint-xs: 360px;
+  --breakpoint-xs: 361px;
+  --breakpoint-sm: 420px;
 
   /* 애니메이션 */
   --animate-fade-in: fade-in 0.2s ease-in forwards;

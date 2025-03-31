@@ -2,13 +2,15 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Analysis from "../pages/analysis/Analysis";
 import Report from "../pages/analysis/Report";
-import Discover from "../pages/Discover";
-import Recommendations from "../pages/Recommendations";
+import Discover from "../pages/discover/Discover";
+import ChoiceMusicAnalysis from "../pages/discover/ChoiceMusicAnalysis";
+import LineChart from "../pages/discover/LineChart";
+import Recommendations from "../pages/recommend/Recommendations";
 import Login from "../pages/Login";
 import MusicList from "../pages/MusicList";
-import RecommendationDetail from "../pages/RecommendationDetail";
-import MyRecommendationDetail from "../pages/MyRecommendationDetail";
-import MyRecommendation from "../pages/MyRecommendation";
+import RecommendationDetail from "../pages/recommend/RecommendationDetail";
+import MyRecommendationDetail from "../pages/recommend/MyRecommendationDetail";
+import MyRecommendation from "../pages/recommend/MyRecommendation";
 export default function AppRoutes(): React.ReactElement {
   return (
     <Routes>
@@ -19,6 +21,8 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/analysis" element={<Analysis />} />
       <Route path="/analysis/report" element={<Report />} />
       <Route path="/discover" element={<Discover />} />
+      <Route path="/discover/choice-music-analysis" element={<ChoiceMusicAnalysis />} />
+      <Route path="/discover/line-chart" element={<LineChart />} />
       <Route path="/recommendations" element={<Recommendations />} />
       <Route path="/recommendations/:domain" element={<RecommendationDetail />} />
       <Route path="/my-recommendation" element={<MyRecommendation />} />

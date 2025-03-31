@@ -35,7 +35,7 @@ export default function MovieCarousel({ movies, getGenreNames }: MovieCarouselPr
     <>
       <Slider {...settings}>
         {movies.map((movie) => (
-          <div key={movie.id} className="relative h-[calc(100vh-320px)] rounded-lg overflow-hidden">
+          <div key={movie.id} className="relative h-[calc(97vh-320px)] rounded-lg overflow-hidden">
             <img
               src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
               alt={movie.title}
