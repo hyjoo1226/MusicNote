@@ -69,7 +69,7 @@ export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMus
   };
 
   return (
-    <div className="w-full px-5 relative">
+    <div className="w-full px-5 relative" ref={containerRef}>
       <div className="w-full flex justify-between p-2 shadow-gray shadow-md text-white">
         <input
           ref={inputRef}
