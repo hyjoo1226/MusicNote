@@ -1,4 +1,4 @@
-package com.music.note.auth.dto;
+package com.music.note.auth.dto.login;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
