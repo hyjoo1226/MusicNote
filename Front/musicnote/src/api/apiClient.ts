@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "@/stores/authStore";
 
 // 기본 axios 인스턴스 생성
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
@@ -86,5 +86,3 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export default apiClient;
