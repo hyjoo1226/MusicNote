@@ -96,9 +96,9 @@ export default function Login() {
         try {
           const tokenData = await exchangeCodeForToken(queryParams.code);
           const newTokenData = {
-            access_token: tokenData.access_token,
-            refresh_token: tokenData.refresh_token,
-            spotify_access_token: tokenData.spotify_accessToken,
+            access_token: tokenData.data.accessToken,
+            refresh_token: tokenData.data.spotify_refreshToken,
+            spotify_access_token: tokenData.data.spotify_accessToken,
             expires_at: Date.now() + 3600 * 1000,
           };
           removeSpotifyAuthState();
