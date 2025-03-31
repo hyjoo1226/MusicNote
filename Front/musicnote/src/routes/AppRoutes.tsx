@@ -2,7 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Analysis from "../pages/analysis/Analysis";
 import Report from "../pages/analysis/Report";
-import Discover from "../pages/Discover";
+import Discover from "../pages/discover/Discover";
+import ChoiceMusicAnalysis from "../pages/discover/ChoiceMusicAnalysis";
 import Recommendations from "../pages/recommend/Recommendations";
 import Login from "../pages/Login";
 import MusicList from "../pages/MusicList";
@@ -19,6 +20,7 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/analysis" element={<Analysis />} />
       <Route path="/analysis/report" element={<Report />} />
       <Route path="/discover" element={<Discover />} />
+      <Route path="/discover/choice-music-analysis" element={<ChoiceMusicAnalysis />} />
       <Route path="/recommendations" element={<Recommendations />} />
       <Route path="/recommendations/:domain" element={<RecommendationDetail />} />
       <Route path="/my-recommendation" element={<MyRecommendation />} />
