@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
-import { isWithinInterval, eachDayOfInterval, format } from "date-fns";
+import { isWithinInterval, eachDayOfInterval } from "date-fns";
 import { ko } from "date-fns/locale";
 import "react-day-picker/style.css";
 import "./Calendar.css";
@@ -11,7 +11,7 @@ const dailyReports = [
   // new Date(2025, 2, 8),
   // new Date(2025, 2, 9),
   // new Date(2025, 2, 11),
-  { from: new Date(2025, 1, 1), to: new Date(2025, 2, 27) },
+  { from: new Date(2025, 1, 1), to: new Date() },
 ];
 const weeklyReports = [
   { from: new Date(2025, 1, 23), to: new Date(2025, 2, 1) },
@@ -105,10 +105,6 @@ export default function Calendar() {
             // today: `bg-sub rounded-full`,
           }}
           mode="single"
-          // formatters={{
-          //   formatCaption: (date, options) =>
-          //     format(date, "LLLL yyyy", options),
-          // }}
           // formatters={{
           //   formatCaption: (date) => format(date, "yyyy LLLL"),
           // }}

@@ -129,7 +129,7 @@ export default function Login() {
         </div>
         <img className="max-w-7/12 max-h-[1h] w-auto mt-[3vh]" src={logoName} alt="로고이름" />
         <button
-          className="flex w-[calc(90vw-40px)] h-[70px] mt-[20vh] px-2 items-center bg-main rounded-lg"
+          className="flex w-[calc(90vw-40px)] max-w-[500px] min-w-[248px] h-[70px] mt-[20vh] px-2 items-center bg-main rounded-lg"
           onClick={handleSpotifyLogin}
         >
           <SpotifyIcon className="w-[45px] h-[45px] pt-1 flex-shrink-0" />

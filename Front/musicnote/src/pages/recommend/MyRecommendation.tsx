@@ -67,35 +67,36 @@ export default function MyRecommendation() {
           )}
         </div>
         {movies.length > 0 ? (
-          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level3 rounded-sm m-1 p-2 min-h-[290px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
+          <div className="content-box grid grid-cols-3 sm:grid-cols-4 gap-x-2 gap-y-2 bg-level3 rounded-sm m-1 p-2 min-h-[290px] sm:min-h-[146px] sm:max-h-[218px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] sm:h-[calc((100vw-75px)/3*5/4)] min-w-[270px] max-w-[535px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             {movies.map(
               (movie, index) =>
                 index < 6 && (
-                  <img
-                    key={movie.id}
-                    src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                    alt={movie.title}
-                    className="w-full aspect-[3/5] object-cover rounded-sm"
-                  />
+                  <div key={movie.id} className={`${index >= 4 ? "sm:hidden" : ""}`}>
+                    <img
+                      src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                      alt={movie.title}
+                      className="w-full aspect-[3/5] object-cover rounded-sm"
+                    />
+                  </div>
                 )
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[290px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[290px] sm:min-h-[146px] sm:max-h-[218px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] sm:h-[calc((100vw-75px)/3*5/4)] min-w-[270px] max-w-[535px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             <img
               src={Mascot}
               alt="mascot"
-              className="w-full aspect-[1/1] object-cover rounded-sm"
+              className="w-full sm:w-4/5 aspect-[1/1] object-cover rounded-sm"
             />
             <div className="grid grid-cols-1 gap-y-4 items-center justify-center">
-              <span className="text-light-gray text-sm xs:text-base">
+              <span className="text-light-gray text-sm xs:text-base sm:text-sm md:text-base">
                 좋아요 누른
                 <br /> 영화가 없짹.
                 <br /> 영화 추천 받으러
                 <br /> 가보겠짹?
               </span>
               <button
-                className="bg-main w-auto text-white text-sm xs:text-base mx-2 px-2 py-1 rounded-xl"
+                className="bg-main w-auto text-white text-sm xs:text-base sm:text-sm md:text-base mx-2 px-2 py-1 rounded-xl"
                 onClick={() => navigate("/recommendations/영화")}
               >
                 영화 추천
@@ -120,13 +121,15 @@ export default function MyRecommendation() {
           )}
         </div>
         {recentPlayedList.items.length > 0 ? (
-          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level2 rounded-sm m-1 p-2 min-h-[280px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
+          <div className="content-box grid grid-cols-3 sm:grid-cols-4 gap-x-2 gap-y-2 bg-level2 rounded-sm m-1 p-2 min-h-[280px] min-h-[290px] sm:min-h-[146px] sm:max-h-[218px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] sm:h-[calc((100vw-75px)/3*5/4)] min-w-[270px] max-w-[535px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             {recentPlayedList.items.map(
               (music, index) =>
                 index < 6 && (
-                  <div className="bg-level3 w-full aspect-[3/5] rounded-sm text-center">
+                  <div
+                    key={music.track.id}
+                    className={`bg-level3 w-full aspect-[3/5] rounded-sm text-center ${index >= 4 ? "sm:hidden" : ""}`}
+                  >
                     <img
-                      key={music.track.id}
                       src={music.track.album.images[0].url}
                       alt={music.track.name}
                       className="w-full aspect-[1/1] object-cover rounded-sm mb-1 xs:mb-2"
@@ -144,21 +147,21 @@ export default function MyRecommendation() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[280px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[290px] sm:min-h-[146px] sm:max-h-[218px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] sm:h-[calc((100vw-75px)/3*5/4)] min-w-[270px] max-w-[535px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             <img
               src={Mascot}
               alt="mascot"
-              className="w-full aspect-[1/1] object-cover rounded-sm"
+              className="w-full sm:w-4/5 aspect-[1/1] object-cover rounded-sm"
             />
             <div className="grid grid-cols-1 gap-y-4 items-center justify-center">
-              <span className="text-light-gray text-sm xs:text-base">
+              <span className="text-light-gray text-sm xs:text-base sm:text-sm md:text-base">
                 좋아요 누른
                 <br /> 음악이 없짹.
                 <br /> 음악 추천 받으러
                 <br /> 가보겠짹?
               </span>
               <button
-                className="bg-main w-auto text-white text-sm xs:text-base mx-2 px-2 py-1 rounded-xl"
+                className="bg-main w-auto text-white text-sm xs:text-base sm:text-sm md:text-base mx-2 px-2 py-1 rounded-xl"
                 onClick={() => navigate("/recommendations/음악")}
               >
                 음악 추천
@@ -183,31 +186,36 @@ export default function MyRecommendation() {
           )}
         </div>
         {activities.length > 0 ? (
-          <div className="content-box grid grid-cols-3 gap-x-2 gap-y-2 bg-level3 rounded-sm m-1 p-2 min-h-[280px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
-            {activities.map((activity) => (
-              <img
-                src={activity.poster_path}
-                alt={activity.title}
-                className="w-full aspect-[1/1] object-cover rounded-sm"
-              />
-            ))}
+          <div className="content-box grid grid-cols-3 sm:grid-cols-4 gap-x-2 gap-y-2 bg-level3 rounded-sm m-1 p-2 min-h-[280px] sm:min-h-[146px] sm:max-h-[218px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] sm:h-[calc((100vw-75px)/3*5/4)] min-w-[270px] max-w-[535px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
+            {activities.map(
+              (activity, index) =>
+                index < 6 && (
+                  <div key={activity.id} className={`${index >= 4 ? "sm:hidden" : ""}`}>
+                    <img
+                      src={activity.poster_path}
+                      alt={activity.title}
+                      className="w-full aspect-[1/1] object-cover rounded-sm"
+                    />
+                  </div>
+                )
+            )}
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[280px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] min-w-[270px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2  m-1 p-2 items-center justify-center min-h-[280px] sm:min-h-[146px] sm:max-h-[218px] h-[calc((100vw-60px)/3*5/3*2)] xs:h-[calc((100vw-75px)/3*5/3*2)] sm:h-[calc((100vw-75px)/3*5/4)] min-w-[270px] max-w-[535px] w-[calc(100vw-45px)] xs:w-[calc(100vw-65px)]">
             <img
               src={Mascot}
               alt="mascot"
-              className="w-full aspect-[1/1] object-cover rounded-sm"
+              className="w-full sm:w-4/5 aspect-[1/1] object-cover rounded-sm"
             />
             <div className="grid grid-cols-1 gap-y-4 items-center justify-center">
-              <span className="text-light-gray text-sm xs:text-base">
+              <span className="text-light-gray text-sm xs:text-base sm:text-sm md:text-base">
                 좋아요 누른
                 <br /> 활동이 없짹.
                 <br /> 활동 추천 받으러
                 <br /> 가보겠짹?
               </span>
               <button
-                className="bg-main w-auto text-white text-sm xs:text-base mx-2 px-2 py-1 rounded-xl"
+                className="bg-main w-auto text-white text-sm xs:text-base sm:text-sm md:text-base mx-2 px-2 py-1 rounded-xl"
                 onClick={() => navigate("/recommendations/활동")}
               >
                 활동 추천
