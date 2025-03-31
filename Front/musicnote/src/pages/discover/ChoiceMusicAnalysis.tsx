@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+// import { useEffect, useRef } from "react";
 import TopBar from "../../components/layout/TopBar";
 import SearchMusic from "../../features/discover/ChoiceMusicAnalysis/SearchMusic";
 import SelectMusicList from "../../features/discover/ChoiceMusicAnalysis/SelectMusicList";

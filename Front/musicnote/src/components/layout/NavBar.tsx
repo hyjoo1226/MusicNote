@@ -17,17 +17,18 @@ export default function NavBar() {
     "/recommendationlist",
     "/my-recommendation",
     "/recommendations",
+    "/callback",
   ];
 
   if (
     exactHiddenPaths.includes(location.pathname) ||
-    patternHiddenPaths.some((path) => location.pathname.startsWith(path + "/"))
+    patternHiddenPaths.some((path) => location.pathname.startsWith(path))
   ) {
     return null;
   }
 
   return (
-    <div className="fixed bottom-0 w-full max-w-[600px] h-[80px] bg-level1 z-10">
+    <div className="fixed bottom-0 w-full min-w-[320px] max-w-[600px] h-[80px] bg-level1 z-10">
       <ul className="flex justify-evenly py-[16px] w-full text-[12px] font-medium">
         <li className="flex-1">
           <NavLink
