@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserTemperGraph from "../../components/UserTemperGraph";
-import ReportDetail from "./ReportDetail";
+import ReportDetail from "../../features/analysis/ReportDetail";
 import NoteIcon from "../../assets/icon/note-icon.svg?react";
 import ShareIcon from "../../assets/icon/share-icon.svg?react";
 
