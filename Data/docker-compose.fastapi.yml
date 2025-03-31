@@ -1,0 +1,8 @@
+version: "3"
+services:
+  fastapi-server:
+    image: ysh933/fastapi-server:latest
+    container_name: fastapi-server
+    ports:
+      - "8100:8100"
+    restart: always
