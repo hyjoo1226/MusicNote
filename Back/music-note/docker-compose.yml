@@ -1,4 +1,14 @@
-name: music-note-server
+name: music-note
+
+volumes:
+  mysql_data:
+  mongo_data:
+  Kafka00:
+  Kafka01:
+  Kafka02:
+
+networks:
+  music-network:
 
 services:
   mysql-db:
@@ -37,10 +47,69 @@ services:
     networks:
       - music-network
 
-volumes:
-  mysql_data:
-  mongo_data:
+  ### Kafka00
+  kafka00:
+    image: bitnami/kafka:3.7.0
+    restart: unless-stopped
+    container_name: kafka00
+    ports:
+      - '10000:9094'
+    env_file:
+      - .env.kafka
+    environment:
+      - KAFKA_CFG_BROKER_ID=0
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka00:9092,EXTERNAL://127.0.0.1:10000
+    networks:
+      - music-network
+    volumes:
+      - Kafka00:/bitnami/kafka
+  ### Kafka01
+  kafka01:
+    image: bitnami/kafka:3.7.0
+    restart: unless-stopped
+    container_name: kafka01
+    ports:
+      - '10001:9094'
+    env_file:
+      - .env.kafka
+    environment:
+      - KAFKA_CFG_BROKER_ID=1
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka01:9092,EXTERNAL://127.0.0.1:10001
+    networks:
+      - music-network
+    volumes:
+      - Kafka01:/bitnami/kafka
+  ### Kafka02
+  kafka02:
+    image: bitnami/kafka:3.7.0
+    restart: unless-stopped
+    container_name: kafka02
+    ports:
+      - '10002:9094'
+    env_file:
+      - .env.kafka
+    environment:
+      - KAFKA_CFG_BROKER_ID=2
+      - KAFKA_CFG_NODE_ID=2
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka02:9092,EXTERNAL://127.0.0.1:10002
+    networks:
+      - music-network
+    volumes:
+      - Kafka02:/bitnami/kafka
 
-networks:
-  music-network:
-    driver: bridge
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    restart: unless-stopped
+    container_name: kafka-ui
+    ports:
+      - '8000:8080'
+    env_file:
+      - .env.kafka-ui
+    depends_on:
+      - kafka00
+      - kafka01
+      - kafka02
+    networks:
+      - music-network

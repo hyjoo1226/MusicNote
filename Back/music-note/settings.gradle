@@ -1,4 +1,5 @@
 rootProject.name = 'music-note'
 
-include('auth','gateway','discovery','main',
-        'music-type-consumer', 'music-type-service', 'music-crawler-consumer', 'common' )
+include('auth', 'gateway', 'discovery', 'main',
+        'music-type-consumer', 'music-type-service', 'music-crawler-consumer', 'common',
+        'kafka-event-model', 'track-domain')
