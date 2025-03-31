@@ -1,3 +1,4 @@
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import ChoiceMusicImage from "../../assets/img/choice-music-img.png";
@@ -5,6 +6,20 @@ import LineChartImage from "../../assets/img/line-chart-img.png";
 
 export default function DiscoverCarousel() {
   const navigate = useNavigate();
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
+  // 드래그 상태 관리
+  const [dragging, setDragging] = useState(false);
+  const handleBeforeChange = useCallback(() => {
+    setDragging(true);
+  }, []);
+  const handleAfterChange = useCallback(() => {
+    setDragging(false);
+  }, []);
+
+  // 캐러셀 설정
   const settings = {
     infinite: true,
     speed: 500,
@@ -17,17 +32,28 @@ export default function DiscoverCarousel() {
     pauseOnFocus: true,
     pauseOnDotsHover: true,
     arrows: false,
+    touchThreshold: 100,
+    beforeChange: handleBeforeChange,
+    afterChange: handleAfterChange,
   };
 
-  const handleNavigate = (path: string) => {
-    navigate(path);
+  // 슬라이드 클릭 핸들러
+  const handleSlideClick = (e: any, path: string) => {
+    if (dragging) {
+      // 드래그 중일 경우 클릭 이벤트 차단
+      e.stopPropagation();
+      return;
+    }
+    // 드래그가 아닌 경우 네비게이션 실행
+    handleNavigate(path);
   };
 
   return (
     <div className="w-full h-full px-5 overflow-hidden">
       <Slider {...settings} className="p-5 bg-gradient-to-b from-black to-gray rounded-lg">
+        {/* 첫 번째 슬라이드 */}
         <div
-          onClick={() => handleNavigate("/discover/choice-music-analysis")}
+          onClick={(e) => handleSlideClick(e, "/discover/choice-music-analysis")}
           className="!block w-full h-full"
         >
           <div className="h-full flex flex-col justify-between">
@@ -45,7 +71,7 @@ export default function DiscoverCarousel() {
           </div>
         </div>
         <div
-          onClick={() => handleNavigate("/discover/line-chart")}
+          onClick={(e) => handleSlideClick(e, "/discover/line-chart")}
           className="!block w-full h-full"
         >
           <div className="h-full flex flex-col justify-between">
