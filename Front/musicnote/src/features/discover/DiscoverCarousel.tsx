@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import ChoiceMusicImage from "../../assets/img/choice-music-img.png";
-import Mascot from "../../assets/logo/mascot.webp";
+import LineChartImage from "../../assets/img/line-chart-img.png";
 
 export default function DiscoverCarousel() {
   const navigate = useNavigate();
@@ -19,14 +19,17 @@ export default function DiscoverCarousel() {
     arrows: false,
   };
 
-  const handleClick = () => {
-    navigate("/discover/choice-music-analysis");
+  const handleNavigate = (path: string) => {
+    navigate(path);
   };
 
   return (
     <div className="w-full h-full px-5 overflow-hidden">
       <Slider {...settings} className="p-5 bg-gradient-to-b from-black to-gray rounded-lg">
-        <div onClick={handleClick} className="!block w-full h-full">
+        <div
+          onClick={() => handleNavigate("/discover/choice-music-analysis")}
+          className="!block w-full h-full"
+        >
           <div className="h-full flex flex-col justify-between">
             <div className="h-[min(60vh,60vw)] min-h-[200px] max-h-[500px] w-full overflow-hidden mx-auto">
               <img
@@ -41,13 +44,20 @@ export default function DiscoverCarousel() {
             </div>
           </div>
         </div>
-        <div className="!block w-full h-full">
+        <div
+          onClick={() => handleNavigate("/discover/line-chart")}
+          className="!block w-full h-full"
+        >
           <div className="h-full flex flex-col justify-between">
             <div className="h-[min(60vh,60vw)] min-h-[200px] max-h-[500px] w-full overflow-hidden mx-auto">
-              <img src={Mascot} alt="Mascot" className="w-full h-full object-contain rounded-lg" />
+              <img
+                src={LineChartImage}
+                alt="Mascot"
+                className="w-full h-full object-contain rounded-lg"
+              />
             </div>
             <div className="p-5 pt-4 flex-shrink-0">
-              <h2 className="text-[20px] font-bold">라인 그래프</h2>
+              <h2 className="text-[20px] font-bold">성향 트렌드</h2>
               <p className="pt-2 text-[16px]">내 성향이 시간에 따라 어떻게 변했을까</p>
             </div>
           </div>
