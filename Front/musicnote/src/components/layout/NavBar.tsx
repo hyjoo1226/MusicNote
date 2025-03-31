@@ -17,11 +17,12 @@ export default function NavBar() {
     "/recommendationlist",
     "/my-recommendation",
     "/recommendations",
+    "/callback",
   ];
 
   if (
     exactHiddenPaths.includes(location.pathname) ||
-    patternHiddenPaths.some((path) => location.pathname.startsWith(path + "/"))
+    patternHiddenPaths.some((path) => location.pathname.startsWith(path))
   ) {
     return null;
   }
