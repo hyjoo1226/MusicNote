@@ -34,7 +34,7 @@ public class AuthController {
 
 	}
 
-	@GetMapping("/spoify/refresh")
+	@GetMapping("/spotify/refresh")
 	public CommonResponse<ResponseSpotifyAccessToken> login(@RequestParam String refreshToken) {
 		log.info("spotify access token reissue");
 		ResponseSpotifyAccessToken responseSpotifyAccessToken = authService.getSpotifyAccessTokenByRefreshToken(refreshToken);
