@@ -10,7 +10,7 @@ const report = {
 
 export default function ReportDetail() {
   return (
-    <div className="text-white min-h-[400px] p-2 xs:p-4 bg-level2 rounded-lg w-full">
+    <div className="text-white h-auto p-2 xs:p-4 bg-level2 rounded-lg w-full">
       <h1 className="text-xl text-white font-medium mb-2">상세 리포트</h1>
       <div className="text-[16px]">
         <p className="ml-1">1. 높은 점수 분석</p>

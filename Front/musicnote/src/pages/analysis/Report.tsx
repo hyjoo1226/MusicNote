@@ -62,7 +62,7 @@ export default function Report() {
   // const [title, setTitle] = useState("일일");
 
   return (
-    <div className="text-white w-full h-full">
+    <div className="text-white w-full h-[calc(100vh-80px)]">
       <div className="flex flex-row mx-2 xs:mx-5 my-5 rounded-2xl px-3 py-1 items-center justify-center w-[calc(100%-20px)] xs:w-[calc(100%-40px)] h-[60px] bg-level2">
         <div className="relative flex items-center justify-center w-full h-full">
           <div
