@@ -120,22 +120,20 @@ export default function Login() {
   }, [exchangeCodeForToken, navigate, spotifyAuthState, removeSpotifyAuthState, setAccessToken]);
 
   return (
-    <div>
-      <div className="flex flex-col max-w-[560px] m-[20px] items-center justify-center">
-        <div className="bg-level2 rounded-full max-h-[40vh] max-w-[calc(80%-40px)] w-auto h-auto aspect-square p-2 flex items-center justify-center">
-          <img className="w-full h-full object-contain" src={logo} alt="로고" />
-        </div>
-        <img className="max-w-7/12 max-h-[1h] w-auto mt-[3vh]" src={logoName} alt="로고이름" />
-        <button
-          className="flex w-[calc(90vw-40px)] max-w-[500px] min-w-[248px] h-[70px] mt-[20vh] px-2 items-center bg-main rounded-lg"
-          onClick={handleSpotifyLogin}
-        >
-          <SpotifyIcon className="w-[45px] h-[45px] pt-1 flex-shrink-0" />
-          <span className="flex-1 text-white text-[20px] xs:text-[24px] font-bold text-center cursor-pointer">
-            Spotify 로그인
-          </span>
-        </button>
+    <div className="flex flex-col max-w-[560px] m-[20px] h-screen items-center justify-center">
+      <div className="bg-level2 rounded-full max-h-[40vh] max-w-[calc(80%-40px)] w-auto h-auto aspect-square p-2 flex items-center justify-center">
+        <img className="w-full h-full object-contain" src={logo} alt="로고" />
       </div>
+      <img className="max-w-7/12 max-h-[1h] w-auto mt-[3vh]" src={logoName} alt="로고이름" />
+      <button
+        className="flex w-[calc(90vw-40px)] max-w-[500px] min-w-[248px] h-[70px] mt-[20vh] px-2 items-center bg-main rounded-lg"
+        onClick={handleSpotifyLogin}
+      >
+        <SpotifyIcon className="w-[45px] h-[45px] pt-1 flex-shrink-0" />
+        <span className="flex-1 text-white text-[20px] xs:text-[24px] font-bold text-center cursor-pointer">
+          Spotify 로그인
+        </span>
+      </button>
     </div>
   );
 }
