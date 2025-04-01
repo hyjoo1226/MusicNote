@@ -86,6 +86,9 @@ export default function Chart({ bigFiveScore }: ChartProps) {
           stroke="#F78888"
           strokeWidth={4}
           fillOpacity={0}
+          isAnimationActive={true}
+          animationDuration={500}
+          animationEasing="ease"
         />
 
         {/* 상위 3요인 표시 */}
