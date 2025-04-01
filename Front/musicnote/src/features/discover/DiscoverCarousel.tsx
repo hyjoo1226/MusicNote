@@ -49,46 +49,48 @@ export default function DiscoverCarousel() {
   };
 
   return (
-    <div className="w-full h-full px-5 overflow-hidden">
-      <Slider {...settings} className="p-5 bg-gradient-to-b from-black to-gray rounded-lg">
-        {/* 첫 번째 슬라이드 */}
-        <div
-          onClick={(e) => handleSlideClick(e, "/discover/choice-music-analysis")}
-          className="!block w-full h-full"
-        >
-          <div className="h-full flex flex-col justify-between">
-            <div className="h-[min(60vh,60vw)] min-h-[200px] max-h-[500px] w-full overflow-hidden mx-auto">
-              <img
-                src={ChoiceMusicImage}
-                alt="MY Pick 분석 이미지"
-                className="w-full h-full object-contain rounded-lg"
-              />
-            </div>
-            <div className="p-5 pt-4 flex-shrink-0">
-              <h2 className="text-[20px] font-bold">My Pick 분석</h2>
-              <p className="pt-2 text-[16px]">내가 직접 선택한 음악으로 성향 분석을?</p>
-            </div>
-          </div>
-        </div>
-        <div
-          onClick={(e) => handleSlideClick(e, "/discover/line-chart")}
-          className="!block w-full h-full"
-        >
-          <div className="h-full flex flex-col justify-between">
-            <div className="h-[min(60vh,60vw)] min-h-[200px] max-h-[500px] w-full overflow-hidden mx-auto">
-              <img
-                src={LineChartImage}
-                alt="Mascot"
-                className="w-full h-full object-contain rounded-lg"
-              />
-            </div>
-            <div className="p-5 pt-4 flex-shrink-0">
-              <h2 className="text-[20px] font-bold">성향 트렌드</h2>
-              <p className="pt-2 text-[16px]">내 성향이 시간에 따라 어떻게 변했을까</p>
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full max-w-md px-5 overflow-hidden">
+        <Slider {...settings} className="p-5 bg-gradient-to-b from-black to-gray rounded-lg">
+          {/* 첫 번째 슬라이드 */}
+          <div
+            onClick={(e) => handleSlideClick(e, "/discover/choice-music-analysis")}
+            className="!block w-full h-full"
+          >
+            <div className="h-full flex flex-col justify-between">
+              <div className="h-[min(60vh,60vw)] min-h-[200px] max-h-[500px] w-full overflow-hidden mx-auto">
+                <img
+                  src={ChoiceMusicImage}
+                  alt="MY Pick 분석 이미지"
+                  className="w-full h-full object-contain rounded-lg"
+                />
+              </div>
+              <div className="p-5 pt-4 flex-shrink-0">
+                <h2 className="text-[20px] font-bold">My Pick 분석</h2>
+                <p className="pt-2 text-[16px]">내가 직접 선택한 음악으로 성향 분석을?</p>
+              </div>
             </div>
           </div>
-        </div>
-      </Slider>
+          <div
+            onClick={(e) => handleSlideClick(e, "/discover/line-chart")}
+            className="!block w-full h-full"
+          >
+            <div className="h-full flex flex-col justify-between">
+              <div className="h-[min(60vh,60vw)] min-h-[200px] max-h-[500px] w-full overflow-hidden mx-auto">
+                <img
+                  src={LineChartImage}
+                  alt="Mascot"
+                  className="w-full h-full object-contain rounded-lg"
+                />
+              </div>
+              <div className="p-5 pt-4 flex-shrink-0">
+                <h2 className="text-[20px] font-bold">성향 트렌드</h2>
+                <p className="pt-2 text-[16px]">내 성향이 시간에 따라 어떻게 변했을까</p>
+              </div>
+            </div>
+          </div>
+        </Slider>
+      </div>
     </div>
   );
 }

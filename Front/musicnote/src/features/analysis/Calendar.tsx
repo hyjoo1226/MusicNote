@@ -20,11 +20,27 @@ const weeklyReports = [
   { from: new Date(2025, 2, 16), to: new Date(2025, 2, 22) },
 ];
 
-export default function Calendar() {
+interface CalendarProps {
+  onDateSelect?: (date: Date) => void;
+}
+
+export default function Calendar({ onDateSelect }: CalendarProps) {
   // 선택 날짜
   const [selected, setSelected] = useState<Date>();
   // 리포트 주기
   const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
+
+  const handleDateSelect = (date: Date | undefined) => {
+    // 이미 선택된 날짜를 다시 클릭한 경우, 취소하지 않고 유지
+    if (date === undefined && selected) {
+      return;
+    }
+
+    setSelected(date);
+    if (date && onDateSelect) {
+      onDateSelect(date);
+    }
+  };
 
   const getSelectedRangeDays = () => {
     if (!selected || reportCycle === "daily") return [];
@@ -110,8 +126,9 @@ export default function Calendar() {
           // }}
           showOutsideDays
           selected={selected}
-          onSelect={setSelected}
+          onSelect={handleDateSelect}
           startMonth={new Date(2025, 1)}
+          endMonth={currentDate}
           defaultMonth={currentDate}
           fixedWeeks={true}
           captionLayout="dropdown-months"
