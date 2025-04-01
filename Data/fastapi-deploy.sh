@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "fastapi-server 배포 시작"
+echo "🚀 fastapi-server 배포 시작"
 
-docker-compose -f docker-compose.fastapi.yml pull
-docker-compose -f docker-compose.fastapi.yml down
-docker-compose -f docker-compose.fastapi.yml up -d --build
+docker-compose -f ./Data/docker-compose.yml pull
+docker-compose -f ./Data/docker-compose.yml down
+docker-compose -f ./Data/docker-compose.yml up -d --build
 
-echo "fastapi-server 배포 완료!"
+echo "✅ fastapi-server 배포 완료!"
