@@ -4,6 +4,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
+import com.music.note.musictype.consumer.service.ReportService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TypeEventConsumer {
 
+	private final ReportService reportService;
+
 	@KafkaListener(topics = "music-type", groupId = "music-type-group")
 	public void consumeTypeEvent(MusicListEvent event) {
-
+		reportService.processTypeEvent(event);
 	}
 }

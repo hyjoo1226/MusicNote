@@ -9,16 +9,15 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.music.note.kafkaeventmodel.dto.AudioFeaturesDto;
 import com.music.note.kafkaeventmodel.dto.MusicDto;
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.MusicListWithMissingEvent;
+import com.music.note.musiccrawler.consumer.converter.MusicDtoConverter;
 import com.music.note.musiccrawler.consumer.converter.TrackConverter;
 import com.music.note.musiccrawler.consumer.dto.RawTrackDataResponse;
 import com.music.note.musiccrawler.consumer.dto.TrackDataResponse;
 import com.music.note.musiccrawler.consumer.kafka.producer.TypeEventProducer;
 import com.music.note.musiccrawler.consumer.repository.TrackRepository;
-import com.music.note.trackdomain.domain.AudioFeatures;
 import com.music.note.trackdomain.domain.Track;
 
 import lombok.RequiredArgsConstructor;
@@ -67,28 +66,8 @@ public class CrawlingService {
 			Track track = TrackConverter.toTrack(musicDto, trackDataResponse);
 			trackRepository.save(track);
 
-			// 3. Track의 AudioFeatures를 DTO로 변환
-			AudioFeatures audioFeatures = track.getAudioFeatures();
-			AudioFeaturesDto audioFeaturesDto = AudioFeaturesDto.builder()
-				.tempo(audioFeatures.getTempo())
-				.acousticness(audioFeatures.getAcousticness())
-				.danceability(audioFeatures.getDanceability())
-				.energy(audioFeatures.getEnergy())
-				.instrumentalness(audioFeatures.getInstrumentalness())
-				.liveness(audioFeatures.getLiveness())
-				.loudness(audioFeatures.getLoudness())
-				.speechiness(audioFeatures.getSpeechiness())
-				.valence(audioFeatures.getValence())
-				.build();
-
-			// 4. MusicDto에 반영
-			MusicDto updatedDto = MusicDto.builder()
-				.spotifyId(musicDto.getSpotifyId())
-				.title(musicDto.getTitle())
-				.artist(musicDto.getArtist())
-				.audioFeatures(audioFeaturesDto)
-				.build();
-			updatedMusicList.add(updatedDto);
+			updatedMusicList.add(MusicDtoConverter.updateMusicDtoWithAudioFeatures(musicDto,
+				MusicDtoConverter.toAudioFeaturesDto(track.getAudioFeatures())));
 		}
 		return updatedMusicList;
 	}
