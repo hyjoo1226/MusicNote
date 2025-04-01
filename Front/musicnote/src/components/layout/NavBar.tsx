@@ -24,9 +24,13 @@ export default function NavBar() {
     "/recommendations",
   ];
 
+  // NotFound 페이지
+  const isNotFoundPage = location.state?.isNotFound === true;
+
   if (
     exactHiddenPaths.includes(location.pathname) ||
-    patternHiddenPaths.some((path) => location.pathname.startsWith(path + "/"))
+    patternHiddenPaths.some((path) => location.pathname.startsWith(path + "/")) ||
+    isNotFoundPage
   ) {
     return null;
   }
