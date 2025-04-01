@@ -11,6 +11,7 @@ import MusicList from "../pages/MusicList";
 import RecommendationDetail from "../pages/recommend/RecommendationDetail";
 import MyRecommendationDetail from "../pages/recommend/MyRecommendationDetail";
 import MyRecommendation from "../pages/recommend/MyRecommendation";
+import NotFound from "../components/NotFound";
 export default function AppRoutes(): React.ReactElement {
   return (
     <Routes>
@@ -27,6 +28,7 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/recommendations/:domain" element={<RecommendationDetail />} />
       <Route path="/my-recommendation" element={<MyRecommendation />} />
       <Route path="/my-recommendation/:domain" element={<MyRecommendationDetail />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
