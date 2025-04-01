@@ -1,4 +1,4 @@
-package com.music.note.musictype.consumer.domain;
+package com.music.note.typedomain.domain;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
@@ -36,6 +37,7 @@ public class PersonalityReport {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Builder
+	@ToString
 	public static class Report {
 		private String topScore;
 		private String topText;

@@ -37,6 +37,7 @@ dependencies {
     implementation project(':common')
     implementation project(':kafka-event-model')
     implementation project(':track-domain')
+    implementation project(':type-domain')
 }
 
 tasks.named('test') {

@@ -7,11 +7,11 @@ import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.NotificationEvent;
 import com.music.note.musictype.consumer.converter.AudioFeatureConverter;
 import com.music.note.musictype.consumer.converter.PersonalityReportConverter;
-import com.music.note.musictype.consumer.domain.PersonalityReport;
 import com.music.note.musictype.consumer.dto.AudioFeaturesRequest;
 import com.music.note.musictype.consumer.dto.PersonalityReportDto;
 import com.music.note.musictype.consumer.kafka.proiducer.NotificationProducer;
 import com.music.note.musictype.consumer.repository.ReportRepository;
+import com.music.note.typedomain.domain.PersonalityReport;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class ReportService {
 		PersonalityReport entity = PersonalityReportConverter.toEntity(event.getUserId(), result);
 		reportRepository.save(entity);
 
-		log.info("Report saved: {}", entity);
+		log.info("Report saved: {}", entity.getReport().toString());
 
 		// Notification 서버로 이벤트 전송
 		NotificationEvent notificationEvent = NotificationEvent.builder()

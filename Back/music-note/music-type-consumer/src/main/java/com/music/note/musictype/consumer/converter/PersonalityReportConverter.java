@@ -1,7 +1,7 @@
 package com.music.note.musictype.consumer.converter;
 
-import com.music.note.musictype.consumer.domain.PersonalityReport;
 import com.music.note.musictype.consumer.dto.PersonalityReportDto;
+import com.music.note.typedomain.domain.PersonalityReport;
 
 public class PersonalityReportConverter {
 	public static PersonalityReport toEntity(Long userId, PersonalityReportDto dto) {
