@@ -22,6 +22,7 @@ public class PreferencesService {
 
 	// 스포티파이 API 를 통해 음악 리스트 조회
 	private List<MusicDto> getMusicListFromSpotify(Long userId) {
+
 		//TODO: 스포티파이 API 호출 후 musicList 생성
 		return List.of(
 			MusicDto.builder()

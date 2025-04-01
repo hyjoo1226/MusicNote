@@ -1,6 +1,7 @@
 package com.music.note.main.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.music.note.common.response.CommonResponse;
@@ -15,7 +16,8 @@ public class PreferencesController {
 	private final PreferencesService preferencesService;
 
 	@GetMapping("/preferences")
-	public CommonResponse<String> preferences() {
+	public CommonResponse<String> preferences(@RequestHeader String Authorization) {
+
 		// TODO: auth 서버 연동 후 userId 파라미터로 전달
 		preferencesService.publishUserMusicPreferences(1L);
 		return CommonResponse.success("음악 타입 결과 요청 성공");

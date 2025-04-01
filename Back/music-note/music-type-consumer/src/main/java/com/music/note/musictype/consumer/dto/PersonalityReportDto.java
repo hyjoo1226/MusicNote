@@ -1,5 +1,7 @@
 package com.music.note.musictype.consumer.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,10 +19,18 @@ public class PersonalityReportDto {
 	@Getter
 	@Builder
 	public static class Report {
+		@JsonProperty("top_score")
 		private String topScore;
+
+		@JsonProperty("top_text")
 		private String topText;
+
+		@JsonProperty("low_score")
 		private String lowScore;
+
+		@JsonProperty("low_text")
 		private String lowText;
+
 		private String summary;
 	}
 }
