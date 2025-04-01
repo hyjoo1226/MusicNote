@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useDebounce } from "use-debounce";
+import { useGetData } from "../../../hooks/useApi";
 import SearchIcon from "../../../assets/icon/search-icon.svg?react";
 import { Track } from "./ChoiceMusicAnalysis";
 
@@ -9,44 +9,66 @@ interface SearchMusicProps {
 }
 
 export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMusicProps) {
-  const [searchResults, setSearchResults] = useState<Track[]>([]);
+  // const [searchResults, setSearchResults] = useState<Track[]>([]);
   const [query, setQuery] = useState("");
   const [isResultsVisible, setIsResultsVisible] = useState(false);
-  const [debouncedQuery] = useDebounce(query, 500);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  // const [debouncedQuery] = useDebounce(query, 500);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Spotify access_token
-  const tokenData = JSON.parse(localStorage.getItem("spotify_token_data") || "{}");
-
   // 검색 디바운스
   useEffect(() => {
-    if (!debouncedQuery.trim()) return;
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 500);
 
-    const url = new URL("https://api.spotify.com/v1/search");
-    url.searchParams.append("q", debouncedQuery);
-    url.searchParams.append("type", "track");
-    url.searchParams.append("limit", "20");
+    return () => clearTimeout(timer);
+  }, [query]);
 
-    const fetchSearchData = async () => {
-      try {
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${tokenData.access_token}`,
-          },
-        });
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-        setSearchResults(data.tracks.items);
-        setIsResultsVisible(true); // 새로운 검색 시 결과창 자동 열림
-      } catch (error) {
-        console.error("Search failed:", error);
-      }
-    };
+  // Spotify API 인증 토큰
 
-    fetchSearchData();
-  }, [debouncedQuery, tokenData.access_token]);
+  const { data } = useGetData(
+    "searchMusic" + debouncedQuery,
+    `/search?q=${encodeURIComponent(debouncedQuery)}&type=track&limit=20`,
+    "spotify"
+  );
 
+  const searchResults = data?.tracks?.items || [];
+  // 검색 결과가 있을 때 결과창 표시
+  useEffect(() => {
+    if (debouncedQuery.trim() && data) {
+      setIsResultsVisible(true);
+    }
+  }, [debouncedQuery, data]);
+  // useEffect(() => {
+  //   if (!debouncedQuery.trim()) return;
+
+  //   const url = new URL("https://api.spotify.com/v1/search");
+  //   url.searchParams.append("q", debouncedQuery);
+  //   url.searchParams.append("type", "track");
+  //   url.searchParams.append("limit", "20");
+
+  //   const fetchSearchData = async () => {
+  //     try {
+  //       const response = await fetch(url, {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       });
+  //       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  //       const data = await response.json();
+  //       setSearchResults(data.tracks.items);
+  //       setIsResultsVisible(true); // 새로운 검색 시 결과창 자동 열림
+  //     } catch (error) {
+  //       console.error("Search failed:", error);
+  //     }
+  //   };
+
+  //   fetchSearchData();
+  // }, [debouncedQuery, accessToken]);
+
+  // 외부 클릭 시 검색창 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -85,7 +107,7 @@ export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMus
 
       {isResultsVisible && searchResults.length > 0 && (
         <div className="absolute top-full left-0 right-0 z-100 mt-2 mx-[20px] bg-level3 rounded-lg shadow-xl max-h-[300px] overflow-y-auto">
-          {searchResults.map((track) => (
+          {searchResults.map((track: Track) => (
             <div
               key={track.id}
               className={`p-3 cursor-pointer ${

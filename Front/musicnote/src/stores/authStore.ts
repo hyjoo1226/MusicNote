@@ -33,8 +33,22 @@ export const useAuthStore = create<AuthState>()(
         refresh_token: string,
         expiresAt: number,
         spotifyAccessToken: string
-      ) => set({ accessToken, refresh_token, expiresAt, spotifyAccessToken }),
-      removeAccessToken: () => set({ accessToken: null, expiresAt: null }),
+      ) =>
+        set((state) => ({
+          ...state,
+          accessToken,
+          refresh_token,
+          expiresAt,
+          spotifyAccessToken,
+        })),
+      removeAccessToken: () =>
+        set((state) => ({
+          ...state,
+          accessToken: null,
+          refresh_token: null,
+          spotifyAccessToken: null,
+          expiresAt: null,
+        })),
       setSpotifyAuthState: (state: string) => set({ spotifyAuthState: state }),
       removeSpotifyAuthState: () => set({ spotifyAuthState: null }),
 

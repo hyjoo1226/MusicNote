@@ -1,11 +1,14 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-import apiClient from "@/api/apiClient";
+import { apiClient, spotifyApiClient } from "@/api/apiClient";
 
 // GET 요청을 위한 커스텀 훅
-export const useGetData = (key: string, url: string, options = {}) => {
+export const useGetData = (key: string, url: string, client: string = "default", options = {}) => {
   return useQuery({
     queryKey: [key],
-    queryFn: () => apiClient.get(url).then((res: any) => res.data),
+    queryFn: () =>
+      client === "spotify"
+        ? spotifyApiClient.get(url).then((res: any) => res.data)
+        : apiClient.get(url).then((res: any) => res.data),
     ...options,
   });
 };
