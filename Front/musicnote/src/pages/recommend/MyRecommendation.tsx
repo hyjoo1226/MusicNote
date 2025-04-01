@@ -10,15 +10,8 @@ interface Movie {
   poster_path: string;
 }
 
-interface Activity {
-  id: number;
-  title: string;
-  poster_path: string;
-}
-
 export default function MyRecommendation() {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [activities] = useState<Activity[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {

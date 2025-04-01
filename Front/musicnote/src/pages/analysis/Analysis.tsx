@@ -27,6 +27,7 @@ export default function Analysis() {
       ...score,
       User: Math.floor(Math.random() * 101), // 0부터 100 사이 랜덤값
     }));
+    console.log(date);
     setBigFiveScore(newScores);
   };
 
