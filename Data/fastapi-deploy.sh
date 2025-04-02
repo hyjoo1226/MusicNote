@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# ✅ docker-compose 경로 인식 위해 PATH 확장
+export PATH=$PATH:/usr/local/bin
+
 echo "🚀 fastapi-server 배포 시작"
 
 # 1. 기존 컨테이너 종료 및 제거
