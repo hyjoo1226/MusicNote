@@ -17,7 +17,6 @@ movies = pd.read_csv(movie_file)
 # 전처리
 df.columns = df.columns.str.strip()
 movies.columns = movies.columns.str.strip()
-movies['genres'] = movies['genres'].str.strip()
 
 # enjoy_watching 1, 2 제거
 df = df[~df['enjoy_watching'].isin([1, 2])]
@@ -45,11 +44,8 @@ merged['genres'] = merged['genres'].str.split('|')
 # print(merged['genres'].head())
 # print(merged)
 
-# 장르 및 개수 열이 있는 새 DataFrame 생성
+# Counter 대신 사용자, 장르 및 개수 열이 있는 새 DataFrame 생성
 genre_df = merged.explode('genres')
-genre_df = genre_df[genre_df['genres'] != 'IMAX']
-print(genre_df)
-print(genre_df['genres'].unique(), len(genre_df['genres'].unique()))
 user_genre_counts = genre_df.groupby(['userid', 'genres']).size().reset_index(name='count')
 
 # 딕셔너리 형식으로 변환
@@ -58,7 +54,13 @@ for userid, group in user_genre_counts.groupby('userid'):
     user_genre_dict[str(userid)] = {row['genres']: int(row['count']) for _, row in group.iterrows()}
 print(user_genre_dict)
 
-
-# user_genre_counts 딕셔너리를 JSON 파일로 저장
+# JSON으로 저장
 with open("user_genre_counts.json", "w") as f:
     json.dump(user_genre_dict, f)
+
+
+
+# print(user_genre_counts)
+# user_genre_counts 딕셔너리를 JSON 파일로 저장
+# with open("user_genre_counts.json", "w") as f:
+#     json.dump(user_genre_counts, f)
