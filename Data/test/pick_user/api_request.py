@@ -1,15 +1,12 @@
-from tmdbv3api import TMDb
-from tmdbv3api import Discover, Movie
+from tmdbv3api import TMDb, Discover, Movie
 
-tmdb = TMDb()
-tmdb.api_key = '4feca631dd5c6770c207e60e8f469db0'
-tmdb.language = 'ko'
-tmdb.debug = True
+def init_tmdb(api_key='4feca631dd5c6770c207e60e8f469db0', lang='ko'):
+    tmdb = TMDb()
+    tmdb.api_key = api_key
+    tmdb.language = lang
+    tmdb.debug = False
+    return Discover(), Movie()
 
-discover = Discover()
-movie = Movie()
-
-user = {"Action": 1, "Adventure": 1, "Comedy": 1, "Crime": 1, "Drama": 7, "Film-Noir": 1, "Mystery": 1, "Romance": 2, "Thriller": 3, "War": 1, "Western": 1}
 
 # 원본데이터의 장르를 현재 장르 리스트에 맞게 변환
 def genre_transformation(user_dict):
@@ -61,6 +58,7 @@ def convert_genre_to_id(user_dict):
 def recommend(user_dict):
 	user_dict = convert_genre_to_id(user_dict)
 	recommendation = []
+	discover, movie = init_tmdb()
 	for id, cnt in user_dict.items():
 		sort_by = ['popularity.desc', 'revenue.desc', 'vote_average.desc', 'vote_count.desc']
 		page = None
@@ -71,5 +69,3 @@ def recommend(user_dict):
 			recommendation.append(list(results)[i])
 	
 	return recommendation
-
-print(recommend(user))

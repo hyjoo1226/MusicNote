@@ -3,12 +3,20 @@
 from fastapi import APIRouter
 from modelschemas.request_response import BigFiveScore, MovieList
 from services.movie_recommender import recommend_movie_genre
+from test.pick_user.pick_user import user
+from test.pick_user.get_movie import user_genre
+from test.pick_user.api_request import recommend
 
 router = APIRouter()
 
 @router.post("/recommend/movie", response_model=MovieList)
 def recommend_movie(data: BigFiveScore):
-    return recommend_movie_genre(data)
+    print(1)
+    print(type)
+    userid = user(data)
+    movie_genre = user_genre(userid)
+    movies = recommend(movie_genre)
+    return movies
     #
     # return {"movies": [
     #         {
