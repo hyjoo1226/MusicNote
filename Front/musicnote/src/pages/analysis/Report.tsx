@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { toJpeg } from "html-to-image";
-import * as htmlToImage from "html-to-image";
+import { domToJpeg } from "modern-screenshot";
 import UserTemperGraph from "../../components/UserTemperGraph";
 import ReportDetail from "../../features/analysis/ReportDetail";
 import NoteIcon from "../../assets/icon/note-icon.svg?react";
@@ -48,31 +47,33 @@ export default function Report() {
     if (!reportRef.current) return;
 
     try {
-      // Safari 브라우저 감지
-      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-      // 시도 횟수 (Safari는 2번, 나머지는 1번)
-      const trial = isSafari ? 2 : 1;
+      let tempDataUrl = "";
 
       // 리포트 내용을 이미지로 캡처
-      for (let i = 0; i < trial; i++) {
-        setDataUrl(
-          await toJpeg(reportRef.current, {
-            backgroundColor: "#19171b",
-            pixelRatio: 2,
-            preferredFontFormat: "woff2",
-            fontEmbedCSS: await htmlToImage.getFontEmbedCSS(reportRef.current),
-            style: {
-              transform: "scale(0.9)",
-              transformOrigin: "center center",
-              width: "100%",
-              height: "100%",
-            },
-          })
-        );
+      for (let i = 0; i < 2; i++) {
+        // 두 번째 시도일 경우 500ms 대기
+        if (i === 1) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+
+        tempDataUrl = await domToJpeg(reportRef.current, {
+          backgroundColor: "#19171b",
+          quality: 1,
+          scale: 3,
+          style: {
+            transform: "scale(0.9)",
+            transformOrigin: "center center",
+            width: "100%",
+            height: "100%",
+          },
+        });
       }
-      // base64 이미지를 Blob으로 변환
-      const response = await fetch(dataUrl);
+
+      // 모든 시도가 끝난 후 최종 결과물만 상태에 저장
+      setDataUrl(tempDataUrl);
+
+      // 여기서 공유 로직 진행
+      const response = await fetch(tempDataUrl);
       const blob = await response.blob();
 
       // File 객체 생성
