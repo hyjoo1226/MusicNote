@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toJpeg } from "html-to-image";
 import * as htmlToImage from "html-to-image";
@@ -10,7 +10,7 @@ import ShareIcon from "../../assets/icon/share-icon.svg?react";
 export default function Report() {
   const navigate = useNavigate();
   const reportRef = useRef<HTMLDivElement>(null);
-  const [fontCSS, setFontCSS] = useState<string>("");
+  const [dataUrl, setDataUrl] = useState<string>("");
 
   // top bar
   const handleBack = () => {
@@ -48,24 +48,29 @@ export default function Report() {
     if (!reportRef.current) return;
 
     try {
-      await document.fonts.ready;
+      // Safari 브라우저 감지
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-      const css = await htmlToImage.getFontEmbedCSS(reportRef.current);
-      setFontCSS(css);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // 시도 횟수 (Safari는 2번, 나머지는 1번)
+      const trial = isSafari ? 2 : 1;
 
-      const dataUrl = await toJpeg(reportRef.current, {
-        backgroundColor: "#19171b",
-        pixelRatio: 2,
-        fontEmbedCSS: fontCSS,
-        style: {
-          transform: "scale(0.9)",
-          transformOrigin: "center center",
-          width: "100%",
-          height: "100%",
-        },
-      });
-
+      // 리포트 내용을 이미지로 캡처
+      for (let i = 0; i < trial; i++) {
+        setDataUrl(
+          await toJpeg(reportRef.current, {
+            backgroundColor: "#19171b",
+            pixelRatio: 2,
+            preferredFontFormat: "woff2",
+            fontEmbedCSS: await htmlToImage.getFontEmbedCSS(reportRef.current),
+            style: {
+              transform: "scale(0.9)",
+              transformOrigin: "center center",
+              width: "100%",
+              height: "100%",
+            },
+          })
+        );
+      }
       // base64 이미지를 Blob으로 변환
       const response = await fetch(dataUrl);
       const blob = await response.blob();
@@ -87,22 +92,10 @@ export default function Report() {
         copyToClipboard(window.location.href);
       }
     } catch (error) {
-      console.error("이미지 생성 실패", error);
+      console.error("공유 실패:", error);
       copyToClipboard(window.location.href);
     }
   };
-
-  useEffect(() => {
-    // 컴포넌트 마운트 시 폰트 로딩 시작
-    const loadFonts = async () => {
-      if (reportRef.current) {
-        const css = await htmlToImage.getFontEmbedCSS(reportRef.current);
-        setFontCSS(css);
-      }
-    };
-
-    loadFonts();
-  }, []);
 
   // const [title, setTitle] = useState("일일");
 
