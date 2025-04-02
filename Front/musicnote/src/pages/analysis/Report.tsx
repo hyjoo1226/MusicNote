@@ -47,13 +47,12 @@ export default function Report() {
 
     try {
       let tempDataUrl = "";
+      let blob;
+      const MIN_SIZE = 1024; // 1MB in bytes
 
       // 리포트 내용을 이미지로 캡처
-      for (let i = 0; i < 2; i++) {
-        // 두 번째 시도일 경우 500ms 대기
-        if (i === 1) {
-          await new Promise((resolve) => setTimeout(resolve, 500));
-        }
+      do {
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         tempDataUrl = await domToJpeg(reportRef.current, {
           backgroundColor: "#19171b",
@@ -66,11 +65,12 @@ export default function Report() {
             height: "100%",
           },
         });
-      }
 
-      // 여기서 공유 로직 진행
-      const response = await fetch(tempDataUrl);
-      const blob = await response.blob();
+        // blob으로 변환하여 크기 체크
+        const response = await fetch(tempDataUrl);
+        blob = await response.blob();
+        console.log("Generated image size:", blob.size, "bytes");
+      } while (blob.size < MIN_SIZE);
 
       // File 객체 생성
       const file = new File([blob], "my-report.jpeg", { type: "image/jpeg" });
