@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toJpeg } from "html-to-image";
+import * as htmlToImage from "html-to-image";
 import UserTemperGraph from "../../components/UserTemperGraph";
 import ReportDetail from "../../features/analysis/ReportDetail";
 import NoteIcon from "../../assets/icon/note-icon.svg?react";
@@ -49,11 +50,14 @@ export default function Report() {
       // 리포트 내용을 이미지로 캡처
       const dataUrl = await toJpeg(reportRef.current, {
         backgroundColor: "#19171b",
-        quality: 1.0,
         pixelRatio: 2,
+        preferredFontFormat: "woff2",
+        fontEmbedCSS: await htmlToImage.getFontEmbedCSS(reportRef.current),
         style: {
           transform: "scale(0.9)",
           transformOrigin: "center center",
+          width: "100%",
+          height: "100%",
         },
       });
 
