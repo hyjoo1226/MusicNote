@@ -2,7 +2,7 @@
 import sys
 import os
 from fastapi import FastAPI
-from routers import bigfive_predict, movie_recommend
+from routers import bigfive_predict, movie_recommend, test
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,6 +15,7 @@ app = FastAPI(
 # 라우터 등록
 app.include_router(bigfive_predict.router)
 app.include_router(movie_recommend.router)
+app.include_router(test.router)
 
 @app.get("/")
 def root():
