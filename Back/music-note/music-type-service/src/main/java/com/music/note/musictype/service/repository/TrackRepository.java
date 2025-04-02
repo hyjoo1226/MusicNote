@@ -11,5 +11,7 @@ import com.music.note.trackdomain.domain.Track;
 public interface TrackRepository extends MongoRepository<Track, String> {
 	List<Track> findByTitleIn(List<String> musicList);
 
+	List<Track> findBySpotifyIdIn(List<String> spotifyIds);
+
 	Track findBySpotifyId(String spotifyId);
 }

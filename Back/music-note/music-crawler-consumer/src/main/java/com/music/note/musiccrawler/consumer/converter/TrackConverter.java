@@ -11,6 +11,7 @@ public class TrackConverter {
 			.spotifyId(musicDto.getSpotifyId())
 			.title(musicDto.getTitle())
 			.artist(musicDto.getArtist())
+			.imageUrl(musicDto.getImageUrl())
 			.audioFeatures(toAudioFeatures(trackDataResponse))
 			.build();
 	}

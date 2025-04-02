@@ -18,9 +18,8 @@ public class NotificationConsumer {
 
 	@KafkaListener(topics = "notification", groupId = "notification-group")
 	public void consumeTypeEvent(NotificationEvent event) {
-		log.info(">>> 알림 잔송 <<<"
-			+ "userId: {}"
-			+ "msg: {}", event.getUserId(), event.getMessage());
+		log.info(">>> 알림 잔송 <<<");
+		log.info("userId: {}, msg: {}", event.getUserId(), event.getMessage());
 		notificationService.sendNotification(event);
 	}
 }
