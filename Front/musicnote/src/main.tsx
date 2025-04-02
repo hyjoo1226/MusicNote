@@ -3,6 +3,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
+import { registerSW } from "./registerSW.ts";
+
+registerSW();
 
 const queryClient = new QueryClient({
   defaultOptions: {
