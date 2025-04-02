@@ -68,9 +68,6 @@ export default function Report() {
         });
       }
 
-      // 모든 시도가 끝난 후 최종 결과물만 상태에 저장
-      setDataUrl(tempDataUrl);
-
       // 여기서 공유 로직 진행
       const response = await fetch(tempDataUrl);
       const blob = await response.blob();
