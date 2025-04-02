@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.music.note.common.response.CommonResponse;
-import com.music.note.recommend.dto.response.ResponseMovieRecommendDto;
+import com.music.note.recommend.dto.movie.response.ResponseMovieRecommendDto;
+import com.music.note.recommend.dto.movie.response.ResponseRecommendMovieList;
 import com.music.note.recommend.service.RecommendMovieService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,10 +29,10 @@ public class RecommendController {
 		log.info("memberId: {}, Type: {}", memberId, memberId.getClass().getSimpleName());
 		return memberId;
 	}
-	// @PostMapping("/movie")
-	// public CommonResponse<ResponseMovieRecommendDto> recommendMovies(@AuthenticationPrincipal Long memberId) {
-	// 	ResponseMovieRecommendDto responseMovieRecommendDto = recommendMovieService.recommendMovies(memberId);
-	// 	return CommonResponse.success(responseMovieRecommendDto);
-	// }
+	@PostMapping("/movie")
+	public CommonResponse<ResponseRecommendMovieList> recommendMovies(@AuthenticationPrincipal Long memberId) {
+		ResponseRecommendMovieList responseMovieRecommendDto = recommendMovieService.recommendMovies(memberId);
+		return CommonResponse.success(responseMovieRecommendDto);
+	}
 
 }
