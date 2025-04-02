@@ -51,6 +51,20 @@ spring:
             - Path=/api/notifications/**
           filters:
             - RewritePath=/api/notifications/(?<segment>/.*)?, /${segment}
+
+        - id: type-service-route
+          uri: lb://type-service
+          predicates:
+            - Path=/api/type-service/actuator/health/**
+          filters:
+            - RewritePath=/api/type-service/(?<segment>/.*)?, /${segment}
+
+        - id: recommend-route
+          uri: lb://recommend-server
+          predicates:
+            - Path=/api/recommend/**
+          filters:
+            - RewritePath=/api/recommend/(?<segment>/.*)?, /${segment}
 eureka:
   client:
     register-with-eureka: true
