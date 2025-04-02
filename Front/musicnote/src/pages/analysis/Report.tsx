@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toJpeg } from "html-to-image";
 import * as htmlToImage from "html-to-image";
@@ -10,6 +10,7 @@ import ShareIcon from "../../assets/icon/share-icon.svg?react";
 export default function Report() {
   const navigate = useNavigate();
   const reportRef = useRef<HTMLDivElement>(null);
+  const [fontCSS, setFontCSS] = useState<string | null>(null);
 
   // top bar
   const handleBack = () => {
@@ -89,6 +90,16 @@ export default function Report() {
       copyToClipboard(window.location.href);
     }
   };
+
+  useEffect(() => {
+    // 페이지 로드 시 폰트 미리 로드
+    if (reportRef.current) {
+      htmlToImage.getFontEmbedCSS(reportRef.current).then((css) => {
+        // 폰트 CSS를 state에 저장
+        setFontCSS(css);
+      });
+    }
+  }, []);
 
   // const [title, setTitle] = useState("일일");
 
