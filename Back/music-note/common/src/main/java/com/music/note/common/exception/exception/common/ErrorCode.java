@@ -14,6 +14,11 @@ public enum ErrorCode {
 	EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "4005", "토큰이 만료됐습니다."),
 	NULL_REQUIRED_VALUE(HttpStatus.BAD_REQUEST, "4006", "필수 요청값이 비어있습니다."),
 	TOKEN_PARSING_ERROR(HttpStatus.BAD_REQUEST, "4007", "토큰 파싱 오류입니다."),
+	JWT_INVALID_SIGNATURE(HttpStatus.BAD_REQUEST, "4008", "JWT 시그니처 불일치오류입니다."),
+	JWT_EXPIRED_ERROR(HttpStatus.BAD_REQUEST, "4008", "JWT가 만료되었습니다."),
+	JWT_UNSUPPORTED_ERROR(HttpStatus.BAD_REQUEST, "4009", "지원되지 않는 JWT 토큰입니다."),
+	JWT_ILLEGAL_ERROR(HttpStatus.BAD_REQUEST, "4010", "JWT 형식이 적절하지 않습니다."),
+	JWT_EMPTY_ERROR(HttpStatus.BAD_REQUEST, "4011", "JWT 토큰이 비어있습니다."),
 
 	NO_AUTHORITY(HttpStatus.BAD_REQUEST, "4013", "권한이 없습니다."),
 
