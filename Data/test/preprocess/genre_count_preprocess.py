@@ -60,5 +60,6 @@ print(user_genre_dict)
 
 
 # user_genre_counts 딕셔너리를 JSON 파일로 저장
-with open("user_genre_counts.json", "w") as f:
+output_path = os.path.join(current_dir, "../dataset/user_genre_counts.json")
+with open(output_path, "w") as f:
     json.dump(user_genre_dict, f)
