@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { toJpeg } from "html-to-image";
 import UserTemperGraph from "../../components/UserTemperGraph";
 import ReportDetail from "../../features/analysis/ReportDetail";
 import NoteIcon from "../../assets/icon/note-icon.svg?react";
@@ -7,6 +8,7 @@ import ShareIcon from "../../assets/icon/share-icon.svg?react";
 
 export default function Report() {
   const navigate = useNavigate();
+  const reportRef = useRef<HTMLDivElement>(null);
 
   // top bar
   const handleBack = () => {
@@ -41,21 +43,43 @@ export default function Report() {
   };
   // 공유 아이콘 핸들러
   const handleShare = async () => {
-    const shareData = {
-      title: "일일 리포트",
-      text: "나의 성향 리포트를 확인해보세요!",
-      url: window.location.href,
-    };
+    if (!reportRef.current) return;
 
-    if (navigator.share) {
-      try {
+    try {
+      // 리포트 내용을 이미지로 캡처
+      const dataUrl = await toJpeg(reportRef.current, {
+        backgroundColor: "#19171b",
+        quality: 1.0,
+        pixelRatio: 2,
+        style: {
+          transform: "scale(0.9)",
+          transformOrigin: "center center",
+        },
+      });
+
+      // base64 이미지를 Blob으로 변환
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+
+      // File 객체 생성
+      const file = new File([blob], "my-report.jpeg", { type: "image/jpeg" });
+
+      const shareData = {
+        title: "일일 리포트",
+        text: "나의 성향 리포트를 확인해보세요!",
+        files: [file],
+      };
+
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
         await navigator.share(shareData);
         console.log("공유 성공");
-      } catch (error) {
-        console.error("공유 실패:", error);
+      } else {
+        // 파일 공유를 지원하지 않는 경우 URL 복사
+        copyToClipboard(window.location.href);
       }
-    } else {
-      copyToClipboard(shareData.url);
+    } catch (error) {
+      console.error("공유 실패:", error);
+      copyToClipboard(window.location.href);
     }
   };
 
@@ -93,8 +117,10 @@ export default function Report() {
         </div>
       </div>
       <div className="flex flex-col px-5 gap-y-5 justify-between pb-[82px]">
-        <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
-        <ReportDetail />
+        <div ref={reportRef} className="flex flex-col gap-y-5">
+          <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
+          <ReportDetail />
+        </div>
       </div>
       {isCopied && <span className="text-sm text-green-500">복사 완료!</span>}
     </div>

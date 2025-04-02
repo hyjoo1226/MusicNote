@@ -16,7 +16,6 @@ apiClient.interceptors.request.use(
     // authStore에서 상태와 함수 가져오기
     const authStore = useAuthStore.getState();
 
-    // 일반 토큰이 있으면 헤더에 추가 (expiresAt 체크 없이)
     if (authStore.accessToken) {
       config.headers.Authorization = `Bearer ${authStore.accessToken}`;
     }
