@@ -11,18 +11,21 @@ export default function Report() {
   const navigate = useNavigate();
   const reportRef = useRef<HTMLDivElement>(null);
   const [fontCSS, setFontCSS] = useState<string>("");
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   // top bar
   const handleBack = () => {
     navigate(-1);
   };
+
   // 음악 리스트 아이콘 핸들러
   const handleMusicListClick = () => {
     navigate("/musiclist/리포트에-사용된-음악");
   };
-  // web share API
-  // 지원 안하는 브라우저의 경우 클립보드 복사
-  const [isCopied, setIsCopied] = useState(false);
+
+  // 클립보드 복사 함수
   const copyToClipboard = async (text: string) => {
     try {
       if (navigator.clipboard) {
@@ -33,34 +36,63 @@ export default function Report() {
         textArea.value = text;
         document.body.appendChild(textArea);
         textArea.select();
+        document.execCommand("copy");
         document.body.removeChild(textArea);
       }
-      // alert("링크가 복사되었습니다");
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (error) {
       console.error("클립보드 복사 실패:", error);
-      // alert("링크 복사에 실패했습니다");
     }
   };
+
+  // 폰트 로딩 함수
+  const loadFonts = async () => {
+    if (!reportRef.current) return "";
+
+    try {
+      const css = await htmlToImage.getFontEmbedCSS(reportRef.current);
+      return css;
+    } catch (error) {
+      console.error("폰트 로딩 실패:", error);
+      return "";
+    }
+  };
+
+  // 컴포넌트 마운트 시 폰트 로딩
+  useEffect(() => {
+    const initFonts = async () => {
+      const css = await loadFonts();
+      setFontCSS(css);
+      setFontsLoaded(true);
+    };
+
+    initFonts();
+  }, []);
+
   // 공유 아이콘 핸들러
   const handleShare = async () => {
     if (!reportRef.current) return;
 
-    try {
-      // 폰트 로딩이 안 됐으면 다시 로드
-      if (!fontCSS) {
-        setFontCSS(await htmlToImage.getFontEmbedCSS(reportRef.current));
-      }
+    setIsSharing(true);
 
-      // 폰트 로딩 완료 기다리기
-      await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      // 폰트가 아직 로드되지 않았다면 로드
+      let embeddedFontCSS = fontCSS;
+      if (!fontsLoaded) {
+        embeddedFontCSS = await loadFonts();
+        setFontCSS(embeddedFontCSS);
+        setFontsLoaded(true);
+
+        // 폰트 로딩 후 약간의 시간을 줌
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
 
       const dataUrl = await toJpeg(reportRef.current, {
         backgroundColor: "#19171b",
         pixelRatio: 2,
         preferredFontFormat: "woff2",
-        fontEmbedCSS: fontCSS,
+        fontEmbedCSS: embeddedFontCSS,
         style: {
           transform: "scale(0.9)",
           transformOrigin: "center center",
@@ -92,22 +124,10 @@ export default function Report() {
     } catch (error) {
       console.error("이미지 생성 실패", error);
       copyToClipboard(window.location.href);
+    } finally {
+      setIsSharing(false);
     }
   };
-
-  useEffect(() => {
-    // 컴포넌트 마운트 시 폰트 로딩 시작
-    const loadFonts = async () => {
-      if (reportRef.current) {
-        const css = await htmlToImage.getFontEmbedCSS(reportRef.current);
-        setFontCSS(css);
-      }
-    };
-
-    loadFonts();
-  }, []);
-
-  // const [title, setTitle] = useState("일일");
 
   return (
     <div className="text-white w-full h-[calc(100vh-80px)]">
@@ -147,6 +167,7 @@ export default function Report() {
         </div>
       </div>
       {isCopied && <span className="text-sm text-green-500">복사 완료!</span>}
+      {isSharing && <span className="text-sm text-blue-500">이미지 생성 중...</span>}
     </div>
   );
 }
