@@ -47,12 +47,15 @@ export default function Report() {
     if (!reportRef.current) return;
 
     try {
-      // 리포트 내용을 이미지로 캡처
+      // 폰트 로딩 확인
+      const fontCSS = await htmlToImage.getFontEmbedCSS(reportRef.current);
+
+      // 로딩 완료 후 이미지 변환
       const dataUrl = await toJpeg(reportRef.current, {
         backgroundColor: "#19171b",
         pixelRatio: 2,
         preferredFontFormat: "woff2",
-        fontEmbedCSS: await htmlToImage.getFontEmbedCSS(reportRef.current),
+        fontEmbedCSS: fontCSS,
         style: {
           transform: "scale(0.9)",
           transformOrigin: "center center",
@@ -82,7 +85,7 @@ export default function Report() {
         copyToClipboard(window.location.href);
       }
     } catch (error) {
-      console.error("공유 실패:", error);
+      console.error("이미지 생성 실패", error);
       copyToClipboard(window.location.href);
     }
   };
