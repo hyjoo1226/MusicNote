@@ -9,7 +9,6 @@ import ShareIcon from "../../assets/icon/share-icon.svg?react";
 export default function Report() {
   const navigate = useNavigate();
   const reportRef = useRef<HTMLDivElement>(null);
-  const [dataUrl, setDataUrl] = useState<string>("");
 
   // top bar
   const handleBack = () => {
