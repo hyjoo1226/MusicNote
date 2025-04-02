@@ -53,7 +53,7 @@ export default function MyRecommendation() {
           {movies.length > 0 && (
             <span
               className="text-light-gray text-sm xs:text-base cursor-pointer"
-              onClick={() => navigate("/my-recommendation/movie")}
+              onClick={() => navigate("/recommendations/my/movie")}
             >
               전체보기
             </span>
@@ -90,7 +90,7 @@ export default function MyRecommendation() {
               </span>
               <button
                 className="bg-main w-auto text-white text-sm xs:text-base sm:text-sm md:text-base mx-2 px-2 py-1 rounded-xl"
-                onClick={() => navigate("/recommendations/영화")}
+                onClick={() => navigate("/recommendations/detail/movie")}
               >
                 영화 추천
                 <br />
@@ -107,7 +107,7 @@ export default function MyRecommendation() {
           {recentPlayedList.items.length > 0 && (
             <span
               className="text-light-gray text-sm xs:text-base cursor-pointer"
-              onClick={() => navigate("/my-recommendation/music")}
+              onClick={() => navigate("/recommendations/my/music")}
             >
               전체보기
             </span>
@@ -155,7 +155,7 @@ export default function MyRecommendation() {
               </span>
               <button
                 className="bg-main w-auto text-white text-sm xs:text-base sm:text-sm md:text-base mx-2 px-2 py-1 rounded-xl"
-                onClick={() => navigate("/recommendations/음악")}
+                onClick={() => navigate("/recommendations/detail/music")}
               >
                 음악 추천
                 <br />

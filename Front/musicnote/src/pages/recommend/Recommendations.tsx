@@ -88,7 +88,7 @@ export default function Recommendations() {
         <div className="flex justify-end my-3 mr-3 gap-x-5 items-center">
           <div
             className="flex flex-col justify-center items-center text-center"
-            onClick={() => navigate("/my-recommendation")}
+            onClick={() => navigate("/recommendations/my")}
           >
             <svg
               width="30"
@@ -152,7 +152,7 @@ export default function Recommendations() {
         {renderContent()}
         <button
           className="bg-main w-[200px] text-white text-xl font-bold p-2 rounded-full"
-          onClick={() => navigate(`/recommendations/${selectedDomain}`)}
+          onClick={() => navigate(`/recommendations/detail/${selectedDomain}`)}
         >
           {selectedDomain} 추천 더보기
         </button>
