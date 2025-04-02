@@ -1,6 +1,5 @@
-#  포트 랜덤 -> 수정 필
 server:
-  port: 8890
+  port: 0
 
 spring:
   application:
@@ -25,3 +24,9 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
