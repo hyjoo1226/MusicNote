@@ -1,6 +1,7 @@
 # utils/report_generator.py
 
 from modelschemas.request_response import BigFiveScore, Report
+from utils.recommender.job_recommender import JobRecommender
 
 top_score_text = {
     "openness": "새로움과 창의성을 즐기며 예술적 감수성이 풍부한 편입니다.",
@@ -18,7 +19,14 @@ low_score_text = {
     "neuroticism": "감정적으로 안정되어 있으며 스트레스 상황에서도 침착함을 유지합니다."
 }
 
-def daily_report(data: BigFiveScore):
+# ✅ JobRecommender는 전역에서 재사용
+recommender = JobRecommender()
+
+
+def generate_personality_report(data: BigFiveScore) -> Report:
+    """
+    성격 점수 기반 종합 리포트 생성 함수 (추천 키워드 포함)
+    """
     data_dict = data.dict()
     top_score = max(data_dict, key=data_dict.get)
     low_score = min(data_dict, key=data_dict.get)
@@ -26,10 +34,39 @@ def daily_report(data: BigFiveScore):
     top_text = top_score_text[top_score]
     low_text = low_score_text[low_score]
 
-    summary = f"{top_text} 반면, {low_text} 따라서 전체적으로 {top_score} 성향이 두드러지며, {low_score} 성향은 낮은 편으로 보입니다."
+    # ✅ 추천 키워드 삽입
+    user_scores = [
+        data.openness,
+        data.conscientiousness,
+        data.extraversion,
+        data.agreeableness,
+        1 - data.neuroticism  # stability 계산
+    ]
+    keywords = recommender.get_keywords_from_bigfive(user_scores)
+    keyword_text = ""
+    if keywords:
+        top_keywords = ", ".join(keywords[:5])
+        keyword_text = f"추천된 관심 키워드는 '{top_keywords}' 등이 있으며, 이러한 주제와 관련된 콘텐츠 탐색을 권장합니다."
 
-    return Report(top_score=top_score,
-                  top_text=top_text,
-                  low_score=low_score,
-                  low_text=low_text,
-                  summary=summary)
+    return Report(
+        top_score=top_score,
+        top_text=top_text,
+        low_score=low_score,
+        low_text=low_text,
+        summary=keyword_text
+    )
+
+if __name__ == "__main__":
+    from modelschemas.request_response import BigFiveScore
+
+    sample_score = BigFiveScore(
+        openness=0.68,
+        conscientiousness=0.58,
+        extraversion=0.42,
+        agreeableness=0.53,
+        neuroticism=0.74
+    )
+
+    report = generate_personality_report(sample_score)
+    print(report.summary)
+

@@ -6,7 +6,7 @@ from services.movie_recommender import recommend_movie_genre
 
 router = APIRouter()
 
-@router.post("/recommend/movie", response_model=MovieList)
+@router.post("/movie", response_model=MovieList)
 def recommend_movie(data: BigFiveScore):
     return recommend_movie_genre(data)
     #

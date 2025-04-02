@@ -1,6 +1,6 @@
 # modelschemas/request_response.py
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 from datetime import date
 
 # 공통 요청 모델
@@ -14,6 +14,14 @@ class AudioFeatures(BaseModel):
     energy: float
     loudness: float
     danceability: float
+
+class Music(BaseModel):
+    id: int
+    track_name: str
+    artist_name: str
+    albumcover_path: str
+    release_date: date
+    popularity: int
 
 class MusicScore(BaseModel):
     mellow: float
@@ -52,6 +60,9 @@ class Movie(BaseModel):
     vote_average: float
     vote_count: int
 
+class MusicList(BaseModel):
+    musics: List[Music]
+
 class MovieList(BaseModel):
     movies: List[Movie]
 
@@ -67,3 +78,17 @@ class DailyReport(BaseModel):
     agreeableness: float
     neuroticism: float
     report: Report
+
+class KeywordList(BaseModel):
+    keywords: List[str]
+
+class BookItem(BaseModel):
+    title: str
+    author: str
+    description: Optional[str]
+    isbn: Optional[str]
+    link: str
+    keyword: str
+
+class BookList(BaseModel):
+    results: List[BookItem]
