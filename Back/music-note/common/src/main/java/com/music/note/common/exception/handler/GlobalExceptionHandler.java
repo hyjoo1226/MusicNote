@@ -9,6 +9,7 @@ import com.music.note.common.exception.exception.domain.auth.ExternalApiExceptio
 import com.music.note.common.exception.exception.domain.auth.SocialLoginException;
 import com.music.note.common.exception.exception.domain.auth.TokenParsingException;
 import com.music.note.common.exception.exception.common.ErrorCode;
+import com.music.note.common.exception.exception.domain.jwt.JwtTokenException;
 import com.music.note.common.exception.response.ErrorResponse;
 
 @ControllerAdvice
@@ -50,6 +51,20 @@ public class GlobalExceptionHandler {
 	}
 	@ExceptionHandler(SocialLoginException.class)
 	public ResponseEntity<ErrorResponse> handleSocialLoginException(SocialLoginException ex) {
+
+		ErrorCode errorCode = ex.getErrorCode();
+
+		return ResponseEntity
+			.status(errorCode.getStatus())
+			.body(ErrorResponse.of(
+				errorCode.getMessage(),
+				errorCode.getStatus(),
+				errorCode.getCode()
+			));
+	}
+
+	@ExceptionHandler(JwtTokenException.class)
+	public ResponseEntity<ErrorResponse> handleSocialLoginException(JwtTokenException ex) {
 
 		ErrorCode errorCode = ex.getErrorCode();
 

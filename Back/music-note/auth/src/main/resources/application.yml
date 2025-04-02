@@ -24,7 +24,7 @@ spotify:
   client-secret: ecec3a3c3e1144f4bc3f055c06c2928e
   user-info-uri: https://api.spotify.com/v1/me
   local-redirect-url: http://localhost:5173/callback
-  redirect-url: j12a308.p.ssafy.io/callback
+  redirect-url: https://j12a308.p.ssafy.io/callback
 
 eureka:
   client:
