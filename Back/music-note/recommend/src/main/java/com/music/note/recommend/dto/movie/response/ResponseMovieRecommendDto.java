@@ -1,4 +1,4 @@
-package com.music.note.recommend.dto.response;
+package com.music.note.recommend.dto.movie.response;
 
 import java.util.ArrayList;
 import java.util.List;
