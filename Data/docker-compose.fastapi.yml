@@ -4,6 +4,12 @@ services:
   fastapi-server:
     image: ysh933/fastapi-server:latest
     container_name: fastapi-server
+    networks:
+      - music-network
     ports:
       - "8100:8100"
     restart: always
+
+networks:
+  music-network:
+    external: true
