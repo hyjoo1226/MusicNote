@@ -48,7 +48,14 @@ export default function Report() {
     if (!reportRef.current) return;
 
     try {
-      // 로딩 완료 후 이미지 변환
+      // 폰트 로딩이 안 됐으면 다시 로드
+      if (!fontCSS) {
+        setFontCSS(await htmlToImage.getFontEmbedCSS(reportRef.current));
+      }
+
+      // 폰트 로딩 완료 기다리기
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const dataUrl = await toJpeg(reportRef.current, {
         backgroundColor: "#19171b",
         pixelRatio: 2,
@@ -89,13 +96,15 @@ export default function Report() {
   };
 
   useEffect(() => {
-    // 페이지 로드 시 폰트 미리 로드
-    if (reportRef.current) {
-      htmlToImage.getFontEmbedCSS(reportRef.current).then((css) => {
-        // 폰트 CSS를 state에 저장
+    // 컴포넌트 마운트 시 폰트 로딩 시작
+    const loadFonts = async () => {
+      if (reportRef.current) {
+        const css = await htmlToImage.getFontEmbedCSS(reportRef.current);
         setFontCSS(css);
-      });
-    }
+      }
+    };
+
+    loadFonts();
   }, []);
 
   // const [title, setTitle] = useState("일일");
