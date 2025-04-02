@@ -89,7 +89,7 @@ export default function RecommandModal({ movie, onClose }: { movie: Movie; onClo
           <div className="grid grid-cols-2">
             <div className="w-full h-auto">
               <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
                 alt={movie.title}
                 className="max-h-[500px] w-auto rounded-lg object-cover"
               />
@@ -133,7 +133,7 @@ export default function RecommandModal({ movie, onClose }: { movie: Movie; onClo
             </div>
           </div>
           <div className="flex flex-col w-full items-start justify-center">
-            <span className="flex text-white text-sm xs:text-base font-light break-keep leading-8">
+            <span className="flex text-white text-sm xs:text-base font-light break-keep leading-8 pb-5 sm:pb-0">
               {movie.overview.replace(".", ".\n")}
             </span>
           </div>

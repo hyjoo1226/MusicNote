@@ -1,6 +1,6 @@
 import TopBar from "@/components/layout/TopBar";
 import genreData from "@/assets/data/tmdb-genre-id.json";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import EmptyHeart from "@/assets/icon/empty-heart.svg?react";
 import FilledHeart from "@/assets/icon/filled-heart.svg?react";
@@ -27,6 +27,16 @@ export default function MyRecommendationDetail() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { domain } = useParams();
+  const navigate = useNavigate();
+
+  const domainMap = {
+    movie: "영화",
+    music: "음악",
+  };
+
+  if (!domainMap[domain as keyof typeof domainMap]) {
+    navigate("/recommendations/my");
+  }
 
   const genreMap = new Map(genreData.genres.map((genre: Genre) => [genre.id, genre.name]));
   const getGenreNames = (genreIds: number[]) => {
@@ -76,7 +86,7 @@ export default function MyRecommendationDetail() {
 
   return (
     <div className="text-white w-full min-h-screen">
-      <TopBar title={`${domain} 추천`} />
+      <TopBar title={`${domainMap[domain as keyof typeof domainMap]} 추천 보관함`} />
       <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-2 pb-0 mx-3 xs:mx-5 border border-solid border-border min-h-[calc(100vh-120px)] overflow-y-auto">
         {movies.map((movie: Movie, index: number) => (
           <div
@@ -89,7 +99,7 @@ export default function MyRecommendationDetail() {
               style={{ cursor: "pointer" }}
             >
               <img
-                src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                 alt={movie.title}
                 className="w-[60px] h-[60px] flex-shrink-0 rounded-lg object-cover"
               />

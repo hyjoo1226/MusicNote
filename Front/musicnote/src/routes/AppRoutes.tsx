@@ -25,9 +25,9 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/discover/choice-music-analysis" element={<ChoiceMusicAnalysis />} />
       <Route path="/discover/line-chart" element={<LineChart />} />
       <Route path="/recommendations" element={<Recommendations />} />
-      <Route path="/recommendations/:domain" element={<RecommendationDetail />} />
-      <Route path="/my-recommendation" element={<MyRecommendation />} />
-      <Route path="/my-recommendation/:domain" element={<MyRecommendationDetail />} />
+      <Route path="/recommendations/detail/:domain" element={<RecommendationDetail />} />
+      <Route path="/recommendations/my" element={<MyRecommendation />} />
+      <Route path="/recommendations/my/:domain" element={<MyRecommendationDetail />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

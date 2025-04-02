@@ -15,8 +15,8 @@ export default function NavBar() {
   const patternHiddenPaths = [
     "/musiclist",
     "/recommendationlist",
-    "/my-recommendation",
-    "/recommendations",
+    "/recommendations/detail",
+    "/recommendations/my",
   ];
 
   // NotFound 페이지
