@@ -23,11 +23,11 @@ class TrackRepositoryTest {
 	void findByTitleInTest() {
 		trackRepository.deleteAll();
 		trackRepository.saveAll(List.of(
-			new Track(null, "1A2B3C4D5E", "music1", "Luna Waves",
+			new Track(null, "1A2B3C4D5E", "music1", "Luna Waves", "https://example.com/image1.jpg",
 				new AudioFeatures(0.75, 0.15, 0.60, 0.05, 0.12, 120.0, 0.80, -5.2, 0.78)),
-			new Track(null, "1A2B3C4D5F", "music2", "Luna Waves",
+			new Track(null, "1A2B3C4D5F", "music2", "Luna Waves", "https://example.com/image2.jpg",
 				new AudioFeatures(0.70, 0.10, 0.55, 0.04, 0.10, 115.0, 0.75, -6.0, 0.74)),
-			new Track(null, "1A2B3C4D5G", "music3", "Luna Waves",
+			new Track(null, "1A2B3C4D5G", "music3", "Luna Waves", "https://example.com/image3.jpg",
 				new AudioFeatures(0.65, 0.20, 0.50, 0.06, 0.15, 110.0, 0.70, -5.8, 0.72))
 		));
 
