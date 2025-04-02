@@ -20,6 +20,9 @@ public enum ErrorCode {
 	JWT_ILLEGAL_ERROR(HttpStatus.BAD_REQUEST, "4010", "JWT 형식이 적절하지 않습니다."),
 	JWT_EMPTY_ERROR(HttpStatus.BAD_REQUEST, "4011", "JWT 토큰이 비어있습니다."),
 
+	NOT_ENOUGH_MUSIC(HttpStatus.BAD_REQUEST, "4008", "분석 할 음악이 부족합니다."),
+	SPOTIFY_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "4009", "Spotify 토큰이 만료되었거나 유효하지 않습니다."),
+
 	NO_AUTHORITY(HttpStatus.BAD_REQUEST, "4013", "권한이 없습니다."),
 
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5001", "서버 에러가 발생했습니다."),

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 
+import com.music.note.common.exception.exception.common.ErrorCode;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +21,15 @@ public class ErrorResponse {
 	private String code;
 	private LocalDateTime timestamp;
 
-	// ✅ 기본 에러 응답 생성 (코드 지정)
+	public static ErrorResponse of(ErrorCode errorCode) {
+		return ErrorResponse.builder()
+			.message(errorCode.getMessage())
+			.httpStatus(errorCode.getStatus())
+			.code(errorCode.getCode())
+			.timestamp(LocalDateTime.now())
+			.build();
+	}
+
 	public static ErrorResponse of(String message, HttpStatus status, String code) {
 		return ErrorResponse.builder()
 			.message(message)

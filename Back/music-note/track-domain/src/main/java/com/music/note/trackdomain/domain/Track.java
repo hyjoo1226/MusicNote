@@ -24,6 +24,7 @@ public class Track {
 
 	private String title;
 	private String artist;
+	private String imageUrl;
 
 	private AudioFeatures audioFeatures;
 

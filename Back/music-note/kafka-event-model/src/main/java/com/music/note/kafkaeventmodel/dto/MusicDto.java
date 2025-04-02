@@ -13,5 +13,6 @@ public class MusicDto {
 	private String spotifyId;
 	private String title;
 	private String artist;
+	private String imageUrl;
 	private AudioFeaturesDto audioFeatures;
 }

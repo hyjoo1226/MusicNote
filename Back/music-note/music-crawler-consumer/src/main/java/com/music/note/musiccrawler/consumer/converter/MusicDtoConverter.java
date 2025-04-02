@@ -31,6 +31,7 @@ public class MusicDtoConverter {
 			.spotifyId(musicDto.getSpotifyId())
 			.title(musicDto.getTitle())
 			.artist(musicDto.getArtist())
+			.imageUrl(musicDto.getImageUrl())
 			.audioFeatures(audioFeaturesDto)
 			.build();
 	}

@@ -61,22 +61,37 @@ public class TrackService {
 	}
 
 	public List<MusicDto> filterTracksByExistence(List<MusicDto> musicList, TrackFilterType filterType) {
-		Set<String> foundTitles = trackRepository.findByTitleIn(
-				musicList.stream()
-					.map(MusicDto::getTitle)
-					.toList()
+		Set<String> existingIds = trackRepository.findBySpotifyIdIn(
+				musicList.stream().map(MusicDto::getSpotifyId).toList()
 			).stream()
-			.map(Track::getTitle)
+			.map(Track::getSpotifyId)
 			.collect(Collectors.toSet());
 
 		return musicList.stream()
 			.filter(music -> {
-				boolean exists = foundTitles.contains(music.getTitle());
+				boolean exists = existingIds.contains(music.getSpotifyId());
 				return switch (filterType) {
 					case EXISTING -> exists;
 					case MISSING -> !exists;
 				};
 			})
 			.toList();
+		// Set<String> foundTitles = trackRepository.findByTitleIn(
+		// 		musicList.stream()
+		// 			.map(MusicDto::getTitle)
+		// 			.toList()
+		// 	).stream()
+		// 	.map(Track::getTitle)
+		// 	.collect(Collectors.toSet());
+		//
+		// return musicList.stream()
+		// 	.filter(music -> {
+		// 		boolean exists = foundTitles.contains(music.getTitle());
+		// 		return switch (filterType) {
+		// 			case EXISTING -> exists;
+		// 			case MISSING -> !exists;
+		// 		};
+		// 	})
+		// 	.toList();
 	}
 }
