@@ -31,7 +31,7 @@ export default defineConfig({
         short_name: "MusicNote",
         description: "당신이 듣는 음악이 당신을 말한다.",
         theme_color: "#19171b",
-        background_color: "#FFFFFF",
+        background_color: "#19171b",
         display: "standalone",
         start_url: "/",
         icons: [
