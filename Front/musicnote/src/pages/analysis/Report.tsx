@@ -10,7 +10,7 @@ import ShareIcon from "../../assets/icon/share-icon.svg?react";
 export default function Report() {
   const navigate = useNavigate();
   const reportRef = useRef<HTMLDivElement>(null);
-  const [fontCSS, setFontCSS] = useState<string | null>(null);
+  const [fontCSS, setFontCSS] = useState<string>("");
 
   // top bar
   const handleBack = () => {
@@ -48,9 +48,6 @@ export default function Report() {
     if (!reportRef.current) return;
 
     try {
-      // 폰트 로딩 확인
-      const fontCSS = await htmlToImage.getFontEmbedCSS(reportRef.current);
-
       // 로딩 완료 후 이미지 변환
       const dataUrl = await toJpeg(reportRef.current, {
         backgroundColor: "#19171b",
