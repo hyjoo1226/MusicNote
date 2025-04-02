@@ -48,7 +48,7 @@ export default function Report() {
     try {
       let tempDataUrl = "";
       let blob;
-      const MIN_SIZE = 1024; // 1MB in bytes
+      const MIN_SIZE = 1024 * 400; // 400KB in bytes
 
       // 리포트 내용을 이미지로 캡처
       do {
