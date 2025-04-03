@@ -40,7 +40,7 @@ export default function LineTrend() {
     updateLineWidth();
     window.addEventListener("resize", updateLineWidth);
     return () => window.removeEventListener("resize", updateLineWidth);
-  }, [window.innerWidth]);
+  }, []);
 
   const lineData: LineDataType[] = [
     { id: 1, name: "개방성", values: [65, 59, 80, 81, 56, 55, 40], color: traitColors["개방성"] },
@@ -55,10 +55,10 @@ export default function LineTrend() {
   // 두 번째 줄에 표시할 항목들 (우호성, 신경성)
   const secondRowItems = lineData.filter((line) => line.id > 3);
 
-  const height = 400;
-  const padding = 40;
+  const height = useRef(window.innerHeight * 0.4);
+  const padding = 20;
   const lineContentWidth = lineWidth - padding * 2;
-  const lineHeight = height - padding * 2;
+  const lineHeight = height.current - padding * 2;
 
   const xPoints = lineData[0].values.map(
     (_, i) => padding + i * (lineContentWidth / (lineData[0].values.length - 1))
@@ -114,36 +114,37 @@ export default function LineTrend() {
     <div className="flex flex-col w-full h-full items-center text-white">
       <TopBar title="성향 트렌드" />
       <div
-        className="flex flex-col min-w-[300px] w-[calc(100vw-20px)] xs:w-[calc(100vw-40px)] max-w-[560px] items-center p-2 bg-level2 line-container rounded-lg"
+        className="flex flex-col min-w-[300px] w-[calc(100vw-20px)] xs:w-[calc(100vw-40px)] h-[calc(100vh-200px)] max-w-[560px] items-center p-2 bg-level2 line-container rounded-lg justify-evenly"
         ref={lineContainerRef}
       >
-        <p className="pt-5 mb-4 text-center text-light-gray">
-          성향을 클릭하면 자세한 점수를
-          <br />
-          확인할 수 있습니다.
-        </p>
+        <div className="">
+          <p className="pt-5 mb-4 text-center text-light-gray">
+            성향을 클릭하면 자세한 점수를
+            <br />
+            확인할 수 있습니다.
+          </p>
 
-        {/* 범례 */}
-        {isSmallScreen ? (
-          // 작은 화면에서 두 줄로 표시
-          <div className="line-legend flex flex-col gap-2 items-center">
-            <div className="flex flex-wrap gap-4 justify-center items-center">
-              {firstRowItems.map(renderLegendItem)}
+          {/* 범례 */}
+          {isSmallScreen ? (
+            // 작은 화면에서 두 줄로 표시
+            <div className="line-legend flex flex-col gap-2 items-center">
+              <div className="flex flex-wrap gap-4 justify-center items-center">
+                {firstRowItems.map(renderLegendItem)}
+              </div>
+              <div className="flex flex-wrap gap-4 justify-center items-center">
+                {secondRowItems.map(renderLegendItem)}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-4 justify-center items-center">
-              {secondRowItems.map(renderLegendItem)}
+          ) : (
+            // 큰 화면에서 한 줄로 표시
+            <div className="line-legend flex flex-wrap gap-4 justify-center items-center">
+              {lineData.map(renderLegendItem)}
             </div>
-          </div>
-        ) : (
-          // 큰 화면에서 한 줄로 표시
-          <div className="line-legend flex flex-wrap gap-4 justify-center items-center">
-            {lineData.map(renderLegendItem)}
-          </div>
-        )}
-
+          )}
+        </div>
         {/* 그래프 */}
         <div className="svg-container mt-6">
-          <svg width={lineWidth} height={height}>
+          <svg width={lineWidth} height={height.current}>
             {[0, 25, 50, 75, 100].map((tick) => (
               <line
                 key={tick}
