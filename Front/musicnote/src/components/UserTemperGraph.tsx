@@ -18,8 +18,8 @@ export default function UserTemperGraph({ scores }: { scores: number[] }) {
 
   useEffect(() => {
     // 점수가 0에서 목표값까지 천천히 차오르는 애니메이션 효과
-    const animationDuration = 1200; // 애니메이션 총 시간 (ms)
-    const steps = 60; // 총 스텝 수
+    const animationDuration = 1000; // 애니메이션 총 시간 (ms)
+    const steps = 100; // 총 스텝 수
     const stepDuration = animationDuration / steps; // 각 스텝당 시간
 
     let currentStep = 0;
