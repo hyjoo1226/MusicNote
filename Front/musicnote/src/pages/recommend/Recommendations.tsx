@@ -106,7 +106,7 @@ export default function Recommendations() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span className="text-white text-xs font-bold rounded-full">보관함</span>
+            <span className="text-white text-xs pt-[2px] rounded-full">보관함</span>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function Recommendations() {
             onClick={() => setSelectedDomain("영화")}
           >
             <span className="text-xl xs:text-2xl">🎬</span>
-            <span className="text-white font-bold text-base">영화</span>
+            <span className="text-white  text-base">영화</span>
           </div>
 
           <div
@@ -134,7 +134,7 @@ export default function Recommendations() {
             onClick={() => setSelectedDomain("음악")}
           >
             <span className="text-light-gray text-xl xs:text-2xl">♬</span>
-            <span className="text-white font-bold text-base">음악</span>
+            <span className="text-white  text-base">음악</span>
           </div>
 
           <div
@@ -144,14 +144,14 @@ export default function Recommendations() {
             onClick={() => setSelectedDomain("활동")}
           >
             <span className="text-xl xs:text-2xl">🎮</span>
-            <span className="text-white font-bold text-base">활동</span>
+            <span className="text-white  text-base">활동</span>
           </div>
         </div>
       </div>
       <div className="w-full bg-level2 flex flex-col p-2 justify-evenly items-center rounded-b-lg h-[calc(100vh-260px)]">
         {renderContent()}
         <button
-          className="bg-main w-[200px] text-white text-xl font-bold p-2 rounded-full"
+          className="bg-main w-[200px] text-white text-xl p-2 pt-3  rounded-xl"
           onClick={() => navigate(`/recommendations/detail/${selectedDomain}`)}
         >
           {selectedDomain} 추천 더보기

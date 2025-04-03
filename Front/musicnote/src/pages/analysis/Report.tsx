@@ -98,7 +98,7 @@ export default function Report() {
 
   return (
     <div className="text-white w-full h-[calc(100vh-80px)]">
-      <div className="flex flex-row mx-2 xs:mx-5 my-5 rounded-2xl px-3 py-1 items-center justify-center w-[calc(100%-20px)] xs:w-[calc(100%-40px)] h-[60px] bg-level2">
+      <div className="flex flex-row mx-[10px] xs:mx-5 my-5 rounded-2xl px-3 py-1 items-center justify-center w-[calc(100%-20px)] xs:w-[calc(100%-40px)] h-[60px] bg-level2">
         <div className="relative flex items-center justify-center w-full h-full">
           <div
             className="absolute left-0 cursor-pointer xs:w-12 xs:h-12 w-10 h-10 flex items-center justify-center"
@@ -127,7 +127,7 @@ export default function Report() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col px-5 gap-y-5 justify-between pb-[82px]">
+      <div className="flex flex-col px-[10px] xs:px-5 gap-y-5 justify-between pb-[82px]">
         <div ref={reportRef} className="flex flex-col gap-y-5">
           <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
           <ReportDetail />

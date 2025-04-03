@@ -33,14 +33,14 @@ export default function LineTrend() {
         setLineWidth(newWidth);
 
         // 화면 너비가 430px 이하인지 체크
-        setIsSmallScreen(window.innerWidth <= 430);
+        setIsSmallScreen(window.innerWidth <= 442);
       }
     };
 
     updateLineWidth();
     window.addEventListener("resize", updateLineWidth);
     return () => window.removeEventListener("resize", updateLineWidth);
-  }, []);
+  }, [window.innerWidth]);
 
   const lineData: LineDataType[] = [
     { id: 1, name: "개방성", values: [65, 59, 80, 81, 56, 55, 40], color: traitColors["개방성"] },
@@ -114,11 +114,13 @@ export default function LineTrend() {
     <div className="flex flex-col w-full h-full items-center text-white">
       <TopBar title="성향 트렌드" />
       <div
-        className="flex flex-col w-[calc(100vw-40px)] max-w-[560px] items-center p-2 bg-level2 line-container rounded-lg"
+        className="flex flex-col min-w-[300px] w-[calc(100vw-20px)] xs:w-[calc(100vw-40px)] max-w-[560px] items-center p-2 bg-level2 line-container rounded-lg"
         ref={lineContainerRef}
       >
         <p className="pt-5 mb-4 text-center text-light-gray">
-          성향을 클릭하면 자세한 점수를 확인할 수 있습니다.
+          성향을 클릭하면 자세한 점수를
+          <br />
+          확인할 수 있습니다.
         </p>
 
         {/* 범례 */}

@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import ChoiceMusicImage from "../../assets/img/choice-music-img.png";
+import ChoiceMusicImage from "../../assets/img/choice-music-img2.png";
 import LineChartImage from "../../assets/img/line-chart-img.png";
 
 export default function DiscoverCarousel() {

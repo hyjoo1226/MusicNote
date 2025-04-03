@@ -9,7 +9,7 @@ export default function MusicList() {
   return (
     <div className="text-white w-full h-full">
       <TopBar title={title || "Unknown Title"} />
-      <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-4 mx-3 xs:mx-5 border border-solid border-border">
+      <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-4 mx-[10px] xs:mx-5 border border-solid border-border">
         {recentPlayedList.items.map((item, index) => (
           <div
             key={index}

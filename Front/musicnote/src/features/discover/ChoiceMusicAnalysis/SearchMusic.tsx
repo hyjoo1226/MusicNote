@@ -92,7 +92,7 @@ export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMus
 
   return (
     <div className="w-full px-5 relative" ref={containerRef}>
-      <div className="w-full flex justify-between p-2 shadow-gray shadow-md text-white">
+      <div className="w-full flex justify-between p-2 text-white gap-x-3">
         <input
           ref={inputRef}
           type="text"
@@ -100,9 +100,9 @@ export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMus
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsResultsVisible(true)} // 인풋 클릭 시 결과창 열기
           placeholder="곡을 입력해주세요."
-          className="flex-grow outline-none"
+          className="flex-grow outline-none border-white border-b-1 pl-2 pb-[1px]"
         />
-        <SearchIcon className="flex-shrink-0" />
+        <SearchIcon className="flex-shrink-0 xs:scale-120" />
       </div>
 
       {isResultsVisible && searchResults.length > 0 && (
