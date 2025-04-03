@@ -7,7 +7,7 @@ def user(bigfive_input):
     current_dir = os.path.dirname(__file__)
     file = os.path.join(current_dir, "../dataset/user_bigfive.csv")
     model = os.path.join(current_dir, "../../models/kmeans_model.pkl")
-    print(bigfive_input)
+    # print(bigfive_input)
 
 
     with open(model, "rb") as f:
