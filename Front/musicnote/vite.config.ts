@@ -64,7 +64,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/script\.ebay\.co\.kr\//,
-            handler: "StaleWhileRevalidate",
+            handler: "NetworkFirst",
             options: {
               cacheName: "api-cache",
               expiration: {
