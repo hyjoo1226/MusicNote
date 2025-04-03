@@ -31,7 +31,8 @@ export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMus
   const { data } = useGetData(
     "searchMusic" + debouncedQuery,
     `/search?q=${encodeURIComponent(debouncedQuery)}&type=track&limit=20`,
-    "spotify"
+    "spotify",
+    { enabled: !!debouncedQuery }
   );
 
   const searchResults = data?.tracks?.items || [];

@@ -40,7 +40,7 @@ export default function LineTrend() {
     updateLineWidth();
     window.addEventListener("resize", updateLineWidth);
     return () => window.removeEventListener("resize", updateLineWidth);
-  }, [window.innerWidth]);
+  }, []);
 
   const lineData: LineDataType[] = [
     { id: 1, name: "개방성", values: [65, 59, 80, 81, 56, 55, 40], color: traitColors["개방성"] },
