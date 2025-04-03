@@ -12,6 +12,8 @@ import RecommendationDetail from "../pages/recommend/RecommendationDetail";
 import MyRecommendationDetail from "../pages/recommend/MyRecommendationDetail";
 import MyRecommendation from "../pages/recommend/MyRecommendation";
 import NotFound from "../components/NotFound";
+import Notification from "../pages/Notification";
+
 export default function AppRoutes(): React.ReactElement {
   return (
     <Routes>
@@ -28,6 +30,7 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/recommendations/detail/:domain" element={<RecommendationDetail />} />
       <Route path="/recommendations/my" element={<MyRecommendation />} />
       <Route path="/recommendations/my/:domain" element={<MyRecommendationDetail />} />
+      <Route path="/notification" element={<Notification />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

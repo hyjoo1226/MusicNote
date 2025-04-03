@@ -19,7 +19,7 @@ apiClient.interceptors.request.use(
     if (authStore.accessToken) {
       config.headers.Authorization = `Bearer ${authStore.accessToken}`;
       const { spotifyAccessToken } = useAuthStore.getState();
-      config.headers["Spotify-Access-Token"] = spotifyAccessToken;
+      config.headers["spotifyAccessToken"] = spotifyAccessToken;
     }
 
     return config;
