@@ -45,6 +45,6 @@ dependencies {
     implementation project(':auth')
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
 }
