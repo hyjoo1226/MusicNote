@@ -104,7 +104,7 @@ def add_runtime_credits(movie_info):
 			new_credits[2].update({"name" : name})
 			break
 	    
-	movie_info.update({'credits' : new_credits})
+	movie_info.update({'runtime' : runtime, 'credits' : new_credits})
 	
 
 def convert_id_to_genre(movie_info):
