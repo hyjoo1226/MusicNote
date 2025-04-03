@@ -23,6 +23,7 @@ public class ReportService {
 
 	private static final String FAILED_TO_GET_REPORT = "BigFive 데이터가 없습니다";
 	private static final String DAILY_REPORT_READY_MESSAGE = "성향 리포트 생성 완료";
+	private static final String DAILY_REPORT_URL = "/data/api/predict/bigfive/daily";
 
 	private final RestClient restClient;
 	private final ReportRepository reportRepository;
@@ -37,7 +38,7 @@ public class ReportService {
 
 		// python 서버에서 BigFive 및 리포트 받기
 		PersonalityReportDto result = restClient.post()
-			.uri("/predict/daily")
+			.uri(DAILY_REPORT_URL)
 			.body(request)
 			.retrieve()
 			.body(PersonalityReportDto.class);
