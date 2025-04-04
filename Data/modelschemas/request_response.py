@@ -59,20 +59,20 @@ class Credit(BaseModel):
     order: int
 
 class Movie(BaseModel):
-    adult: bool
-    backdrop_path: str
-    genres: List[str] = Field(default_factory=list)
-    id: int
-    original_language: str
-    original_title: str
-    overview: str
-    popularity: float
-    poster_path: str
-    release_date: date
-    title: str
-    vote_average: float
-    runtime: int
-    credits:List[dict]
+    adult: Optional[bool]
+    backdrop_path: Optional[str]
+    genres: Optional[List[str]] = Field(default_factory=list)
+    id: Optional[int]
+    original_language: Optional[str]
+    original_title: Optional[str]
+    overview: Optional[str]
+    popularity: Optional[float]
+    poster_path: Optional[str]
+    release_date: Optional[date]
+    title: Optional[str]
+    vote_average: Optional[float]
+    runtime: Optional[int]
+    credits:Optional[List[dict]] = Field(default_factory=list)
 
 
 
