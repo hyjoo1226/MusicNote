@@ -1,6 +1,6 @@
 # modelschemas/request_response.py
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Dict, Optional
 from datetime import date
 
 # 공통 요청 모델
@@ -44,6 +44,13 @@ class Report(BaseModel):
     low_text: str
     summary: str
 
+class WeeklyReport(BaseModel):
+    trends: Dict[str, str]
+    summary: str
+    top_growth: str
+    top_decline: str
+    top_fluctuation: str
+
 class Credit(BaseModel):
     adult: bool
     gender: int
@@ -73,8 +80,6 @@ class Movie(BaseModel):
     vote_average: float
     runtime: int
     credits:List[dict]
-
-
 
 class MusicList(BaseModel):
     musics: List[Music]
