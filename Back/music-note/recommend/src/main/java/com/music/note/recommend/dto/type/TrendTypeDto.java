@@ -1,4 +1,6 @@
-package com.music.note.recommend.dto.movie.request;
+package com.music.note.recommend.dto.type;
+
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RequestLatestPersonalityReportDto {
+public class TrendTypeDto {
 	private double openness;
 	private double conscientiousness;
-	private double extraversion;
+	private double extraVersion;
 	private double agreeableness;
 	private double neuroticism;
+	private LocalDateTime createdAt;
 }

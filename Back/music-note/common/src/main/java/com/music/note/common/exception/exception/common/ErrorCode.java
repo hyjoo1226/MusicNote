@@ -24,7 +24,9 @@ public enum ErrorCode {
 	SPOTIFY_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "4009", "Spotify 토큰이 만료되었거나 유효하지 않습니다."),
 
 	NO_AUTHORITY(HttpStatus.BAD_REQUEST, "4013", "권한이 없습니다."),
-	NOT_FOUND_PERSONALITY_REPORT(HttpStatus.NOT_FOUND, "4014", "성향 분석 엔티티를 조회할 수 없습니다.."),
+	NOT_FOUND_PERSONALITY_REPORT(HttpStatus.NOT_FOUND, "4014", "성향 분석 엔티티를 조회할 수 없습니다."),
+	NOT_FOUND_RECOMMEND_MOVIE(HttpStatus.NOT_FOUND, "4015", "추천 영화를 조회할 수 없습니다."),
+	NOT_FOUND_RECOMMEND_MOVIE_LIKES(HttpStatus.NOT_FOUND, "4016", "좋아요한 추천 영화를 조회할 수 없습니다."),
 
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5001", "서버 에러가 발생했습니다."),
 	EXTERNAL_API_INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5002", "외부 API 서버에서 오류가 발생했습니다."),
