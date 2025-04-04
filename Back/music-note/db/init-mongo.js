@@ -8,7 +8,8 @@ if (db.system.users.find({user: "music"}).count() === 0) {
         pwd: "note",
         roles: [
             {role: "readWrite", db: "musicdb"},
-            {role: "readWrite", db: "typedb"}
+            {role: "readWrite", db: "typedb"},
+            {role: "readWrite", db: "recommend-moviedb"}
         ]
     });
     print("사용자 생성 완료");

@@ -10,6 +10,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -50,6 +51,20 @@ public class JwtUtil {
 
 	private static Claims extractClaims(String token, String secretKey){
 		return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+	}
+	private static Optional<String> getToken(HttpServletRequest request){
+		String authorizationHeader = request.getHeader("Authorization");
+
+		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+			return Optional.ofNullable(authorizationHeader.split(" ")[1]);
+		}else {
+			return Optional.empty();
+		}
+	}
+	public static String getUserIdByJwtToken(HttpServletRequest request, String secretKey){
+		Optional<String> token = getToken(request);
+		isTokenValid(token.get(), secretKey);
+		return extractMemberId(token.get(), secretKey);
 	}
 
 }

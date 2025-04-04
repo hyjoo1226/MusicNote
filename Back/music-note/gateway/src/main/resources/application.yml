@@ -8,7 +8,7 @@ spring:
     gateway:
       globalcors:
         corsConfigurations:
-          '[/**]': # 모든 경로에 대해 CORS 허용
+          "[/**]": # 모든 경로에 대해 CORS 허용
             allowedOrigins:
               - "http://localhost:5173"
               - "http://localhost:5174"
@@ -51,10 +51,31 @@ spring:
             - Path=/api/notifications/**
           filters:
             - RewritePath=/api/notifications/(?<segment>/.*)?, /${segment}
+
+        - id: recommend-route
+          uri: lb://recommend-server
+          predicates:
+            - Path=/api/recommend/**
+          filters:
+            - RewritePath=/api/recommend/(?<segment>/.*)?, /${segment}
+
+        - id: crawling-route
+          uri: lb://music-crawler-consumer
+          predicates:
+            - Path=/api/crawl/actuator/health
+          filters:
+            - RewritePath=/api/crawl/(?<segment>/.*)?, /${segment}
+
+        - id: type-consumer-route
+          uri: lb://music-type-consumer
+          predicates:
+            - Path=/api/type/actuator/health
+          filters:
+            - RewritePath=/api/type/(?<segment>/.*)?, /${segment}
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
-
+#      defaultZone: http://eureka-server:8761/eureka/
