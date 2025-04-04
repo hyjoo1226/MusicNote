@@ -47,7 +47,7 @@ public class ReportService {
 		if (result == null) {
 			throw new RuntimeException(FAILED_TO_GET_REPORT);
 		}
-		PersonalityReport entity = PersonalityReportConverter.toEntity(event.getUserId(), result);
+		PersonalityReport entity = PersonalityReportConverter.toEntity(event, result);
 		reportRepository.save(entity);
 
 		log.info("Report saved: {}", entity.getReport().toString());
