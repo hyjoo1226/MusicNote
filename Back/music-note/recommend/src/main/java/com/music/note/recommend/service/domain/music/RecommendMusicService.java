@@ -30,18 +30,17 @@ public class RecommendMusicService {
 			memberId);
 		ResponseRecommendMusicList recommendMusicByDataServer = getRecommendMusicByDataServer(reqReportDto);
 		recommendMusicByDataServer.allocateListSize();
-		saveRecommendMusic(recommendMusicByDataServer.getMusics(), String.valueOf(memberId));
+		saveRecommendMusic(recommendMusicByDataServer.getMusics(), memberId);
 		return recommendMusicByDataServer;
 	}
 	private ResponseRecommendMusicList getRecommendMusicByDataServer(RequestLatestPersonalityReportDto personalityReportDto){
-		// String dataUrl = "http://13.125.215.33:8100/recommend/book";
-		String dataUrl = "http://13.125.215.33:8100/data/api/recommend/music/test";
+		String dataUrl = "http://13.125.215.33:8100/data/api/recommend/music";
 		return recommendCommonService.getRecommendations(dataUrl,
 			personalityReportDto, ResponseRecommendMusicList.class);
 	}
 	private void saveRecommendMusic(List<RecommendMusicDto> musicDtos, String memberId){
 		for (RecommendMusicDto dto: musicDtos){
-			RecommendMusic recommendMusic = recommendMusicMapper.dtoToEntity(dto, String.valueOf(memberId));
+			RecommendMusic recommendMusic = recommendMusicMapper.dtoToEntity(dto, memberId);
 			RecommendMusic save = recommendMusicRepository.save(recommendMusic);
 			dto.setId(save.getId());
 		}
