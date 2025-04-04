@@ -27,6 +27,7 @@ interface CalendarProps {
   // dailyReports: { from: Date; to: Date }[];
   // weeklyReports: { from: Date; to: Date }[];
   enabledDays: Date[];
+  onMonthChange: (date: Date) => void;
   onReportSelect?: (reportId: string) => void;
 }
 
@@ -37,6 +38,7 @@ export default function Calendar({
   // dailyReports,
   // weeklyReports,
   enabledDays,
+  onMonthChange,
   onReportSelect,
 }: CalendarProps) {
   // 선택 날짜
@@ -178,6 +180,10 @@ export default function Calendar({
             reportEnd: "report-end-day",
             selectedRange: "selected-range",
             notInReport: "rdp-disabled",
+          }}
+          onMonthChange={(date) => {
+            console.log(date);
+            onMonthChange(date);
           }}
         />
       </div>

@@ -1,108 +1,100 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Chart from "../../features/analysis/Chart";
 import Calendar from "../../features/analysis/Calendar";
 import { ChartType } from "../../features/analysis/AnalysisType";
 import { eachDayOfInterval } from "date-fns";
+import { useGetData } from "@/hooks/useApi";
+
+interface ReportsData {
+  data: {
+    responseTypeWithReportIds: {
+      cratedAt: string;
+      typeDto: {
+        openness: number;
+        conscientiousness: number;
+        extraVersion: number;
+        agreeableness: number;
+        neuroticism: number;
+      };
+      reportId: string;
+    }[];
+  };
+}
 
 // Big 5 한글 매핑
-const traitMapping = {
-  openness: "개방성",
-  conscientiousness: "성실성",
-  extraversion: "외향성",
-  agreeableness: "우호성",
-  neuroticism: "신경성",
-};
-
 export default function Analysis() {
   const navigate = useNavigate();
   const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
   const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
 
-  // 더미 데이터: 일간 리포트
-  const [dailyReportsData, setDailyReportsData] = useState({
-    data: [
-      {
-        createdAt: "2025-03-03T13:33:55.502",
-        reportId: "1234asd",
-        typeDto: {
-          openness: 0.23,
-          conscientiousness: 0.17,
-          extraversion: 0.73,
-          agreeableness: 0.58,
-          neuroticism: 0.23,
-        },
-      },
-      {
-        createdAt: "2025-03-05T13:33:55.502",
-        reportId: "5678qwe",
-        typeDto: {
-          openness: 0.453,
-          conscientiousness: 0.627,
-          extraversion: 0.313,
-          agreeableness: 0.773,
-          neuroticism: 0.193,
-        },
-      },
-      {
-        createdAt: "2025-03-10T13:33:55.502",
-        reportId: "9101xyz",
-        typeDto: {
-          openness: 0.683,
-          conscientiousness: 0.423,
-          extraversion: 0.513,
-          agreeableness: 0.333,
-          neuroticism: 0.653,
-        },
-      },
-      {
-        createdAt: "2025-04-04",
-        reportId: "9101xyq",
-        typeDto: {
-          openness: 0.2,
-          conscientiousness: 0.3,
-          extraversion: 0.51,
-          agreeableness: 0.33,
-          neuroticism: 0.65,
-        },
-      },
-    ],
-  });
+  const [targetMonth, setTargetMonth] = useState(new Date());
+  const [year, setYear] = useState(targetMonth.getFullYear());
+  const [month, setMonth] = useState(targetMonth.getMonth() + 1);
+
+  useEffect(() => {
+    setYear(targetMonth.getFullYear());
+    setMonth(targetMonth.getMonth() + 1);
+  }, [targetMonth]);
+
+  const {
+    data: dailyReportsData,
+    // isLoading: dailyReportsLoading,
+    // isError: dailyReportsError,
+  } = useGetData(
+    `dailyReportsData-${year}-${month}`, // key
+    `/recommend/type/daily?year=${year}&month=${month}` // url
+  );
+
+  useEffect(() => {
+    console.log(dailyReportsData);
+  }, [dailyReportsData]);
+
+  // 주간 리포트 데이터 가져오기
+  // const {
+  //   data: weeklyReportsData,
+  //   isLoading: weeklyReportsLoading,
+  //   isError: weeklyReportsError,
+  // } = useGetData(
+  //   `weeklyReportsData-${year}-${month}`, // key
+  //   `/recommend/type/weekly?year=${year}&month=${month}` // url
+  // );
+
   // 주간 리포트
-  const [weeklyReportsData, setWeeklyReportsData] = useState({
-    data: {
-      "2025-03-08": {
-        reportId: "week1",
-        type: {
-          openness: 23,
-          conscientiousness: 17,
-          extraversion: 73,
-          agreeableness: 58,
-          neuroticism: 23,
-        },
-      },
-      "2025-03-15": {
-        reportId: "week2",
-        type: {
-          openness: 23,
-          conscientiousness: 17,
-          extraversion: 73,
-          agreeableness: 58,
-          neuroticism: 23,
-        },
-      },
-      "2025-03-22": {
-        reportId: "week3",
-        type: {
-          openness: 23,
-          conscientiousness: 17,
-          extraversion: 73,
-          agreeableness: 58,
-          neuroticism: 23,
-        },
-      },
-    },
-  });
+  // const [weeklyReportsData, setWeeklyReportsData] = useState({
+  //   data: {
+  //     "2025-03-08": {
+  //       reportId: "week1",
+  //       type: {
+  //         openness: 23,
+  //         conscientiousness: 17,
+  //         extraversion: 73,
+  //         agreeableness: 58,
+  //         neuroticism: 23,
+  //       },
+  //     },
+  //     "2025-03-15": {
+  //       reportId: "week2",
+  //       type: {
+  //         openness: 23,
+  //         conscientiousness: 17,
+  //         extraversion: 73,
+  //         agreeableness: 58,
+  //         neuroticism: 23,
+  //       },
+  //     },
+  //     "2025-03-22": {
+  //       reportId: "week3",
+  //       type: {
+  //         openness: 23,
+  //         conscientiousness: 17,
+  //         extraversion: 73,
+  //         agreeableness: 58,
+  //         neuroticism: 23,
+  //       },
+  //     },
+  //   },
+  // });
 
   const [bigFiveScore, setBigFiveScore] = useState<
     {
@@ -111,32 +103,56 @@ export default function Analysis() {
     }[]
   >(() => {
     // 일간 리포트가 있을 경우 최신순 정렬
-    if (dailyReportsData.data.length > 0) {
-      const sorted = [...dailyReportsData.data].sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    if (dailyReportsData?.data?.responseTypeWithReportIds?.length > 0) {
+      const sorted = [...dailyReportsData.data.responseTypeWithReportIds].sort(
+        (a, b) => new Date(b.cratedAt).getTime() - new Date(a.cratedAt).getTime()
       );
       const latestReport = sorted[0];
       return [
         { bigFive: "개방성", User: Math.round(latestReport.typeDto.openness * 100) },
         { bigFive: "성실성", User: Math.round(latestReport.typeDto.conscientiousness * 100) },
-        { bigFive: "외향성", User: Math.round(latestReport.typeDto.extraversion * 100) },
+        { bigFive: "외향성", User: Math.round(latestReport.typeDto.extraVersion * 100) },
         { bigFive: "우호성", User: Math.round(latestReport.typeDto.agreeableness * 100) },
         { bigFive: "신경성", User: Math.round(latestReport.typeDto.neuroticism * 100) },
       ];
     }
     // 기본값
     return [
-      { bigFive: "개방성", User: 0 },
-      { bigFive: "신경성", User: 0 },
-      { bigFive: "우호성", User: 0 },
-      { bigFive: "외향성", User: 0 },
-      { bigFive: "성실성", User: 0 },
+      {
+        bigFive: "개방성",
+        User: Math.round(
+          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.openness * 100
+        ),
+      },
+      {
+        bigFive: "성실성",
+        User: Math.round(
+          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.conscientiousness * 100
+        ),
+      },
+      {
+        bigFive: "외향성",
+        User: Math.round(
+          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.extraVersion * 100
+        ),
+      },
+      {
+        bigFive: "우호성",
+        User: Math.round(
+          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.agreeableness * 100
+        ),
+      },
+      {
+        bigFive: "신경성",
+        User: Math.round(
+          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.neuroticism * 100
+        ),
+      },
     ];
   });
 
   const handleReportClick = () => {
-    navigate(`/analysis/report/${reportCycle}`);
-    // navigate(`/analysis/report/${selectedReportId}`);
+    navigate(`/analysis/report/${reportCycle}/${selectedReportId}`);
   };
 
   // Date 객체를 YYYY-MM-DD 형식으로 변환
@@ -150,13 +166,19 @@ export default function Analysis() {
   // 리포트 데이터 기반 활성화 날짜 계산
   const getEnabledDays = () => {
     if (reportCycle === "daily") {
-      return dailyReportsData.data.flatMap((report) => {
-        const date = new Date(report.createdAt);
+      if (!dailyReportsData?.data?.responseTypeWithReportIds) return [];
+
+      return dailyReportsData.data.responseTypeWithReportIds.flatMap((report: any) => {
+        const date = new Date(report.cratedAt);
         return eachDayOfInterval({ start: date, end: date });
       });
     } else {
-      return Object.keys(weeklyReportsData.data).flatMap((dateStr) => {
-        const endDate = new Date(dateStr);
+      if (!weeklyReportsData?.data?.responseTypeWithReportIds) return [];
+
+      return weeklyReportsData.data.responseTypeWithReportIds.flatMap((report: any) => {
+        const date = new Date(report.cratedAt);
+        // 주간 기간은 해당 날짜부터 7일간으로 가정
+        const endDate = new Date(date);
         const startDate = new Date(endDate);
         startDate.setDate(endDate.getDate() - 6);
         return eachDayOfInterval({ start: startDate, end: endDate });
@@ -172,20 +194,19 @@ export default function Analysis() {
 
     if (reportCycle === "daily") {
       // 일간 리포트 데이터 찾기
-      const selectedReport = dailyReportsData.data.find(
-        (report) => formatDateToString(new Date(report.createdAt)) === dateString
+      if (!dailyReportsData?.data?.responseTypeWithReportIds) return;
+
+      const selectedReport = dailyReportsData.data.responseTypeWithReportIds.find(
+        (report: any) => formatDateToString(new Date(report.cratedAt)) === dateString
       );
 
       if (selectedReport) {
         setSelectedReportId(selectedReport.reportId);
-        // if (selectedReportId) {
-        //   console.log(selectedReportId);
-        // }
         // API 형식에서 차트 형식으로 변환
         const newScores: ChartType = [
           {
             bigFive: "개방성",
-            User: Math.round(selectedReport.typeDto.openness * 100), // ✨ 0.45 → 45점 변환
+            User: Math.round(selectedReport.typeDto.openness * 100),
           },
           {
             bigFive: "성실성",
@@ -193,7 +214,7 @@ export default function Analysis() {
           },
           {
             bigFive: "외향성",
-            User: Math.round(selectedReport.typeDto.extraversion * 100),
+            User: Math.round(selectedReport.typeDto.extraVersion * 100),
           },
           {
             bigFive: "우호성",
@@ -210,28 +231,33 @@ export default function Analysis() {
       }
     } else {
       // 주간 리포트 데이터 찾기
-      // 주간 리포트는 주 마지막 날짜(토요일)로 저장됨
-      const weekEndDate = new Date(date);
-      const day = weekEndDate.getDay();
-      const diff = day === 6 ? 0 : 6 - day; // 토요일(6)까지의 차이
-      weekEndDate.setDate(weekEndDate.getDate() + diff);
+      if (!weeklyReportsData?.data?.responseTypeWithReportIds) return;
 
-      const weekEndDateString = formatDateToString(weekEndDate);
+      // 주간 리포트는 해당 날짜가 포함된 주의 리포트를 찾음
+      const selectedReport = weeklyReportsData.data.responseTypeWithReportIds.find(
+        (report: any) => {
+          const reportDate = new Date(report.cratedAt);
+          const weekEndDate = new Date(reportDate);
+          const weekStartDate = new Date(reportDate);
+          weekStartDate.setDate(weekEndDate.getDate() - 6);
 
-      if (weeklyReportsData.data[weekEndDateString]) {
-        const reportData = weeklyReportsData.data[weekEndDateString].temper;
-        setSelectedReportId(weeklyReportsData.data[weekEndDateString].reportId);
+          return date >= weekStartDate && date <= weekEndDate;
+        }
+      );
+
+      if (selectedReport) {
+        setSelectedReportId(selectedReport.reportId);
         // 주간 리포트 형식에서 차트 형식으로 변환
-        const newScores = [
-          { bigFive: "개방성", User: reportData.O },
-          { bigFive: "성실성", User: reportData.C },
-          { bigFive: "외향성", User: reportData.E },
-          { bigFive: "우호성", User: reportData.A },
-          { bigFive: "신경성", User: reportData.N },
+        const newScores: ChartType = [
+          { bigFive: "개방성", User: Math.round(selectedReport.typeDto.openness * 100) },
+          { bigFive: "성실성", User: Math.round(selectedReport.typeDto.conscientiousness * 100) },
+          { bigFive: "외향성", User: Math.round(selectedReport.typeDto.extraVersion * 100) },
+          { bigFive: "우호성", User: Math.round(selectedReport.typeDto.agreeableness * 100) },
+          { bigFive: "신경성", User: Math.round(selectedReport.typeDto.neuroticism * 100) },
         ];
         setBigFiveScore(newScores);
       } else {
-        console.log(`${weekEndDateString}에 해당하는 주간 리포트가 없습니다.`);
+        console.log(`선택한 날짜에 해당하는 주간 리포트가 없습니다.`);
       }
     }
   };
@@ -242,37 +268,43 @@ export default function Analysis() {
 
     if (cycle === "daily") {
       // 최신 일간 리포트 찾기
-      const sorted = [...dailyReportsData.data].sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      if (!dailyReportsData?.data?.responseTypeWithReportIds?.length) return;
+
+      const sorted = [...dailyReportsData.data.responseTypeWithReportIds].sort(
+        (a, b) => new Date(b.cratedAt).getTime() - new Date(a.cratedAt).getTime()
       );
+
       if (sorted.length > 0) {
         const latest = sorted[0];
         const newScores: ChartType = [
-          { bigFive: "개방성", User: latest.typeDto.openness * 100 },
-          { bigFive: "성실성", User: latest.typeDto.conscientiousness * 100 },
-          { bigFive: "외향성", User: latest.typeDto.extraversion * 100 },
-          { bigFive: "우호성", User: latest.typeDto.agreeableness * 100 },
-          { bigFive: "신경성", User: latest.typeDto.neuroticism * 100 },
+          { bigFive: "개방성", User: Math.round(latest.typeDto.openness * 100) },
+          { bigFive: "성실성", User: Math.round(latest.typeDto.conscientiousness * 100) },
+          { bigFive: "외향성", User: Math.round(latest.typeDto.extraVersion * 100) },
+          { bigFive: "우호성", User: Math.round(latest.typeDto.agreeableness * 100) },
+          { bigFive: "신경성", User: Math.round(latest.typeDto.neuroticism * 100) },
         ];
         setBigFiveScore(newScores);
+        setSelectedReportId(latest.reportId);
       }
     } else {
       // 최신 주간 리포트 찾기
-      const weeklyDates = Object.keys(weeklyReportsData.data);
-      if (weeklyDates.length > 0) {
-        const sortedDates = weeklyDates.sort(
-          (a, b) => new Date(b).getTime() - new Date(a).getTime()
-        );
-        const latestDate = sortedDates[0];
-        const reportData = weeklyReportsData.data[latestDate].temper;
-        const newScores = [
-          { bigFive: "개방성", User: reportData.O },
-          { bigFive: "성실성", User: reportData.C },
-          { bigFive: "외향성", User: reportData.E },
-          { bigFive: "우호성", User: reportData.A },
-          { bigFive: "신경성", User: reportData.N },
+      if (!weeklyReportsData?.data?.responseTypeWithReportIds?.length) return;
+
+      const sorted = [...weeklyReportsData.data.responseTypeWithReportIds].sort(
+        (a, b) => new Date(b.cratedAt).getTime() - new Date(a.cratedAt).getTime()
+      );
+
+      if (sorted.length > 0) {
+        const latest = sorted[0];
+        const newScores: ChartType = [
+          { bigFive: "개방성", User: Math.round(latest.typeDto.openness * 100) },
+          { bigFive: "성실성", User: Math.round(latest.typeDto.conscientiousness * 100) },
+          { bigFive: "외향성", User: Math.round(latest.typeDto.extraVersion * 100) },
+          { bigFive: "우호성", User: Math.round(latest.typeDto.agreeableness * 100) },
+          { bigFive: "신경성", User: Math.round(latest.typeDto.neuroticism * 100) },
         ];
         setBigFiveScore(newScores);
+        setSelectedReportId(latest.reportId);
       }
     }
   };
@@ -296,6 +328,7 @@ export default function Analysis() {
           onReportCycleChange={handleReportCycleChange}
           enabledDays={getEnabledDays()}
           onReportSelect={(reportId) => setSelectedReportId(reportId)}
+          onMonthChange={(date: Date) => setTargetMonth(date)}
         />
       </div>
       <div className="mt-4"></div>

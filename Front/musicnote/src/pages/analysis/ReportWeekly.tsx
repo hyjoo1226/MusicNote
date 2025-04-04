@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { domToJpeg } from "modern-screenshot";
 import UserTemperGraph from "../../components/UserTemperGraph";
-import DailyReport from "../../features/analysis/DailyReport";
 import WeeklyReport from "@/features/analysis/WeeklyReport";
 import NoteIcon from "../../assets/icon/note-icon.svg?react";
 import ShareIcon from "../../assets/icon/share-icon.svg?react";
@@ -134,7 +133,7 @@ export default function Report() {
       <div className="flex flex-col px-[10px] xs:px-5 gap-y-5 justify-between pb-[82px]">
         <div ref={reportRef} className="flex flex-col gap-y-5">
           <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
-          {type === "daily" ? <DailyReport /> : <WeeklyReport />}
+          <WeeklyReport />
         </div>
       </div>
       {isCopied && <span className="text-sm text-green-500">복사 완료!</span>}
