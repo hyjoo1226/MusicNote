@@ -1,8 +1,7 @@
-# job_recommender.py
-
 import joblib
 from sklearn.metrics.pairwise import cosine_similarity
-from utils.keyword_tools import extract_clean_keywords
+from utils.keyword_tools import KeywordTool
+
 
 class JobRecommender:
     def __init__(self, pkl_path="models/onet_bigfive_mapped.pkl"):
@@ -11,6 +10,7 @@ class JobRecommender:
         """
         self.df = joblib.load(pkl_path)
         self.numeric_cols = ["openness", "conscientiousness", "extraversion", "agreeableness", "stability"]
+        self.keyword_tool = KeywordTool()  # ✅ 키워드 유틸 통합 사용
 
     def recommend_jobs(self, user_scores, top_n=5):
         """
@@ -31,13 +31,11 @@ class JobRecommender:
         """
         top_jobs = self.recommend_jobs(user_scores, top_n=top_n_jobs)
         descriptions = top_jobs["Description"].tolist()
-        return extract_clean_keywords(descriptions, top_k=top_k_keywords)
+        return self.keyword_tool.extract_clean_keywords(descriptions, top_k=top_k_keywords)
 
 
-if __name__ == "__main__":
-    recommender = JobRecommender()
-
-    user_bigfive = [0.68, 0.58, 0.42, 0.53, 0.60]  # 예시 점수
-    keywords = recommender.get_keywords_from_bigfive(user_bigfive)
-    print("추천 키워드:", keywords)
-
+# if __name__ == "__main__":
+#     recommender = JobRecommender()
+#     user_bigfive = [0.68, 0.58, 0.42, 0.53, 0.60]
+#     keywords = recommender.get_keywords_from_bigfive(user_bigfive)
+#     print("추천 키워드:", keywords)

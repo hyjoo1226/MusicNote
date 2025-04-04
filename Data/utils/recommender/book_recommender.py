@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from modelschemas.request_response import BigFiveScore, BookItem
 from utils.date_converter import convert_pubdate
+from utils.keyword_tools import KeywordTool
 from utils.recommender.job_recommender import JobRecommender
 
 load_dotenv()
@@ -21,6 +22,8 @@ class BookRecommender:
         }
         self.base_url = "https://openapi.naver.com/v1/search/book.json"
         self.job_recommender = JobRecommender()
+        self.keyword_tool = KeywordTool()
+
 
     def recommend_books_from_bigfive(self, bigfive: BigFiveScore, top_n_jobs: int = 5, top_k_keywords: int = 5, total_per_keyword: int = 2) -> list[BookItem]:
         """

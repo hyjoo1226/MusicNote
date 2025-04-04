@@ -24,6 +24,7 @@ models/*.pkl
 !models/music_score_scaler.pkl
 !models/label_scaler.pkl
 !models/onet_bigfive_mapped.pkl
+!models/kmeans_model.pkl
 
 # OS-specific files
 .DS_Store
@@ -39,6 +40,8 @@ Thumbs.db
 # datasets
 *.json
 *.csv
+!data/user_bigfive.csv
+!data/user_genre_counts.json
 
 # past scripts
 scripts/past/
