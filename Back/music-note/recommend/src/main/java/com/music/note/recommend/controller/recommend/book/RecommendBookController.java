@@ -24,7 +24,6 @@ RecommendBookController {
 	private String secretKey;
 	@PostMapping("/book")
 	public CommonResponse<ResponseRecommendBookList> recommendMusic(HttpServletRequest request){
-		log.info("key입니다 {}", secretKey);
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
 		ResponseRecommendBookList responseMovieRecommendDto = recommendBookService.recommendBooks(userId);
 		return CommonResponse.success(responseMovieRecommendDto);
