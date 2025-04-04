@@ -1,8 +1,8 @@
-package com.music.note.recommend.mapper;
+package com.music.note.recommend.mapper.personality;
 
 import org.springframework.stereotype.Component;
 
-import com.music.note.recommend.dto.movie.request.RequestLatestPersonalityReportDto;
+import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
 import com.music.note.typedomain.domain.PersonalityReport;
 
 @Component
