@@ -18,7 +18,7 @@ public class PreferencesController {
 	private final SpotifyService spotifyService;
 
 	@GetMapping("/preferences")
-	public CommonResponse<String> preferences(@RequestHeader String spotifyAccessToken) {
+	public CommonResponse<String> preferences(@RequestHeader("Spotify-Access-Token") String spotifyAccessToken) {
 
 		// TODO: auth 서버 연동 후 userId 파라미터로 전달
 		preferencesService.publishUserMusicPreferences(1L, spotifyAccessToken);
