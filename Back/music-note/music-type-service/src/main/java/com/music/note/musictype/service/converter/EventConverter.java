@@ -11,9 +11,13 @@ import com.music.note.kafkaeventmodel.dto.MusicListWithMissingEvent;
 import com.music.note.trackdomain.domain.AudioFeatures;
 import com.music.note.trackdomain.domain.Track;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class EventConverter {
 
 	public static MusicListEvent toMusicEvent(Long userId, List<Track> tracks) {
+		log.info("=== toMusicEvent() called ===");
 		List<MusicDto> musicList = tracks.stream()
 			.map(EventConverter::convertToDto)
 			.collect(Collectors.toList());
@@ -49,6 +53,7 @@ public class EventConverter {
 	}
 
 	private static MusicDto convertToDto(Track track) {
+		log.info("=== convertToDto() called ===");
 		if (track == null)
 			return null;
 
