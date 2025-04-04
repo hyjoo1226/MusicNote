@@ -18,7 +18,7 @@ public class RequestEventConsumer {
 
 	@KafkaListener(topics = "music-request", groupId = "music-request-group")
 	public void consumeRequestEvent(RequestEvent event) {
-		log.info("[Consuming Request Event] -> userId={}, musicListSize={}",
+		log.info("[확인용] [Consuming Request Event] -> userId={}, musicListSize={}",
 			event.getUserId(), event.getMusicList().size());
 		trackService.handleTrackCheck(event);
 	}

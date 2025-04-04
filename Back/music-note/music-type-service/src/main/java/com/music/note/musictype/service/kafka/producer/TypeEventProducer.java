@@ -15,7 +15,7 @@ public class TypeEventProducer {
 	private final KafkaTemplate<String, MusicListEvent> kafkaTemplate;
 
 	public void sendMusicListEvent(MusicListEvent event) {
-		log.info("[Producing Type Event] -> userId={}, musicListSize={}",
+		log.info("[확인용] [Producing Type Event] -> userId={}, musicListSize={}",
 			event.getUserId(), event.getMusicList().size());
 		kafkaTemplate.send("music-type", event);
 	}
