@@ -1,6 +1,9 @@
 package com.music.note.main.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,7 +26,13 @@ public class SpotifyService {
 
 	public List<MusicDto> fetchRecentTracks(String accessToken) {
 		SpotifyRecentlyPlayedResponse response = callSpotifyApi(accessToken);
-		return SpotifyTrackConverter.convert(response);
+		List<MusicDto> tracks = SpotifyTrackConverter.convert(response);
+
+		Set<String> seen = new HashSet<>();
+		return tracks.stream()
+			.filter(track -> track.getSpotifyId() != null)
+			.filter(track -> seen.add(track.getSpotifyId()))
+			.collect(Collectors.toList());
 	}
 
 	private SpotifyRecentlyPlayedResponse callSpotifyApi(String accessToken) {

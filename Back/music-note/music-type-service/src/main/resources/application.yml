@@ -7,7 +7,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://music:note@localhost:27017/musicdb?authSource=admin&readPreference=secondary
-      auto-index-creation: false
+      auto-index-creation: true
   kafka:
     bootstrap-servers:
       - 127.0.0.1:10000
