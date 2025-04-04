@@ -22,7 +22,6 @@ interface ReportsData {
   };
 }
 
-// Big 5 한글 매핑
 export default function Analysis() {
   const navigate = useNavigate();
   const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
@@ -103,8 +102,9 @@ export default function Analysis() {
     }[]
   >(() => {
     // 일간 리포트가 있을 경우 최신순 정렬
-    if (dailyReportsData?.data?.responseTypeWithReportIds?.length > 0) {
-      const sorted = [...dailyReportsData.data.responseTypeWithReportIds].sort(
+    const reports = dailyReportsData?.data?.responseTypeWithReportIds;
+    if (reports && reports.length > 0) {
+      const sorted = [...reports].sort(
         (a, b) => new Date(b.cratedAt).getTime() - new Date(a.cratedAt).getTime()
       );
       const latestReport = sorted[0];
@@ -118,36 +118,41 @@ export default function Analysis() {
     }
     // 기본값
     return [
-      {
-        bigFive: "개방성",
-        User: Math.round(
-          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.openness * 100
-        ),
-      },
-      {
-        bigFive: "성실성",
-        User: Math.round(
-          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.conscientiousness * 100
-        ),
-      },
-      {
-        bigFive: "외향성",
-        User: Math.round(
-          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.extraVersion * 100
-        ),
-      },
-      {
-        bigFive: "우호성",
-        User: Math.round(
-          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.agreeableness * 100
-        ),
-      },
-      {
-        bigFive: "신경성",
-        User: Math.round(
-          dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.neuroticism * 100
-        ),
-      },
+      // {
+      //   bigFive: "개방성",
+      //   User: Math.round(
+      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.openness * 100
+      //   ),
+      // },
+      // {
+      //   bigFive: "성실성",
+      //   User: Math.round(
+      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.conscientiousness * 100
+      //   ),
+      // },
+      // {
+      //   bigFive: "외향성",
+      //   User: Math.round(
+      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.extraVersion * 100
+      //   ),
+      // },
+      // {
+      //   bigFive: "우호성",
+      //   User: Math.round(
+      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.agreeableness * 100
+      //   ),
+      // },
+      // {
+      //   bigFive: "신경성",
+      //   User: Math.round(
+      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.neuroticism * 100
+      //   ),
+      // },
+      { bigFive: "개방성", User: 0 },
+      { bigFive: "성실성", User: 0 },
+      { bigFive: "외향성", User: 0 },
+      { bigFive: "우호성", User: 0 },
+      { bigFive: "신경성", User: 0 },
     ];
   });
 
