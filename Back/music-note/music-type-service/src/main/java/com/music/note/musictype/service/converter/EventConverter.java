@@ -52,6 +52,8 @@ public class EventConverter {
 		if (track == null)
 			return null;
 
+		System.out.println("track.getImageUrl() = " + track.getImageUrl());
+
 		return MusicDto.builder()
 			.spotifyId(track.getSpotifyId())
 			.title(track.getTitle())
