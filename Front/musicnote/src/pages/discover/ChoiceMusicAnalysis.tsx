@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // import { useEffect, useRef } from "react";
 import TopBar from "../../components/layout/TopBar";
 import SearchMusic from "../../features/discover/ChoiceMusicAnalysis/SearchMusic";
@@ -6,6 +7,8 @@ import SelectMusicList from "../../features/discover/ChoiceMusicAnalysis/SelectM
 import { usePostData } from "../../hooks/useApi";
 
 export default function ChoiceMusicAnalysis() {
+  const navigate = useNavigate();
+
   const [selectedTracks, setSelectedTracks] = useState<any[]>([]);
   const { mutate: postChoiceMusicData } = usePostData("/main/preferences");
 
@@ -54,7 +57,57 @@ export default function ChoiceMusicAnalysis() {
 
   return (
     <div className="text-white w-full h-full">
-      <TopBar title="MyPick 분석" />
+      <div className="flex flex-row mx-[10px] xs:mx-5 my-5 rounded-2xl px-3 py-1 items-center justify-center w-[calc(100%-20px)] xs:w-[calc(100%-40px)] h-[60px] bg-level2">
+        <div className="relative flex items-center justify-center w-full h-full">
+          <div
+            className="absolute left-0 cursor-pointer xs:w-12 xs:h-12 w-10 h-10 flex items-center justify-center"
+            onClick={() => navigate(-1)}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.6667 19L4 12M4 12L10.6667 5M4 12L20 12"
+                stroke="white"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <span className="text-white text-xl xs:text-2xl font-bold mt-1">MY Pick 분석</span>
+          <div className="absolute right-0 flex cursor-pointer">
+            <div className="flex justify-end my-3 mr-3 gap-x-5 items-center">
+              <div
+                className="flex flex-col justify-center items-center text-center"
+                // onClick={() => navigate("/recommendations/my")}
+              >
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="cursor-pointer"
+                >
+                  <path
+                    d="M21.6001 6.30004L2.40066 6.29976L2.39941 6.3001M21.6001 6.30004L21.5994 19.6161C21.5994 20.8775 20.5575 21.9001 19.2721 21.9001H4.72669C3.44137 21.9001 2.39941 20.8775 2.39941 19.6161V6.3001M21.6001 6.30004L17.7509 2.45157C17.5258 2.22653 17.2206 2.1001 16.9024 2.1001H7.09647C6.77821 2.1001 6.47299 2.22653 6.24794 2.45157L2.39941 6.3001M15.5994 9.9001C15.5994 11.8883 13.9876 13.5001 11.9994 13.5001C10.0112 13.5001 8.39941 11.8883 8.39941 9.9001"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="text-white text-xs pt-[2px] rounded-full">보관함</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="text-end pr-10 text-gray-300 my-2">{selectedTracks.length} / 20</div>
       <SearchMusic onTrackSelect={handleTrackSelect} selectedTracks={selectedTracks} />
       <SelectMusicList
