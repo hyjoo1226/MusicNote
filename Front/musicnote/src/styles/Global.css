@@ -80,6 +80,11 @@
   }
 }
 
+/* NavBar가 표시될 때만 패딩 적용 */
+#root.has-navbar {
+  padding-bottom: 80px;
+}
+
 :root {
   --app-height: 100svh; /* 기본값 설정 */
 }
@@ -103,6 +108,11 @@ body {
   align-items: center;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+/* NavBar가 표시될 때만 패딩 적용 */
+#root.has-navbar {
+  padding-bottom: 80px;
 }
 
 #root {

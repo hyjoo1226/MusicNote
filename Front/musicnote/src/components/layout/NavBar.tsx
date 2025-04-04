@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 import HomeIcon from "../../assets/icon/home-icon.svg?react";
 import ReportIcon from "../../assets/icon/report-icon.svg?react";
@@ -22,16 +23,32 @@ export default function NavBar() {
   // NotFound 페이지
   const isNotFoundPage = location.state?.isNotFound === true;
 
-  if (
+  const shouldShowNavBar = !(
     exactHiddenPaths.includes(location.pathname) ||
     patternHiddenPaths.some((path) => location.pathname.startsWith(path + "/")) ||
     isNotFoundPage
-  ) {
+  );
+
+  useEffect(() => {
+    // NavBar가 보이는 경우에만 패딩 클래스 추가
+    if (shouldShowNavBar) {
+      document.getElementById("root")?.classList.add("has-navbar");
+    } else {
+      document.getElementById("root")?.classList.remove("has-navbar");
+    }
+
+    // 컴포넌트 언마운트 시 클래스 제거
+    return () => {
+      document.getElementById("root")?.classList.remove("has-navbar");
+    };
+  }, [shouldShowNavBar]);
+
+  if (!shouldShowNavBar) {
     return null;
   }
 
   return (
-    <div className="fixed bottom-0 w-full min-w-[320px] max-w-[600px] h-[80px] bg-level1 z-10">
+    <div className="navbar fixed bottom-0 w-full min-w-[320px] max-w-[600px] h-[80px] bg-level1 z-10">
       <ul className="flex justify-evenly py-[16px] w-full text-[12px] font-medium">
         <li className="flex-1">
           <NavLink
