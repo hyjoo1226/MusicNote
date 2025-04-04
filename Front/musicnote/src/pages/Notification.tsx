@@ -122,11 +122,13 @@ export default function Notification() {
   };
 
   // useQuery 훅 직접 사용하여 수동으로 데이터 가져오기
-  const { data: notificationData, refetch } = useQuery({
+  const { data: Notification, refetch } = useQuery({
     queryKey: ["notification"],
     queryFn: () => apiClient.get("/main/preferences").then((res: any) => res.data),
     enabled: false, // 처음에는 자동 실행하지 않음
   });
+
+  console.log(Notification);
 
   const handleButtonClick = () => {
     // 버튼 클릭 시 데이터 가져오기
