@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.music.note.recommend.dto.movie.CreditDto;
 import com.music.note.recommend.dto.movie.RecommendMovieDto;
 
@@ -30,7 +31,10 @@ public class RecommendMovie {
 	private String userId;
 	private List<String> genres;
 	private int runtime;
-	private List<CreditDto> credits; // 추가 (출연진 정보)
+	private List<CreditDto> credits;
+	private boolean adult;
+	private String backdropPath;
+	private double popularity;
 
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();

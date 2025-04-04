@@ -11,9 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreditDto {
 	private String name;
-	private String character;
-	private String department;
-	private String job;
-	@JsonProperty("profile_path")
-	private String profilePath;
+	private String role;
 }
