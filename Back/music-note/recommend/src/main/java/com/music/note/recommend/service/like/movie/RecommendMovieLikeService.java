@@ -29,22 +29,21 @@ public class RecommendMovieLikeService {
 	private final RecommendMovieService recommendMovieService;
 	private final RecommendMovieLikeRepository recommendMovieLikeRepository;
 	private final RecommendMovieLikeMapper recommendMovieLikeMapper;
-	public void likeRecommendMovie(Long memberId, RequestRecommendMovieLikeDto dto) {
+	public void likeRecommendMovie(String userId, RequestRecommendMovieLikeDto dto) {
 		RecommendMovie recommendMovie = recommendMovieService.findRecommendMovieById(dto.getRecommendMovieId());
-		String userId = String.valueOf(memberId);
 		Optional<RecommendMovieLikes> optionalRecommendMovieLikes = recommendMovieLikeRepository.findByUserId(userId);
 		if (optionalRecommendMovieLikes.isPresent()){
 			RecommendMovieLikes recommendMovieLikes = optionalRecommendMovieLikes.get();
 			recommendMovieLikes.addLike(recommendMovie.getId());
 		}
 		else {
-			RecommendMovieLikes recommendMovieLikes =recommendMovieLikeMapper.createRecommendMovieLikes(recommendMovie.getId(), String.valueOf(memberId));
+			RecommendMovieLikes recommendMovieLikes =recommendMovieLikeMapper.createRecommendMovieLikes(recommendMovie.getId(), userId);
 			recommendMovieLikeRepository.save(recommendMovieLikes);
 		}
 	}
 
-	public ResponseRecommendMovieList readLikeRecommendMovie(Long memberId) {
-		RecommendMovieLikes recommendMovieLikes = findRecommendMovieLikesByUserId(String.valueOf(memberId));
+	public ResponseRecommendMovieList readLikeRecommendMovie(String userId) {
+		RecommendMovieLikes recommendMovieLikes = findRecommendMovieLikesByUserId(userId);
 		List<String> likedMusicIds = recommendMovieLikes.getLikedMusicIds();
 		ResponseRecommendMovieList responseRecommendMovieList = new ResponseRecommendMovieList();
 		for (String id : likedMusicIds){
@@ -59,5 +58,10 @@ public class RecommendMovieLikeService {
 	private RecommendMovieLikes findRecommendMovieLikesByUserId(String userId){
 		return recommendMovieLikeRepository.findByUserId(userId)
 			.orElseThrow(()-> new RecommendMovieNotFoundException(ErrorCode.NOT_FOUND_RECOMMEND_MOVIE_LIKES));
+	}
+
+	public void cancelRecommendMovieLike(String userId, String recommendMovieId) {
+		RecommendMovieLikes recommendMovieLikes = findRecommendMovieLikesByUserId(userId);
+		recommendMovieLikes.removeLike(recommendMovieId);
 	}
 }

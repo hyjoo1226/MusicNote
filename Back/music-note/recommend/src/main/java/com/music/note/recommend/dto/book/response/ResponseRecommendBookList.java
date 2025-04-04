@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResponseRecommendBookList {
-	@JsonProperty("results")
+
 	private List<RecommendBookDto> books = new ArrayList<>(); ;
 	private int listSize;
 
