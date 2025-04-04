@@ -24,7 +24,6 @@ class BookRecommender:
         self.job_recommender = JobRecommender()
         self.keyword_tool = KeywordTool()
 
-
     def recommend_books_from_bigfive(self, bigfive: BigFiveScore, top_n_jobs: int = 5, top_k_keywords: int = 5, total_per_keyword: int = 2) -> list[BookItem]:
         """
         Big Five 성격 점수를 기반으로 키워드를 추출하고, 해당 키워드로 책을 추천합니다.
@@ -61,12 +60,16 @@ class BookRecommender:
         for start in range(1, total + 1, 20):
             data = self.fetch_books(query, display=10, start=start)
             for item in data.get("items", []):
+                author = item.get("author", "").strip() or "저자 미상"
+                publisher = item.get("publisher", "").strip() or "출판사 미상"
+                description = item.get("description", "").strip() or "설명 없음"
+
                 results.append(BookItem(
                     title=item.get("title"),
                     image=item.get("image"),
-                    author=item.get("author"),
-                    publisher=item.get("publisher"),
-                    description=item.get("description"),
+                    author=author,
+                    publisher=publisher,
+                    description=description,
                     isbn=item.get("isbn"),
                     pubdate=convert_pubdate(item.get("pubdate"))
                 ))
