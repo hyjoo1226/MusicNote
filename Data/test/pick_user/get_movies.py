@@ -28,7 +28,30 @@ def genre_list():
 			"War" : 10752,
 			"Western" : 37,
 	}
-	return genre_list
+	genre_kr = {
+        28: "액션",
+        12: "모험",
+        16: "애니메이션",
+        35: "코미디",
+        80: "범죄",
+        99: "다큐멘터리",
+        18: "드라마",
+        10751: "가족",
+        14: "판타지",
+        36: "역사",
+        27: "공포",
+        10402: "음악",
+        9648: "미스터리",
+        10749: "로맨스",
+        878: "SF",
+        10770: "TV 영화",
+        53: "스릴러",
+        10752: "전쟁",
+        37: "서부"
+	}
+	
+
+	return genre_list, genre_kr
 
 def response_model():
 	model = {
@@ -75,7 +98,7 @@ def genre_transformation(user_dict):
 ## api 요청을 위해 장르를 id로 변환
 def convert_genre_to_id(user_dict):
 	user_dict = genre_transformation(user_dict)
-	converter = genre_list()
+	converter, genre_kr = genre_list()
 
 	user_converted = dict()
 	for genre, count in user_dict.items():
@@ -127,9 +150,9 @@ def add_runtime_credits(movie_info):
 	
 
 def convert_id_to_genre(movie_info):
-	converter = genre_list() # {'action' : 28, ...}
+	genre_dict, converter = genre_list() # {'action' : 28, ...}
 	genre_ids = movie_info.get("genre_ids") # [28, 14, ...]
-	genres = [k for k, v in converter.items() if v in genre_ids]
+	genres = [v for k, v in converter.items() if k in genre_ids]
 	movie_info.update({"genres" : genres})
 
 ## 장르 횟수만큼 영화 받아오기기
