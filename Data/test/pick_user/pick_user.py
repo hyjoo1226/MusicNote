@@ -13,7 +13,7 @@ import os
 
 def load_dataset():
     current_dir = os.path.dirname(__file__)
-    path = "../dataset/user_bigfive.csv" # path 수정해야함!!!
+    path = "../../data/user_bigfive.csv" # path 수정해야함!!!
     file = os.path.join(current_dir, path)
     return pd.read_csv(file)
 

@@ -12,7 +12,7 @@ userid 받아서 20개 장르 리스트
 # ex:{action:8, comedy:4, ...}
 def load_json():
     currend_dir = os.path.dirname(__file__)
-    path = "../dataset/user_genre_counts.json" # path 수정해야함!!!!
+    path = "../../data/user_genre_counts.json" # path 수정해야함!!!!
     file = os.path.join(currend_dir, path)
     with open(file, 'r') as f:
         return json.load(f)
