@@ -40,10 +40,8 @@ public class TrackService {
 		// DB에 전부 존재하는 경우 -> 성향 분석 Event 생생
 		if (missingTracks.isEmpty()) {
 			// AudioFeatures 가져와 넣어줌
-			log.info("DB에 전부 존재하는 경우 -> 성향 분석 Event 생성");
 			MusicListEvent musicEvent = EventConverter.toMusicEvent(event.getUserId(), tracks);
 			typeEventProducer.sendMusicListEvent(musicEvent);
-			log.info("성향 분석 Event 생성 완료");
 		}
 		// DB에 없는 음악이 있는 경우 -> 크롤링 Event 생성
 		else {
