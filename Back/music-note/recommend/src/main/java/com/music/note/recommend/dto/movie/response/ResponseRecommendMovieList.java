@@ -3,7 +3,7 @@ package com.music.note.recommend.dto.movie.response;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.music.note.recommend.dto.movie.MovieRecommendDto;
+import com.music.note.recommend.dto.movie.RecommendMovieDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResponseRecommendMovieList {
-	private List<MovieRecommendDto> movies = new ArrayList<>(); ;
+	private List<RecommendMovieDto> movies = new ArrayList<>(); ;
 	private int listSize;
 
 	public void allocateListSize(){
