@@ -10,4 +10,4 @@ book_recommender = BookRecommender()
 @router.post("/book", response_model=BookList)
 def recommend_books(data: BigFiveScore):
     books = book_recommender.recommend_books_from_bigfive(data)
-    return {"results": books}
+    return {"books": books}

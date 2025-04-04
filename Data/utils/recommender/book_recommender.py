@@ -5,7 +5,8 @@ import time
 import requests
 from dotenv import load_dotenv
 
-from modelschemas.request_response import BigFiveScore
+from modelschemas.request_response import BigFiveScore, BookItem
+from utils.date_converter import convert_pubdate
 from utils.recommender.job_recommender import JobRecommender
 
 load_dotenv()
@@ -21,9 +22,13 @@ class BookRecommender:
         self.base_url = "https://openapi.naver.com/v1/search/book.json"
         self.job_recommender = JobRecommender()
 
-    def recommend_books_from_bigfive(self, bigfive: BigFiveScore, top_n_jobs: int = 5, top_k_keywords: int = 10, total_per_keyword: int = 20) -> list[dict]:
+    def recommend_books_from_bigfive(self, bigfive: BigFiveScore, top_n_jobs: int = 5, top_k_keywords: int = 5, total_per_keyword: int = 2) -> list[BookItem]:
         """
         Big Five 성격 점수를 기반으로 키워드를 추출하고, 해당 키워드로 책을 추천합니다.
+        :param bigfive: 사용자 Big Five 점수
+        :param top_n_jobs: 상위 N개 직업 선택
+        :param top_k_keywords: 최종 추출할 키워드 개수 (예: 5개면 5개 키워드 사용)
+        :param total_per_keyword: 각 키워드당 책 수집 수 (예: 2권씩)
         """
         user_scores = [
             bigfive.openness,
@@ -48,26 +53,28 @@ class BookRecommender:
         response = requests.get(self.base_url, headers=self.headers, params=params)
         return response.json()
 
-    def collect_books(self, query: str, total: int = 40, delay: float = 0.8) -> list[dict]:
-        """
-        단일 키워드에 대해 여러 페이지의 책 정보 수집
-        """
+    def collect_books(self, query: str, total: int = 40, delay: float = 0.8) -> list[BookItem]:
         results = []
         for start in range(1, total + 1, 20):
-            data = self.fetch_books(query, display=20, start=start)
+            data = self.fetch_books(query, display=10, start=start)
             for item in data.get("items", []):
-                results.append({
-                    "title": item.get("title"),
-                    "author": item.get("author"),
-                    "description": item.get("description"),
-                    "isbn": item.get("isbn"),
-                    "link": item.get("link"),
-                    "keyword": query
-                })
+                results.append(BookItem(
+                    title=item.get("title"),
+                    image=item.get("image"),
+                    author=item.get("author"),
+                    publisher=item.get("publisher"),
+                    description=item.get("description"),
+                    isbn=item.get("isbn"),
+                    pubdate=convert_pubdate(item.get("pubdate"))
+                ))
+
+                # ✅ 수집 개수 도달 시 중단
+                if len(results) >= total:
+                    return results
             time.sleep(delay)
         return results
 
-    def collect_from_keywords(self, keywords: list[str], total_per_keyword: int = 30, delay: float = 0.5) -> list[dict]:
+    def collect_from_keywords(self, keywords: list[str], total_per_keyword: int = 2, delay: float = 0.5) -> list[BookItem]:
         """
         여러 키워드를 기반으로 책 정보 수집
         """

@@ -45,5 +45,6 @@ def extract_clean_keywords(descriptions: List[str], top_k: int = 10) -> List[str
     :param top_k: 최종 추출할 키워드 수
     :return: 키워드 리스트
     """
+    tok_k_keywords = 5
     raw_keywords = extract_tfidf_keywords(descriptions, top_k)
-    return deduplicate_keywords(raw_keywords, top_k)
+    return deduplicate_keywords(raw_keywords, top_k=tok_k_keywords)
