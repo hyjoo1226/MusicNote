@@ -24,6 +24,7 @@ public class RecommendMovieMapper {
 			.genres(genres)
 			.runtime(recommendDto.getRuntime())
 			.credits(credits)
+			.createdAt(recommendDto.getCreatedAt())
 			.build();
 	}
 }

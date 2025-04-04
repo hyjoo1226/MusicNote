@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CrawlingService {
 
-	private static final String API_KEY = "468c4fc9bede188fb0c40c59bf04929e96906531";
+	private static final String API_KEY = "11ce7f874fc9814791404199a5ae2fc100414bce";
 	private static final String BASE_API_URL = "https://api.zenrows.com/v1/";
 	private static final String TARGET_URL_TEMPLATE = "https://songdata.io/track/%s/";
 	private static final String CSS_EXTRACTOR = "{\"scores\":\"dd\"}";

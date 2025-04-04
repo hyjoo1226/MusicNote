@@ -29,14 +29,12 @@ public class RecommendBookService {
 	public ResponseRecommendBookList recommendBooks(String memberId) {
 		RequestLatestPersonalityReportDto personalityReportDto = recommendCommonService.getRequestLatestPersonalityReportDto(memberId);
 		ResponseRecommendBookList recommendMoviesByDataServer = getRecommendBooksByDataServer(personalityReportDto);
-		log.info("data server response:{}",recommendMoviesByDataServer.getBooks());
 		recommendMoviesByDataServer.allocateListSize();
 		saveRecommendMovie(recommendMoviesByDataServer.getBooks(),memberId);
 		return recommendMoviesByDataServer;
 	}
 
 	private ResponseRecommendBookList getRecommendBooksByDataServer(RequestLatestPersonalityReportDto personalityReportDto){
-		// String dataUrl = "http://13.125.215.33:8100/recommend/book";
 		String dataUrl = "http://13.125.215.33:8100/data/api/recommend/book";
 		return recommendCommonService.getRecommendations(dataUrl,
 			personalityReportDto, ResponseRecommendBookList.class);
