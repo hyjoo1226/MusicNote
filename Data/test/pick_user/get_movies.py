@@ -30,6 +30,25 @@ def genre_list():
 	}
 	return genre_list
 
+def response_model():
+	model = {
+		'adult': None,
+		'backdrop_path': None,
+		'genres': None,
+		'id': None,
+		'original_language': None,
+		'original_title': None,
+		'overview': None,
+		'popularity': None,
+		'poster_path': None,
+		'release_date': None,
+		'title': None,
+		'vote_average': None,
+		'runtime': None,
+		'credits': None
+	}
+	return model
+
 def init_tmdb(api_key='4feca631dd5c6770c207e60e8f469db0', lang='ko'):
     tmdb = TMDb()
     tmdb.api_key = api_key
@@ -111,32 +130,41 @@ def convert_id_to_genre(movie_info):
 	converter = genre_list() # {'action' : 28, ...}
 	genre_ids = movie_info.get("genre_ids") # [28, 14, ...]
 	genres = [k for k, v in converter.items() if v in genre_ids]
-	movie_info.update({"genre_ids" : genres})
+	movie_info.update({"genres" : genres})
 
 ## 장르 횟수만큼 영화 받아오기기
 def recommend(user_genre):
 	
-    # 장르str -> 장르id
-	user_genre = convert_genre_to_id(user_genre)
+	user_genre = convert_genre_to_id(user_genre) # {action : 2} -> {28: 2}
 	discover, movie = init_tmdb()
 	recommendation = []
 
+	# user_genre를 순회하며 영화 받아오기
 	for id, cnt in user_genre.items():
 		print(id, cnt)
 		sort_by = ['popularity.desc', 'revenue.desc', 'vote_average.desc', 'vote_count.desc']
 		page = None
+
+		# tmdb에서 장르로 영화 검색한 결과
 		response = discover.discover_movies({'with_genres' : id, 'sort_by' : 'popularity.desc', 'page' : 1})
 		results = response['results']
 		results = list(results)
+
 		print(len(results))
+		# 장르의 cnt만큼 영화 추가
 		for i in range(cnt):
 			result = results[i]
+			movie_model = response_model() # response_model 불러오기
+
+			# result 보완하는 부분
 			add_runtime_credits(result)
 			convert_id_to_genre(result)
-			result.pop('video')
-			result.pop('vote_count')
-			recommendation.append(result)
-	print(recommendation)
-	with open("result.json", "w", encoding="utf-8") as f:
-		json.dump(recommendation, f)
+
+			# result를 순회하며 response_model 작성
+			for key in result.keys(): # dict를 순회하면 key 값을 반환한다!
+				if key in movie_model:
+					movie_model[key] = result[key]
+			
+			recommendation.append(movie_model)
+		print(type(recommendation))
 	return recommendation

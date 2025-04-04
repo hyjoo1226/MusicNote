@@ -3,41 +3,72 @@ import numpy as np
 import pandas as pd
 import os
 
-def user(bigfive_input):
+'''
+1. 파일 읽어
+2. df에 k=5로 big-five별 클러스터 생성
+3. big-five 인풋받아 해당된 클러스터 뽑기
+4. 클러스터 내에서 랜덤유저id 픽픽
+''' 
+
+
+def load_dataset():
     current_dir = os.path.dirname(__file__)
-    file = os.path.join(current_dir, "../dataset/user_bigfive.csv")
-    model = os.path.join(current_dir, "../../models/kmeans_model.pkl")
-    print(bigfive_input)
+    path = "../dataset/user_bigfive.csv" # path 수정해야함!!!
+    file = os.path.join(current_dir, path)
+    return pd.read_csv(file)
 
+def load_kmeans_model():
+    current_dir = os.path.dirname(__file__)
+    kmeans_path = "../../models/kmeans_model.pkl" # path 수정해야함!!!!
+    file = os.path.join(current_dir, kmeans_path)
 
-    with open(model, "rb") as f:
-        kmeans = pickle.load(f)
-    df = pd.read_csv(file)
+    with open(file, "rb") as f:
+        return pickle.load(f)
 
-    # 유저별 클러스터 칼럼 생성
-    bigfive_cols = ['openness', 'conscientiousness', 'extraversion', 'agreeableness', 'neuroticism']
-    X = df[bigfive_cols]
-    df['cluster'] = kmeans.fit_predict(X)
-    bg_dict = dict(bigfive_input)
-    bigfive_values = [list(bg_dict.values())]
+# 데이터셋에 clustering하고 'cluster' 칼럼 추가
+def clustering():
 
+    # bigfive 데이터셋, kmeans모델 로드
+    df = load_dataset()
+    kmeans_model = load_kmeans_model()
 
-    predicted_cluster = kmeans.predict(bigfive_values)[0]
-    print("예측된 클러스터:", predicted_cluster)
+    # 유저 각각에 해당되는 'cluster' 칼럼 추가
+    bf_columns = ['openness', 'conscientiousness', 'extraversion', 'agreeableness', 'neuroticism']
+    X = df[bf_columns]
+    df['cluster'] = kmeans_model.fit_predict(X)
 
-    # 예측된 클러스터에 해당하는 유저들 선택
-    cluster_users = df[df['cluster'] == predicted_cluster]
+    return df
 
-    # 'probability' 칼럼을 사용하여 가중치 계산 (칼럼명이 다르다면 수정하세요)
-    weights = cluster_users['probability']
-    normalized_weights = weights / weights.sum()
+# 입력받은 bigfive 점수에 해당하는 cluster 반환
+def return_cluster(bf_score):
+    
+    kmeans_model = load_kmeans_model()
+    # fastapi로 입력받은 빅파이브 점수 2차원 리스트로 변환
+    bigfive_dict = dict(bf_score)
+    bigfive_list = [list(bigfive_dict.values())]
 
-    # 가중치에 따른 랜덤 선택: 클러스터 내 인덱스를 선택
-    selected_index = np.random.choice(cluster_users.index, p=normalized_weights)
-    selected_user = cluster_users.loc[selected_index]
+    # bigfive 점수로 cluster 반환
+    perdicted_cluster = kmeans_model.predict(bigfive_list)[0]
+    
+    return perdicted_cluster
 
-    # print("선택된 유저 정보:")
-    # print(selected_user)
+# cluster 내의 랜덤유저의 userid 반환환
+def user(bigfive_input):
+    df = clustering()
+
+    # cluster에 해당하는 유저들 선택
+    cluster = return_cluster(bigfive_input)
+    clustered_users = df[df['cluster'] == cluster]
+
+    # 유저별 선택될 가중치 계산
+    weights = clustered_users['probability']
+    p_choice = weights / weights.sum()
+
+    # 확률에 따른 랜덤 선택
+    selected_index = np.random.choice(clustered_users.index, p=p_choice)
+    selected_user = clustered_users.loc[selected_index]
+
     return selected_user.get('userid')
+
 
 

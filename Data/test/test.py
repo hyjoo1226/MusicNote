@@ -1,4 +1,4 @@
-from pick_user.pick_user import user
+from test.pick_user.get_movies import recommend
 
 a = {
   "openness": 0.2,
@@ -8,4 +8,22 @@ a = {
   "neuroticism": 1
 
 }
-print(user(a))
+
+a = recommend({'Action' : 2, 'Adventure' : 2, 'Drama' : 8, 'Fantasy' : 2, 'Horror' : 1, 'Mystery' : 1, 'Romance': 2, 'War' : 2})
+print(a, type(a))
+
+credits = [
+{
+  "role" : "actor1",
+  "name" : ""
+},
+{
+  "role" : "actor2",
+  "name" : ""
+},
+{
+  "role" : "director",
+  "name" : ""
+}
+
+]

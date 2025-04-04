@@ -56,9 +56,11 @@ class Movie(BaseModel):
     poster_path: str
     release_date: date
     title: str
-    video: bool
     vote_average: float
-    vote_count: int
+    runtime: int
+    credits:List[dict]
+
+
 
 class MusicList(BaseModel):
     musics: List[Music]
