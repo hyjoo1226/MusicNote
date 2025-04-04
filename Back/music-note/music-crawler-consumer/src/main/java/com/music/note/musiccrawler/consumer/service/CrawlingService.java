@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -64,7 +65,13 @@ public class CrawlingService {
 		for (MusicDto musicDto : missingTracks) {
 			TrackDataResponse trackDataResponse = fetchTrackData(musicDto.getSpotifyId());
 			Track track = TrackConverter.toTrack(musicDto, trackDataResponse);
-			trackRepository.save(track);
+
+			// trackRepository.save(track);
+			try {
+				trackRepository.save(track);
+			} catch (DuplicateKeyException e) {
+				log.info("이미 저장된 트랙: {}", track.getSpotifyId());
+			}
 
 			updatedMusicList.add(MusicDtoConverter.updateMusicDtoWithAudioFeatures(musicDto,
 				MusicDtoConverter.toAudioFeaturesDto(track.getAudioFeatures())));
