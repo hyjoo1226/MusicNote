@@ -1,6 +1,7 @@
 package com.music.note.recommend.dto.movie;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -11,14 +12,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@ToString
 public class RecommendMovieDto {
-	private List<String> genres;
+	private List<String> genres = new ArrayList<>();
 	@Setter
 	private String id;
 	private String overview;
@@ -29,8 +32,12 @@ public class RecommendMovieDto {
 	private String title;
 	@JsonProperty("vote_average")
 	private double voteAverage;
-	@JsonProperty("run_time")
 	private int runtime;
-	private List<CreditDto> credits; // 추가 (출연진 정보)
+	private List<CreditDto> credits = new ArrayList<>();
+	private boolean adult;
+
+	@JsonProperty("backdrop_path")
+	private String backdropPath;
+	private double popularity;
 	private LocalDateTime createdAt;
 }

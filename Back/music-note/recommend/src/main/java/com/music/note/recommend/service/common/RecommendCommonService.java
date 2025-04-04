@@ -13,8 +13,8 @@ import org.springframework.http.MediaType;
 
 import com.music.note.common.exception.exception.domain.personalityreport.PersonalityNotFoundByUserIdException;
 import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
-import com.music.note.recommend.mapper.personality.PersonalityMapper;
-import com.music.note.recommend.repository.personality.PersonalityRepository;
+import com.music.note.recommend.mapper.report.ReportMapper;
+import com.music.note.recommend.repository.personality.ReportRepository;
 import com.music.note.typedomain.domain.PersonalityReport;
 
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RecommendCommonService {
 
-	private final PersonalityRepository personalityRepository;
-	private final PersonalityMapper personalityMapper;
+	private final ReportRepository personalityRepository;
+	private final ReportMapper personalityMapper;
 
 	private final RestTemplate restTemplate;
 	private PersonalityReport getPersonalityReportByMemberId(String userId){
@@ -37,7 +37,7 @@ public class RecommendCommonService {
 	}
 	public RequestLatestPersonalityReportDto getRequestLatestPersonalityReportDto(String userId){
 		PersonalityReport report = getPersonalityReportByMemberId(userId);
-		RequestLatestPersonalityReportDto personalityReportDto = personalityMapper.EntityToDto(report);
+		RequestLatestPersonalityReportDto personalityReportDto = personalityMapper.entityToDto(report);
 		log.info("personalityReportDto: {}", personalityReportDto);
 		return personalityReportDto;
 	}
@@ -55,7 +55,7 @@ public class RecommendCommonService {
 
 		ResponseEntity<T> responseEntity = restTemplate.exchange(
 			url, HttpMethod.POST, requestEntity, responseType);
-
+		log.info("data server response{}=", responseEntity.getBody());
 		return responseEntity.getBody();
 	}
 }
