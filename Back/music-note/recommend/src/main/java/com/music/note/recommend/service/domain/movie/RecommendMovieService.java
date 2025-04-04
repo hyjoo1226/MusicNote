@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.music.note.common.exception.exception.domain.recommend.domain.RecommendMovieNotFoundException;
+import com.music.note.common.exception.exception.domain.recommend.domain.movie.RecommendMovieNotFoundException;
 import com.music.note.recommend.domain.recommned.movie.RecommendMovie;
 import com.music.note.recommend.dto.movie.RecommendMovieDto;
 import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;

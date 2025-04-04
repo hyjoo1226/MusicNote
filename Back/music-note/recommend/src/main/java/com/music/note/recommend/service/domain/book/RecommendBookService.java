@@ -1,13 +1,14 @@
 package com.music.note.recommend.service.domain.book;
 
 
+import static com.music.note.common.exception.exception.common.ErrorCode.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.music.note.common.exception.exception.domain.recommend.domain.book.RecommendBookNotFoundException;
 import com.music.note.recommend.domain.recommned.book.RecommendBook;
 import com.music.note.recommend.dto.book.RecommendBookDto;
 import com.music.note.recommend.dto.book.response.ResponseRecommendBookList;
@@ -63,5 +64,10 @@ public class RecommendBookService {
 			.books(books)
 			.listSize(books.size())
 			.build();
+	}
+
+	public RecommendBook findRecommendBookById(String recommendBookId) {
+		return recommendBookRepository.findById(recommendBookId)
+			.orElseThrow(() -> new RecommendBookNotFoundException(NOT_FOUND_RECOMMEND_BOOK));
 	}
 }
