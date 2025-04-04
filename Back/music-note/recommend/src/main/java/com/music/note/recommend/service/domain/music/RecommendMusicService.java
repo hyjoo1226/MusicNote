@@ -1,5 +1,6 @@
 package com.music.note.recommend.service.domain.music;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -38,11 +39,24 @@ public class RecommendMusicService {
 		return recommendCommonService.getRecommendations(dataUrl,
 			personalityReportDto, ResponseRecommendMusicList.class);
 	}
-	private void saveRecommendMusic(List<RecommendMusicDto> musicDtos, String memberId){
-		for (RecommendMusicDto dto: musicDtos){
+	private void saveRecommendMusic(List<RecommendMusicDto> dtoList, String memberId){
+		for (RecommendMusicDto dto: dtoList){
 			RecommendMusic recommendMusic = recommendMusicMapper.dtoToEntity(dto, memberId);
 			RecommendMusic save = recommendMusicRepository.save(recommendMusic);
 			dto.setId(save.getId());
 		}
+	}
+
+	public ResponseRecommendMusicList readRecommendMusic(String userId) {
+		List<RecommendMusic> recommendMusicList = recommendMusicRepository.findTop20ByUserIdOrderByCreatedAtDesc(userId);
+		List<RecommendMusicDto> recommendMusicDtoList = new ArrayList<>();
+		for (RecommendMusic recommendMusic : recommendMusicList){
+			RecommendMusicDto dto = recommendMusicMapper.entityToRecommendMusicDto(recommendMusic);
+			recommendMusicDtoList.add(dto);
+		}
+		return ResponseRecommendMusicList.builder()
+			.musics(recommendMusicDtoList)
+			.listSize(recommendMusicDtoList.size())
+			.build();
 	}
 }

@@ -49,6 +49,7 @@ public class RecommendBookService {
 			RecommendBook recommendBook = recommendBookMapper.dtoToEntity(dto, memberId);
 			RecommendBook save = recommendBookRepository.save(recommendBook);
 			dto.setId(save.getId());
+			dto.setUserId(memberId);
 		}
 	}
 

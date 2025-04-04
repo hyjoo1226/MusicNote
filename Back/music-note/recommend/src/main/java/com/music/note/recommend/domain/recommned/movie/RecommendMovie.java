@@ -52,8 +52,9 @@ public class RecommendMovie {
 			.voteAverage(voteAverage)
 			.releaseDate(releaseDate)
 			.createdAt(createdAt)
-			.genres(genres)
 			.popularity(popularity)
+			.backdropPath(backdropPath)
+
 			.build();
 	}
 

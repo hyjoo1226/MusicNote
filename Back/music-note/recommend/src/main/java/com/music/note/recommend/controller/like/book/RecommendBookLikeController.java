@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.music.note.common.response.CommonResponse;
@@ -27,9 +28,9 @@ public class RecommendBookLikeController {
 	@PostMapping("/like/book")
 	public CommonResponse<String> likeRecommendMovies(
 		HttpServletRequest request,
-		@RequestBody RequestRecommendBookLikeDto dto) {
+		@RequestParam String recommendBookId) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
-		recommendBookLikeService.likeRecommendBook(userId, dto);
+		recommendBookLikeService.likeRecommendBook(userId, recommendBookId);
 		return CommonResponse.success("ok");
 	}
 	@GetMapping("/like/book")

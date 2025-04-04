@@ -28,15 +28,15 @@ public class RecommendMovieLikeService {
 	private final RecommendMovieService recommendMovieService;
 	private final RecommendMovieLikeRepository recommendMovieLikeRepository;
 	private final RecommendMovieLikeMapper recommendMovieLikeMapper;
-	public void likeRecommendMovie(String userId, RequestRecommendMovieLikeDto dto) {
+	public void likeRecommendMovie(String userId, String recommendMovieId) {
 
-		RecommendMovie recommendMovie = recommendMovieService.findRecommendMovieById(dto.getRecommendMovieId());
+		RecommendMovie recommendMovie = recommendMovieService.findRecommendMovieById(recommendMovieId);
 		Optional<RecommendMovieLikes> optionalRecommendMovieLikes = recommendMovieLikeRepository.findByUserId(userId);
 
 		if (optionalRecommendMovieLikes.isPresent()){
 
 			RecommendMovieLikes recommendMovieLikes = optionalRecommendMovieLikes.get();
-			recommendMovieLikeRepository.addMovieLike(recommendMovieLikes.getId(), dto.getRecommendMovieId());
+			recommendMovieLikeRepository.addMovieLike(recommendMovieLikes.getId(), recommendMovieId);
 
 
 		}

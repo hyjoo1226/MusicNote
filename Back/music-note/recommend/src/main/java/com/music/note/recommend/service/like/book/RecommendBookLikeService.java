@@ -33,12 +33,12 @@ public class RecommendBookLikeService {
 	private final RecommendBookLikeRepository recommendBookLikeRepository;
 	private final RecommendBookLikeMapper recommendBookLikeMapper;
 	private final RecommendBookMapper recommendBookMapper;
-	public void likeRecommendBook(String userId, RequestRecommendBookLikeDto dto){
-		RecommendBook recommendBook = recommendBookService.findRecommendBookById(dto.getRecommendBookId());
-		Optional<RecommendBookLikes> optionalRecommendMovieLikes = recommendBookLikeRepository.findByUserId(userId);
+	public void likeRecommendBook(String userId, String recommendBookId){
+		RecommendBook recommendBook = recommendBookService.findRecommendBookById(recommendBookId);
+		Optional<RecommendBookLikes> optionalRecommendBookLikes = recommendBookLikeRepository.findByUserId(userId);
 
-		if (optionalRecommendMovieLikes.isPresent()){
-			RecommendBookLikes recommendBookLikes = optionalRecommendMovieLikes.get();
+		if (optionalRecommendBookLikes.isPresent()){
+			RecommendBookLikes recommendBookLikes = optionalRecommendBookLikes.get();
 			recommendBookLikeRepository.addMovieLike(recommendBookLikes.getId(), recommendBook.getId());
 
 		}

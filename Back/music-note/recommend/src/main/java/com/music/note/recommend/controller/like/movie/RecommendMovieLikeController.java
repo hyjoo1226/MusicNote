@@ -31,9 +31,9 @@ public class RecommendMovieLikeController {
 	@PostMapping("/like/movie")
 	public CommonResponse<String> likeRecommendMovies(
 		HttpServletRequest request,
-		@RequestBody RequestRecommendMovieLikeDto dto) {
+		@RequestParam String recommendMovieId) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
-		recommendMovieLikeService.likeRecommendMovie(userId, dto);
+		recommendMovieLikeService.likeRecommendMovie(userId, recommendMovieId);
 		return CommonResponse.success("ok");
 	}
 	@GetMapping("/like/movie")

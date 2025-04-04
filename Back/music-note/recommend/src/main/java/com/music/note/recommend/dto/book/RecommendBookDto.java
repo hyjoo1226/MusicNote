@@ -21,6 +21,7 @@ public class RecommendBookDto {
 	private String description;
 	private String publisher;
 	private String isbn;
+	@Setter
 	private String userId;
 	private String pubdate;
 	private String image;

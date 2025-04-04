@@ -2,6 +2,7 @@ package com.music.note.recommend.controller.recommend.music;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,9 +26,15 @@ public class RecommendMusicController {
 	private String secretKey;
 
 	@PostMapping("/music")
-	public CommonResponse<ResponseRecommendMusicList> recommendMusic(HttpServletRequest request) {
+	public CommonResponse<ResponseRecommendMusicList> createdRecommendMusic(HttpServletRequest request) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
 		ResponseRecommendMusicList responseRecommendMusicList = recommendMusicService.recommendMusic(userId);
+		return CommonResponse.success(responseRecommendMusicList);
+	}
+	@GetMapping("/music")
+	public CommonResponse<ResponseRecommendMusicList> readRecommendMusic(HttpServletRequest request) {
+		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
+		ResponseRecommendMusicList responseRecommendMusicList = recommendMusicService.readRecommendMusic(userId);
 		return CommonResponse.success(responseRecommendMusicList);
 	}
 }

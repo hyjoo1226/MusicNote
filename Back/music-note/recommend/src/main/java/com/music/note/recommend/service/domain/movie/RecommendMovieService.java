@@ -47,11 +47,11 @@ public class RecommendMovieService {
 			RecommendMovie recommendMovie = recommendMovieMapper.dtoToEntity(dto, memberId);
 			RecommendMovie save = recommendMovieRepository.save(recommendMovie);
 			dto.setId(save.getId());
+			dto.setCreatedAt(save.getCreatedAt());
 		}
 	}
 
 	private ResponseRecommendMovieList getRecommendMoviesByDataServer(RequestLatestPersonalityReportDto personalityReportDto){
-		// String dataUrl = "http://13.125.215.33:8100/recommend/movie";
 		String dataUrl = "http://13.125.215.33:8100/data/api/recommend/movie";
 		return recommendCommonService.getRecommendations(dataUrl,
 			personalityReportDto, ResponseRecommendMovieList.class);
