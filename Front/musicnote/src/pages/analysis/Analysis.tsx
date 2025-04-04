@@ -135,7 +135,7 @@ export default function Analysis() {
   });
 
   const handleReportClick = () => {
-    navigate("/analysis/report");
+    navigate(`/analysis/report/${reportCycle}`);
     // navigate(`/analysis/report/${selectedReportId}`);
   };
 

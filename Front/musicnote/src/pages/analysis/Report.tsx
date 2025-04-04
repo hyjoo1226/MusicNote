@@ -1,13 +1,15 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { domToJpeg } from "modern-screenshot";
 import UserTemperGraph from "../../components/UserTemperGraph";
-import ReportDetail from "../../features/analysis/ReportDetail";
+import DailyReport from "../../features/analysis/DailyReport";
+import WeeklyReport from "@/features/analysis/WeeklyReport";
 import NoteIcon from "../../assets/icon/note-icon.svg?react";
 import ShareIcon from "../../assets/icon/share-icon.svg?react";
 
 export default function Report() {
   const navigate = useNavigate();
+  const { type } = useParams<{ type: "daily" | "weekly" }>();
   const reportRef = useRef<HTMLDivElement>(null);
 
   // top bar
@@ -76,7 +78,7 @@ export default function Report() {
       const file = new File([blob], "my-report.jpeg", { type: "image/jpeg" });
 
       const shareData = {
-        title: "일일 리포트",
+        title: type === "daily" ? "일일 리포트" : "주간 리포트",
         text: "나의 성향 리포트를 확인해보세요!",
         files: [file],
       };
@@ -120,7 +122,9 @@ export default function Report() {
               />
             </svg>
           </div>
-          <span className="text-white text-xl xs:text-2xl font-bold mt-1">일일 리포트</span>
+          <span className="text-white text-xl xs:text-2xl font-bold mt-1">
+            {type === "daily" ? "일일" : "주간"} 리포트
+          </span>
           <div className="absolute right-0 flex cursor-pointer">
             <NoteIcon onClick={handleMusicListClick} className="mr-3" />
             <ShareIcon onClick={handleShare} />
@@ -130,7 +134,7 @@ export default function Report() {
       <div className="flex flex-col px-[10px] xs:px-5 gap-y-5 justify-between pb-[82px]">
         <div ref={reportRef} className="flex flex-col gap-y-5">
           <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
-          <ReportDetail />
+          {type === "daily" ? <DailyReport /> : <WeeklyReport />}
         </div>
       </div>
       {isCopied && <span className="text-sm text-green-500">복사 완료!</span>}

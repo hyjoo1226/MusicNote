@@ -8,7 +8,7 @@ const report = {
     "감정 기복이 있으며 불안이나 걱정이 잦을 수 있습니다. 반면, 새로운 경험보다는 익숙한 것을 선호하는 경향이 있습니다. 따라서 전체적으로 neuroticism 성향이 두드러지며, openness 성향은 낮은 편으로 보입니다.",
 };
 
-export default function ReportDetail() {
+export default function DailyReport() {
   return (
     <div className="text-white h-auto p-2 xs:p-4 bg-level2 rounded-lg w-full">
       <h1 className="text-xl text-white font-medium mb-2">상세 리포트</h1>
