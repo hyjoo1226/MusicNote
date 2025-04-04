@@ -1,8 +1,11 @@
 package com.music.note.recommend.service.domain.book;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.music.note.recommend.domain.recommned.book.RecommendBook;
@@ -46,5 +49,19 @@ public class RecommendBookService {
 			RecommendBook save = recommendBookRepository.save(recommendBook);
 			dto.setId(save.getId());
 		}
+	}
+
+	public ResponseRecommendBookList readRecommendBook(String userId) {
+		List<RecommendBook> recommendBookList = recommendBookRepository.findTop20ByUserIdOrderByCreatedAtDesc(
+			userId);
+		List<RecommendBookDto> books = new ArrayList<>();
+		for (RecommendBook recommendBook: recommendBookList){
+			RecommendBookDto recommendBookDto = recommendBookMapper.entityToDto(userId, recommendBook);
+			books.add(recommendBookDto);
+		}
+		return ResponseRecommendBookList.builder()
+			.books(books)
+			.listSize(books.size())
+			.build();
 	}
 }

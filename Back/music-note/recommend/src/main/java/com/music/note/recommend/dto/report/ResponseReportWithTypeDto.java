@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class ResponseReportWithTypeDto {
-	private LocalDateTime cratedAt;
+	private LocalDateTime createdAt;
 	private String reportId;
 	private TypeDto typeDto;
 }

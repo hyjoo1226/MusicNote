@@ -2,6 +2,7 @@ package com.music.note.recommend.service.domain.movie;
 
 import static com.music.note.common.exception.exception.common.ErrorCode.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -60,5 +61,19 @@ public class RecommendMovieService {
 		return recommendMovieRepository.findById(id)
 			.orElseThrow(() -> new RecommendMovieNotFoundException(id, NOT_FOUND_RECOMMEND_MOVIE));
 
+	}
+
+	public ResponseRecommendMovieList readRecommendMovies(String userId) {
+		List<RecommendMovie> recommendMovieList = recommendMovieRepository.findTop20ByUserIdOrderByCreatedAtDesc(
+			userId);
+		List<RecommendMovieDto> recommendMovieDtoList = new ArrayList<>();
+		for (RecommendMovie recommendMovie : recommendMovieList){
+			RecommendMovieDto recommendMovieDto = recommendMovie.EntityToDto();
+			recommendMovieDtoList.add(recommendMovieDto);
+		}
+		return ResponseRecommendMovieList.builder()
+			.movies(recommendMovieDtoList)
+			.listSize(recommendMovieDtoList.size())
+			.build();
 	}
 }

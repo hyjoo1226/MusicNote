@@ -1,4 +1,4 @@
-package com.music.note.recommend.domain.like.movie;
+package com.music.note.recommend.domain.like.book;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,23 +17,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "recommend_movie_likes")
-public class RecommendMovieLikes {
+@Document(collection = "recommend_book_likes")
+public class RecommendBookLikes {
 	@Id
 	private String id;
-	@Field("liked_movie_ids") // 필드명 지정
-	private List<String> likedMovieIds = new ArrayList<>();
+	@Field("liked_book_ids") // 필드명 지정
+	private List<String> likedBookIds = new ArrayList<>();
 	private String userId;
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
-
-	public void addLike(String movieId) {
-		if (!likedMovieIds.contains(movieId)) {
-			likedMovieIds.add(movieId);
+	public void addLike(String bookId) {
+		if (!likedBookIds.contains(bookId)) {
+			likedBookIds.add(bookId);
 		}
 	}
 
-	public void removeLike(String musicId) {
-		likedMovieIds.remove(musicId);
+	public void removeLike(String bookId) {
+		likedBookIds.remove(bookId);
 	}
 }
+

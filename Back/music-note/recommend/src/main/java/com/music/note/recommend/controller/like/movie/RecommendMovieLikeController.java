@@ -52,5 +52,4 @@ public class RecommendMovieLikeController {
 		recommendMovieLikeService.cancelRecommendMovieLike(userId, recommendMovieId);
 		return CommonResponse.success("ok");
 	}
-
 }
