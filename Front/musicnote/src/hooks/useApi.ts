@@ -15,9 +15,27 @@ export const useGetData = (key: string, url: string, client: string = "default",
 
 // POST 요청을 위한 커스텀 훅
 export const usePostData = (url: string) => {
-  return useMutation({
-    mutationFn: (data: any) => apiClient.post(url, data).then((res: any) => res.data),
+  const mutation = useMutation({
+    mutationFn: (data: any) =>
+      apiClient.post(url, data).then((res: any) => {
+        // 응답에서 status, message, data를 추출
+        const { status, message, data: responseData } = res.data;
+        return { status, message, data: responseData };
+      }),
   });
+
+  return {
+    mutate: mutation.mutate,
+    mutateAsync: mutation.mutateAsync,
+    isLoading: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error,
+    isSuccess: mutation.isSuccess,
+    data: mutation.data?.data, // 실제 데이터만 반환
+    status: mutation.data?.status, // 응답 상태 코드
+    message: mutation.data?.message, // 응답 메시지
+    reset: mutation.reset,
+  };
 };
 
 // 예시
@@ -34,15 +52,14 @@ export const usePostData = (url: string) => {
 // }
 
 // function CreatePost() {
-//   const postMutation = usePostData('/api/posts');
+//   const { mutate, isLoading, status, message, data } = usePostData('/api/posts');
 
-//   const handleSubmit = (data) => {
-//     postMutation.mutate(data, {
-//       onSuccess: (response) => {
-//         console.log('성공:', response);
-//       }
-//     });
+//   const handleSubmit = (formData) => {
+//     mutate(formData);
 //   };
+
+//   if (isLoading) return <div>저장 중...</div>;
+//   if (status === 200) return <div>성공: {message}</div>;
 
 //   return (/* 폼 컴포넌트 */);
 // }
