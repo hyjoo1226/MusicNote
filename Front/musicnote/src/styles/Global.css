@@ -88,6 +88,7 @@ body {
   width: 100vw;
   height: var(--app-height);
   background-color: #19171b;
+  overflow-y: auto;
 }
 
 #root {
