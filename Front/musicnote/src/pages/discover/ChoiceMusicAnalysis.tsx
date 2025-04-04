@@ -102,7 +102,7 @@ export default function ChoiceMusicAnalysis() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <span className="text-white text-xs pt-[2px] rounded-full">보관함</span>
+                {/* <span className="text-white text-xs pt-[2px] rounded-full">보관함</span> */}
               </div>
             </div>
           </div>
