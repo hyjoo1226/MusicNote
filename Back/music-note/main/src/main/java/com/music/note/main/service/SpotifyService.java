@@ -40,6 +40,7 @@ public class SpotifyService {
 			return restClient.get()
 				.uri("/v1/me/player/recently-played?limit=30")
 				.header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+				.header(HttpHeaders.ACCEPT_LANGUAGE, "ko")
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.body(SpotifyRecentlyPlayedResponse.class);
