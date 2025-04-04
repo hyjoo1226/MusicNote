@@ -1,4 +1,4 @@
-package com.music.note.recommend.dto.movie.request;
+package com.music.note.recommend.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
