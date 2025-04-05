@@ -64,8 +64,7 @@ public class RecommendBookLikeService {
 			.build();
 	}
 	private RecommendBookLikes findRecommendBookLikesByUserId(String userId){
-		return recommendBookLikeRepository.
-			findByUserId(userId)
+		return recommendBookLikeRepository.findByUserId(userId)
 			.orElseThrow(()-> new RecommendBookLikesNotFoundException(NOT_FOUND_RECOMMEND_BOOK_LIKES));
 	}
 }

@@ -29,6 +29,8 @@ public enum ErrorCode {
 	NOT_FOUND_RECOMMEND_MOVIE_LIKES(HttpStatus.NOT_FOUND, "4016", "좋아요한 추천 영화를 조회할 수 없습니다."),
 	NOT_FOUND_RECOMMEND_BOOK(HttpStatus.NOT_FOUND, "4017", "추천 책을 조회할 수 없습니다."),
 	NOT_FOUND_RECOMMEND_BOOK_LIKES(HttpStatus.NOT_FOUND, "4018", "좋아요한 추천 책을 조회할 수 없습니다."),
+	NOT_FOUND_RECOMMEND_MUSIC(HttpStatus.NOT_FOUND, "4019", "추천 음악을 조회할 수 없습니다."),
+	NOT_FOUND_RECOMMEND_MUSIC_LIKES(HttpStatus.NOT_FOUND, "4019", "좋아요한 추천 음악을 조회할 수 없습니다."),
 
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5001", "서버 에러가 발생했습니다."),
 	EXTERNAL_API_INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5002", "외부 API 서버에서 오류가 발생했습니다."),

@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-
+import com.music.note.common.exception.exception.common.ErrorCode;
+import com.music.note.common.exception.exception.domain.recommend.domain.music.RecommendMusicNotFoundException;
 import com.music.note.recommend.domain.recommned.music.RecommendMusic;
 import com.music.note.recommend.dto.music.RecommendMusicDto;
 import com.music.note.recommend.dto.music.response.ResponseRecommendMusicList;
@@ -58,5 +59,10 @@ public class RecommendMusicService {
 			.musics(recommendMusicDtoList)
 			.listSize(recommendMusicDtoList.size())
 			.build();
+	}
+
+	public RecommendMusic findRecommendMusicById(String recommendMusicId) {
+		return recommendMusicRepository.findById(recommendMusicId)
+			.orElseThrow(()-> new RecommendMusicNotFoundException(ErrorCode.NOT_FOUND_RECOMMEND_MUSIC));
 	}
 }
