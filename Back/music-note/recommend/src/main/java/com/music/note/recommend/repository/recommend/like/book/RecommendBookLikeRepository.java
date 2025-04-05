@@ -17,4 +17,8 @@ public interface RecommendBookLikeRepository extends MongoRepository<RecommendBo
 	void addMovieLike(String recommendBookLikesId, String bookId);
 
 	Optional<RecommendBookLikes> findByUserId(String userId);
+
+	@Query("{ '_id': ?0 }")
+	@Update("{ '$pull': { 'liked_book_ids': ?1 } }")
+	void removeBookLike(String recommendBookLikesId, String bookId);
 }
