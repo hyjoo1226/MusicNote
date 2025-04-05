@@ -1,5 +1,7 @@
 package com.music.note.recommend.mapper.domain.music;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import com.music.note.recommend.domain.recommned.music.RecommendMusic;
@@ -15,6 +17,18 @@ public class RecommendMusicMapper {
 			.releaseDate(dto.getReleaseDate())
 			.popularity(dto.getPopularity())
 			.userId(userId)
+			.createdAt(LocalDateTime.now())
+			.build();
+	}
+
+	public RecommendMusicDto entityToRecommendMusicDto(RecommendMusic recommendMusic) {
+		return RecommendMusicDto.builder()
+			.id(recommendMusic.getId())
+			.albumCoverPath(recommendMusic.getAlbumCoverPath())
+			.trackName(recommendMusic.getTrackName())
+			.artistName(recommendMusic.getArtistName())
+			.popularity(recommendMusic.getPopularity())
+			.releaseDate(recommendMusic.getReleaseDate())
 			.build();
 	}
 }

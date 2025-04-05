@@ -1,6 +1,8 @@
 package com.music.note.typedomain.domain;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -24,7 +26,7 @@ public class PersonalityReport {
 
 	private String userId;
 	@Builder.Default
-	private LocalDateTime createdAt = LocalDateTime.now();
+	private LocalDateTime createdAt = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
 	private double openness;
 	private double conscientiousness;
