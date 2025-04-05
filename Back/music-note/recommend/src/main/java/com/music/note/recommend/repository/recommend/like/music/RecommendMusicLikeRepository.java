@@ -16,4 +16,8 @@ public interface RecommendMusicLikeRepository extends MongoRepository<RecommendM
 	void addMovieLike(String recommendMusicLikesId, String musicId);
 
 	Optional<RecommendMusicLikes> findByUserId(String userId);
+
+	@Query("{ '_id': ?0 }")
+	@Update("{ '$pull': { 'liked_music_ids': ?1 } }")
+	void removeMusicLike(String recommendMusicLikesId, String musicId);
 }
