@@ -39,5 +39,6 @@ public class RecommendMovieDto {
 	@JsonProperty("backdrop_path")
 	private String backdropPath;
 	private double popularity;
+	@Setter
 	private LocalDateTime createdAt;
 }

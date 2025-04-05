@@ -17,4 +17,15 @@ public class RecommendMusicMapper {
 			.userId(userId)
 			.build();
 	}
+
+	public RecommendMusicDto entityToRecommendMusicDto(RecommendMusic recommendMusic) {
+		return RecommendMusicDto.builder()
+			.id(recommendMusic.getId())
+			.albumCoverPath(recommendMusic.getAlbumCoverPath())
+			.trackName(recommendMusic.getTrackName())
+			.artistName(recommendMusic.getArtistName())
+			.popularity(recommendMusic.getPopularity())
+			.releaseDate(recommendMusic.getReleaseDate())
+			.build();
+	}
 }

@@ -1,6 +1,8 @@
 package com.music.note.typedomain.domain;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,7 +25,7 @@ public class PersonalityReport {
 
 	private String userId;
 	@Builder.Default
-	private LocalDateTime createdAt = LocalDateTime.now();
+	private ZonedDateTime createdAt = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
 
 	private double openness;
 	private double conscientiousness;
@@ -32,6 +34,7 @@ public class PersonalityReport {
 	private double neuroticism;
 
 	private Report report;
+	private List<MusicData> musicList;
 
 	@Getter
 	@NoArgsConstructor
@@ -44,5 +47,17 @@ public class PersonalityReport {
 		private String lowScore;
 		private String lowText;
 		private String summary;
+	}
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	@ToString
+	public static class MusicData {
+		private String spotifyId;
+		private String title;
+		private String artist;
+		private String imageUrl;
 	}
 }
