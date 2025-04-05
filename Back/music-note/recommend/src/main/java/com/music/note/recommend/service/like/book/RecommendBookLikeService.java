@@ -67,4 +67,9 @@ public class RecommendBookLikeService {
 		return recommendBookLikeRepository.findByUserId(userId)
 			.orElseThrow(()-> new RecommendBookLikesNotFoundException(NOT_FOUND_RECOMMEND_BOOK_LIKES));
 	}
+
+	public void deleteRecommendBookLike(String recommendBookId, String userid) {
+		RecommendBookLikes recommendBookLike = findRecommendBookLikesByUserId(userid);
+		recommendBookLikeRepository.removeBookLike(recommendBookLike.getId(), recommendBookId);
+	}
 }

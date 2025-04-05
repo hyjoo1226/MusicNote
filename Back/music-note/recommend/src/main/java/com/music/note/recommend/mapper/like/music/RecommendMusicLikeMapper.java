@@ -1,5 +1,6 @@
 package com.music.note.recommend.mapper.like.music;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class RecommendMusicLikeMapper {
 		return RecommendMusicLikes.builder()
 			.likeMusicIds(new ArrayList<>(List.of(recommendMusicId)))
 			.userId(userId)
+			.createdAt(LocalDateTime.now())
 			.build();
 	}
 }
