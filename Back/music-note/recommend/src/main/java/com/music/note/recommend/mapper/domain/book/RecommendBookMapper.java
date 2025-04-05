@@ -1,5 +1,7 @@
 package com.music.note.recommend.mapper.domain.book;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import com.music.note.recommend.domain.recommned.book.RecommendBook;
@@ -18,6 +20,7 @@ public class RecommendBookMapper {
 			.image(dto.getImage())
 			.pubdate(dto.getPubdate())
 			.publisher(dto.getPublisher())
+			.createdAt(LocalDateTime.now())
 			.build();
 
 	}

@@ -1,6 +1,7 @@
 package com.music.note.recommend.controller.like.book;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +41,16 @@ public class RecommendBookLikeController {
 		ResponseRecommendBookList responseRecommendBookList = recommendBookLikeService.readLikeRecommendBook(userId);
 		return CommonResponse.success(responseRecommendBookList);
 	}
+	@DeleteMapping("like/book")
+	public CommonResponse<String> deleteRecommendBookLike(
+		HttpServletRequest request,
+		String recommendBookId){
+		String userid = JwtUtil.getUserIdByJwtToken(request, secretKey);
+		recommendBookLikeService.deleteRecommendBookLike(recommendBookId, userid);
+		return CommonResponse.success("ok");
+
+	}
+
 
 
 }
