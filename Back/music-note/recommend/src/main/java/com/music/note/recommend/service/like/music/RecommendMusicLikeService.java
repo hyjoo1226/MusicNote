@@ -64,4 +64,9 @@ public class RecommendMusicLikeService {
 		return recommendMusicLikeRepository.findByUserId(userId)
 			.orElseThrow(() -> new RecommendBookLikesNotFoundException(NOT_FOUND_RECOMMEND_MUSIC_LIKES));
 	}
+
+	public void cancelRecommendMusicLike(String userId, String recommendMusicId) {
+		RecommendMusicLikes recommendMusicLikes = findRecommendMusicLikesByUserId(userId);
+		recommendMusicLikeRepository.removeMusicLike(recommendMusicLikes.getId(), recommendMusicId);
+	}
 }
