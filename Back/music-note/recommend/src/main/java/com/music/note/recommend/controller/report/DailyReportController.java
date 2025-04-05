@@ -13,6 +13,7 @@ import com.music.note.common.response.CommonResponse;
 import com.music.note.jwt.util.JwtUtil;
 import com.music.note.recommend.dto.report.ResponseReportDto;
 import com.music.note.recommend.dto.report.ResponseReportList;
+import com.music.note.recommend.dto.report.music.ResponseMusicDtoList;
 import com.music.note.recommend.dto.type.ResponseWeeklyTypeDto;
 import com.music.note.recommend.service.type.ReportService;
 
@@ -51,5 +52,11 @@ public class DailyReportController {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
 		ResponseWeeklyTypeDto responseWeeklyTypeDto = reportService.getTypeTrend(userId, date);
 		return CommonResponse.success(responseWeeklyTypeDto);
+	}
+	@GetMapping("music")
+	public CommonResponse<ResponseMusicDtoList> readMusicData(
+		@RequestParam String reportId) {
+		ResponseMusicDtoList musicDtoList = reportService.readMusicDataByReportId(reportId);
+		return CommonResponse.success(musicDtoList);
 	}
 }

@@ -1,8 +1,14 @@
 package com.music.note.recommend.mapper.report;
 
+import static com.music.note.typedomain.domain.PersonalityReport.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.music.note.recommend.dto.report.ResponseReportDto;
+import com.music.note.recommend.dto.report.music.MusicDto;
 import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
 import com.music.note.recommend.dto.report.ResponseReportWithTypeDto;
 import com.music.note.recommend.dto.type.TrendTypeDto;
@@ -44,7 +50,7 @@ public class ReportMapper {
 
 	public ResponseReportDto entityToResponseReportDto(PersonalityReport reqReport) {
 		TypeDto typeDto = entityToTypeDto(reqReport);
-		PersonalityReport.Report report = reqReport.getReport();
+		Report report = reqReport.getReport();
 		return ResponseReportDto.builder()
 			.id(reqReport.getId())
 			.lowText(report.getLowText())
@@ -66,5 +72,19 @@ public class ReportMapper {
 			.createdAt(report.getCreatedAt().toLocalDateTime())
 			.build();
 
+	}
+	public List<MusicDto> reportToMusicDto(PersonalityReport report){
+		List<MusicDto> list = new ArrayList<>();
+		List<MusicData> musicList = report.getMusicList();
+		for (MusicData musicData: musicList){
+			MusicDto musicDto = MusicDto.builder()
+				.title(musicData.getTitle())
+				.artist(musicData.getArtist())
+				.imageUrl(musicData.getImageUrl())
+				.spotifyId(musicData.getSpotifyId())
+				.build();
+			list.add(musicDto);
+		}
+		return list;
 	}
 }

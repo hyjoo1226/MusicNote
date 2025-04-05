@@ -70,6 +70,6 @@ public class RecommendMovieLikeService {
 
 	public void cancelRecommendMovieLike(String userId, String recommendMovieId) {
 		RecommendMovieLikes recommendMovieLikes = findRecommendMovieLikesByUserId(userId);
-		recommendMovieLikes.removeLike(recommendMovieId);
+		recommendMovieLikeRepository.removeMovieLike(recommendMovieLikes.getId(), recommendMovieId);
 	}
 }
