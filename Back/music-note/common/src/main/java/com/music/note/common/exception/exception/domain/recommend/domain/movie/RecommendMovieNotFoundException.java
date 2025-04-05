@@ -1,4 +1,4 @@
-package com.music.note.common.exception.exception.domain.recommend.domain;
+package com.music.note.common.exception.exception.domain.recommend.domain.movie;
 
 import com.music.note.common.exception.exception.common.ErrorCode;
 import com.music.note.common.exception.exception.domain.BusinessBaseException;
