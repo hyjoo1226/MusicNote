@@ -11,7 +11,7 @@ import com.music.note.recommend.domain.like.movie.RecommendMovieLikes;
 public class RecommendMovieLikeMapper {
 	public RecommendMovieLikes createRecommendMovieLikes(String id, String userId) {
 		return RecommendMovieLikes.builder()
-			.likedMusicIds(new ArrayList<>(List.of(id)))
+			.likedMovieIds(new ArrayList<>(List.of(id)))
 			.userId(userId)
 			.build();
 	}

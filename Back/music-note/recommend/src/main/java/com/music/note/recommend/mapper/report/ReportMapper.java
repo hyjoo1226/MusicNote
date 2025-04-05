@@ -37,19 +37,22 @@ public class ReportMapper {
 		TypeDto typeDto = entityToTypeDto(report);
 		return ResponseReportWithTypeDto.builder()
 			.reportId(report.getId())
-			.cratedAt(report.getCreatedAt())
+			.createdAt(report.getCreatedAt().toLocalDateTime())
 			.typeDto(typeDto)
 			.build();
 	}
 
 	public ResponseReportDto entityToResponseReportDto(PersonalityReport reqReport) {
+		TypeDto typeDto = entityToTypeDto(reqReport);
 		PersonalityReport.Report report = reqReport.getReport();
 		return ResponseReportDto.builder()
+			.id(reqReport.getId())
 			.lowText(report.getLowText())
 			.summary(report.getSummary())
 			.topScore(report.getTopScore())
 			.topText(report.getTopText())
 			.lowScore(report.getLowScore())
+			.typeDto(typeDto)
 			.build();
 	}
 
@@ -60,7 +63,7 @@ public class ReportMapper {
 			.neuroticism(report.getNeuroticism())
 			.conscientiousness(report.getConscientiousness())
 			.openness(report.getOpenness())
-			.createdAt(report.getCreatedAt())
+			.createdAt(report.getCreatedAt().toLocalDateTime())
 			.build();
 
 	}

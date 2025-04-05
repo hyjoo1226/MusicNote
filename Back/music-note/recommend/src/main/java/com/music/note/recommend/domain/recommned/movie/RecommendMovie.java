@@ -33,6 +33,7 @@ public class RecommendMovie {
 	private int runtime;
 	private List<CreditDto> credits;
 	private boolean adult;
+	@JsonProperty("backdrop_path")
 	private String backdropPath;
 	private double popularity;
 
@@ -51,6 +52,9 @@ public class RecommendMovie {
 			.voteAverage(voteAverage)
 			.releaseDate(releaseDate)
 			.createdAt(createdAt)
+			.popularity(popularity)
+			.backdropPath(backdropPath)
+
 			.build();
 	}
 
