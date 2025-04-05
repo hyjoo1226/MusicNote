@@ -1,5 +1,6 @@
 package com.music.note.typedomain.domain;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PersonalityReport {
 
 	private String userId;
 	@Builder.Default
-	private ZonedDateTime createdAt = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+	private LocalDateTime createdAt = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
 	private double openness;
 	private double conscientiousness;
