@@ -1,10 +1,14 @@
 package com.music.note.recommend.service.domain.book;
 
 
+import static com.music.note.common.exception.exception.common.ErrorCode.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.music.note.common.exception.exception.domain.recommend.domain.book.RecommendBookNotFoundException;
 import com.music.note.recommend.domain.recommned.book.RecommendBook;
 import com.music.note.recommend.dto.book.RecommendBookDto;
 import com.music.note.recommend.dto.book.response.ResponseRecommendBookList;
@@ -45,6 +49,26 @@ public class RecommendBookService {
 			RecommendBook recommendBook = recommendBookMapper.dtoToEntity(dto, memberId);
 			RecommendBook save = recommendBookRepository.save(recommendBook);
 			dto.setId(save.getId());
+			dto.setUserId(memberId);
 		}
+	}
+
+	public ResponseRecommendBookList readRecommendBook(String userId) {
+		List<RecommendBook> recommendBookList = recommendBookRepository.findTop20ByUserIdOrderByCreatedAtDesc(
+			userId);
+		List<RecommendBookDto> books = new ArrayList<>();
+		for (RecommendBook recommendBook: recommendBookList){
+			RecommendBookDto recommendBookDto = recommendBookMapper.entityToDto(userId, recommendBook);
+			books.add(recommendBookDto);
+		}
+		return ResponseRecommendBookList.builder()
+			.books(books)
+			.listSize(books.size())
+			.build();
+	}
+
+	public RecommendBook findRecommendBookById(String recommendBookId) {
+		return recommendBookRepository.findById(recommendBookId)
+			.orElseThrow(() -> new RecommendBookNotFoundException(NOT_FOUND_RECOMMEND_BOOK));
 	}
 }
