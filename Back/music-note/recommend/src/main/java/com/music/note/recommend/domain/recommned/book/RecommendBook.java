@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
+
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +24,11 @@ public class RecommendBook {
 	private String author;
 	private String description;
 	private String isbn;
-	private String link;
-	private String keyword;
 	private String userId;
+	private String pubdate;
+	private String image;
+	private String publisher;
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 }
+
