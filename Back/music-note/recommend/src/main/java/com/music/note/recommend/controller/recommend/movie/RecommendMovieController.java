@@ -43,4 +43,10 @@ public class RecommendMovieController {
 		return CommonResponse.success(responseMovieRecommendDto);
 	}
 
+	@GetMapping("/movie")
+	public CommonResponse<ResponseRecommendMovieList> readRecommendMovies(HttpServletRequest request) {
+		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
+		ResponseRecommendMovieList responseMovieRecommendDto = recommendMovieService.readRecommendMovies(userId);
+		return CommonResponse.success(responseMovieRecommendDto);
+	}
 }
