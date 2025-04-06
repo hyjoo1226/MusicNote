@@ -4,6 +4,28 @@ server:
 spring:
   application:
     name: music-type-server
+  data:
+    mongodb:
+      uri: mongodb://music:note@localhost:27017/musicdb?authSource=admin&readPreference=secondary
+      auto-index-creation: true
+  kafka:
+    bootstrap-servers:
+      - 127.0.0.1:10000
+      - 127.0.0.1:10001
+      - 127.0.0.1:10002
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: true
+    consumer:
+      group-id: music-request-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "*"
+
 
 eureka:
   client:

@@ -11,6 +11,13 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+
+}
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
 }
 
 repositories {
