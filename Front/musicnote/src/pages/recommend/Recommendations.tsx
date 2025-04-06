@@ -5,6 +5,8 @@ import { usePostData } from "@/hooks/useApi";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MovieCarousel from "@/features/recommend/MovieCarousel";
+import MusicCarousel from "@/features/recommend/MusicCarousel";
+import BookCarousel from "@/features/recommend/BookCarousel";
 
 interface Movie {
   id: string;
@@ -24,17 +26,49 @@ interface Movie {
   popularity: number;
 }
 
+interface Music {
+  id: string;
+  popularity: number;
+  track_name: string;
+  artist_name: string;
+  albumcover_path: string;
+  release_date: string;
+}
+
+interface Book {
+  author: string;
+  description: string;
+  id: string;
+  image: string;
+  isbn: string;
+  pubdate: string;
+  publisher: string;
+  title: string;
+}
 
 export default function Recommendations() {
   const navigate = useNavigate();
-  const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<"영화" | "음악" | "책">("영화");
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [musics, setMusics] = useState<Music[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
 
+  const {
+    mutateAsync: getMovieRecommendations,
+    isLoading: movieRecommendationsLoading,
+    error: movieRecommendationsError,
+  } = usePostData("/recommend/movie");
+  const {
+    mutateAsync: getMusicRecommendations,
+    isLoading: musicRecommendationsLoading,
+    error: musicRecommendationsError,
+  } = usePostData("/recommend/music");
+  const {
+    mutateAsync: getBookRecommendations,
+    isLoading: bookRecommendationsLoading,
+    error: bookRecommendationsError,
+  } = usePostData("/recommend/book");
 
-  const { mutateAsync: getMovieRecommendations, isLoading: movieRecommendationsLoading, error: movieRecommendationsError } = usePostData("/recommend/movie");
-  //const { mutateAsync: getMusicRecommendations, data: musicRecommendations, isLoading: musicRecommendationsLoading, error: musicRecommendationsError } = usePostData("/recommend/music");
-  //const { mutateAsync: getBookRecommendations, data: bookRecommendations, isLoading: bookRecommendationsLoading, error: bookRecommendationsError } = usePostData("/recommend/book");
-  
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -47,36 +81,119 @@ export default function Recommendations() {
       }
     };
 
+    const fetchMusic = async () => {
+      try {
+        const response = await getMusicRecommendations({});
+        if (response.status === 200) {
+          setMusics(response.data.musics);
+        }
+      } catch (error) {
+        console.error("음악 데이터를 불러오는데 실패했습니다:", error);
+      }
+    };
+    const fetchBook = async () => {
+      try {
+        const response = await getBookRecommendations({});
+        if (response.status === 200) {
+          setBooks(response.data.books);
+          console.log(response.data.books);
+        }
+      } catch (error) {
+        console.error("책 데이터를 불러오는데 실패했습니다:", error);
+      }
+    };
     fetchMovies();
-  }, [getMovieRecommendations]);
+    fetchMusic();
+    fetchBook();
+  }, [getMovieRecommendations, getMusicRecommendations, getBookRecommendations]);
 
   const renderContent = () => {
     switch (selectedDomain) {
       case "영화":
         return (
-          <div className="w-full px-2 rounded-lg overflow-visible">
-            {movieRecommendationsLoading && <div className="flex flex-col w-full h-full items-center justify-center gap-4 p-4">
-            <img
-              src={mascot}
-              alt="mascot"
-              className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
-            />
-            <h3 className="text-white text-2xl font-bold text-center">영화를 찾고 있짹!</h3>
-          </div>}
-            {movieRecommendationsError && <div className="text-white">Error: {movieRecommendationsError.message}</div>}
-            {movies.length > 0 && <MovieCarousel movies={movies} />}
+          <div className="w-full px-2 rounded-lg overflow-visible items-center justify-center">
+            {movieRecommendationsLoading && (
+              <div className="flex flex-col w-full h-full items-center justify-center gap-4 p-4">
+                <img
+                  src={mascot}
+                  alt="mascot"
+                  className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
+                />
+                <h3 className="text-white text-2xl font-bold text-center">영화를 찾고 있짹!</h3>
+              </div>
+            )}
+            {movieRecommendationsError && (
+              <div className="text-white">Error: {movieRecommendationsError.message}</div>
+            )}
+            {movies.length > 0 && (
+              <>
+                <MovieCarousel movies={movies} />
+                <button
+                  className="flex bg-main w-[200px] text-white text-xl p-2 pt-3 items-center justify-center text-center mx-auto rounded-xl"
+                  onClick={() => navigate("/recommendations/detail/movie")}
+                >
+                  영화 추천 더보기
+                </button>
+              </>
+            )}
           </div>
         );
       case "음악":
         return (
-          <div className="w-full px-2 mb-8 text-white text-center">
-            음악 추천 컴포넌트가 들어갈 자리입니다
+          <div className="w-full px-2 rounded-lg overflow-visible items-center justify-center">
+            {musicRecommendationsLoading && (
+              <div className="flex flex-col w-full h-full items-center justify-center gap-4 p-4">
+                <img
+                  src={mascot}
+                  alt="mascot"
+                  className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
+                />
+                <h3 className="te xt-white text-2xl font-bold text-center">음악을 찾고 있짹!</h3>
+              </div>
+            )}
+            {musicRecommendationsError && (
+              <div className="text-white">Error: {musicRecommendationsError.message}</div>
+            )}
+            {musics.length > 0 && (
+              <>
+                <MusicCarousel musics={musics} />
+                <button
+                  className="flex bg-main w-[200px] text-white text-xl p-2 pt-3 items-center justify-center text-center mx-auto rounded-xl"
+                  onClick={() => navigate("/recommendations/detail/music")}
+                >
+                  음악 추천 더보기
+                </button>
+              </>
+            )}
           </div>
         );
       case "책":
         return (
-          <div className="w-full px-2 mb-8 text-white text-center">
-            책 추천 컴포넌트가 들어갈 자리입니다
+          <div className="w-full px-2 rounded-lg overflow-visible items-center justify-center">
+            {bookRecommendationsLoading && (
+              <div className="flex flex-col w-full h-full items-center justify-center gap-4 p-4">
+                <img
+                  src={mascot}
+                  alt="mascot"
+                  className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
+                />
+                <h3 className="te xt-white text-2xl font-bold text-center">음악을 찾고 있짹!</h3>
+              </div>
+            )}
+            {bookRecommendationsError && (
+              <div className="text-white">Error: {bookRecommendationsError.message}</div>
+            )}
+            {books.length > 0 && (
+              <>
+                <BookCarousel books={books} />
+                <button
+                  className="flex bg-main w-[200px] text-white text-xl p-2 pt-3 items-center justify-center text-center mx-auto rounded-xl"
+                  onClick={() => navigate("/recommendations/detail/book")}
+                >
+                  책 추천 더보기
+                </button>
+              </>
+            )}
           </div>
         );
     }
@@ -154,14 +271,6 @@ export default function Recommendations() {
       </div>
       <div className="w-full bg-level2 flex flex-col justify-evenly items-center rounded-tr-lg rounded-b-lg h-[calc(100vh-230px)]">
         {renderContent()}
-        {selectedDomain === "영화" && !movieRecommendationsLoading && (
-          <button
-            className="bg-main w-[200px] text-white text-xl p-2 pt-3  rounded-xl"
-            onClick={() => navigate(`/recommendations/detail/${selectedDomain}`)}
-        >
-          영화 추천 더보기
-        </button>
-        )}
       </div>
     </div>
   );

@@ -50,7 +50,8 @@ export default function Login() {
   // Spotify 로그인
   const handleSpotifyLogin = () => {
     const STATE = generateRandomString(16);
-    const SCOPE = "user-read-private user-read-email user-read-recently-played user-read-private";
+    const SCOPE =
+      "user-read-private user-read-email user-read-recently-played user-read-private user-modify-playback-state user-read-playback-state streaming";
 
     setSpotifyAuthState(STATE);
 

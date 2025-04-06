@@ -27,16 +27,16 @@
 
 .direction-indicator.right {
   right: 10px;
-  color: #4CAF50;
-  border: 2px solid #4CAF50;
+  color: #4caf50;
+  border: 2px solid #4caf50;
   background-color: rgba(76, 175, 80, 0.1);
   transform: rotate(10deg);
 }
 
 .direction-indicator.left {
   left: 10px;
-  color: #F44336;
-  border: 2px solid #F44336;
+  color: #f44336;
+  border: 2px solid #f44336;
   background-color: rgba(244, 67, 54, 0.1);
   transform: rotate(-10deg);
 }
@@ -48,7 +48,7 @@
 }
 
 .swipe-button {
-  padding: 10px 24px;
+  padding: 12px 24px 10px 24px;
   border: none;
   border-radius: 50px;
   font-size: 16px;
@@ -59,13 +59,13 @@
 }
 
 .dislike-button {
-  color: #F44336;
-  border: 1px solid #F44336;
+  color: #f44336;
+  border: 1px solid #f44336;
 }
 
 .like-button {
-  color: #4CAF50;
-  border: 1px solid #4CAF50;
+  color: #4caf50;
+  border: 1px solid #4caf50;
 }
 
 .dislike-button:hover {
@@ -117,13 +117,17 @@
 .card-hidden {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 }
 
 .card-visible {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 }
 
 .recommendation-container .flex-col {

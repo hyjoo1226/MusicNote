@@ -1,5 +1,5 @@
 import TopBar from "@/components/layout/TopBar";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import mascot from "@/assets/logo/mascot.webp";
 import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
@@ -16,9 +16,8 @@ interface Movie {
   genres: string[];
 }
 
-export default function RecommendationDetail() {
-  const { domain } = useParams();
-  const titleText = `${domain} 추천`;
+export default function RecommendationMovie() {
+  const titleText = "영화 추천";
   const navigate = useNavigate();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -42,6 +41,7 @@ export default function RecommendationDetail() {
   const currentMovie = movies?.[currentIndex];
 
   const { data, isLoading, isError } = useGetData("recommendMovie", `recommend/movie`);
+  // const { mutateAsync: likeMovie, error: likeMovieError } = usePostData("recommend/like/movie");
 
   useEffect(() => {
     if (data) {
@@ -156,9 +156,9 @@ export default function RecommendationDetail() {
 
     if (!isVerticalScrolling) {
       if (direction === "right") {
-        handleLike();
+        handleLike(movies[currentIndex].id);
       } else if (direction === "left") {
-        handleDislike();
+        handleDislike(movies[currentIndex].id);
       } else {
         resetSwipeState();
       }
@@ -222,9 +222,9 @@ export default function RecommendationDetail() {
 
     if (!isVerticalScrolling) {
       if (direction === "right") {
-        handleLike();
+        handleLike(movies[currentIndex].id);
       } else if (direction === "left") {
-        handleDislike();
+        handleDislike(movies[currentIndex].id);
       } else {
         resetSwipeState();
       }
@@ -239,8 +239,9 @@ export default function RecommendationDetail() {
     }
   };
 
-  const handleLike = () => {
+  const handleLike = (id: string) => {
     if (!currentMovie) return;
+    console.log(id);
     resetSwipeState();
 
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
@@ -260,8 +261,9 @@ export default function RecommendationDetail() {
     }, 300);
   };
 
-  const handleDislike = () => {
+  const handleDislike = (id: string) => {
     if (!currentMovie) return;
+    console.log(id);
     resetSwipeState();
 
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
@@ -446,10 +448,16 @@ export default function RecommendationDetail() {
               </div>
             </div>
             <div className="swipe-buttons">
-              <button className="swipe-button dislike-button" onClick={handleDislike}>
+              <button
+                className="swipe-button dislike-button"
+                onClick={() => handleDislike(movies[currentIndex].id)}
+              >
                 👎 싫어요
               </button>
-              <button className="swipe-button like-button" onClick={handleLike}>
+              <button
+                className="swipe-button like-button"
+                onClick={() => handleLike(movies[currentIndex].id)}
+              >
                 👍 좋아요
               </button>
             </div>
@@ -468,7 +476,7 @@ export default function RecommendationDetail() {
             </h3>
             <button
               className="bg-main text-white text-lg font-bold px-4 py-2 rounded-lg cursor-pointer"
-              onClick={() => navigate(`/recommendations/my/${domain}`)}
+              onClick={() => navigate(`/recommendations/my/movie`)}
             >
               보관함으로 가기
             </button>

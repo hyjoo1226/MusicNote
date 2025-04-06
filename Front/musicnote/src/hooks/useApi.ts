@@ -16,7 +16,7 @@ export const useGetData = (key: string, url: string, client: string = "default",
 // POST 요청을 위한 커스텀 훅
 export const usePostData = (url: string, options = {}) => {
   const queryClient = useQueryClient();
-  
+
   const mutation = useMutation({
     mutationFn: (data: any | null) =>
       apiClient.post(url, data).then((res: any) => {
