@@ -23,12 +23,7 @@ public class PreferencesController {
 		@RequestHeader("Spotify-Access-Token") String spotifyAccessToken,
 		@RequestHeader("X-User-Id") String userId) {
 
-		// TODO: auth 서버 연동 후 userId 파라미터로 전달
-		preferencesService.publishUserMusicPreferences(1L, spotifyAccessToken);
-
-		System.out.println("accessToken = " + accessToken);
-		System.out.println("spotifyAccessToken = " + spotifyAccessToken);
-		System.out.println("userId = " + userId);
+		preferencesService.publishUserMusicPreferences(Long.parseLong(userId), spotifyAccessToken);
 
 		return CommonResponse.success("음악 타입 결과 요청 성공");
 	}
