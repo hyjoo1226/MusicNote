@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: .  # Dockerfile이 있는 디렉토리 경로
+#    image: sonny0514/music-note-auth:1.0.0
+    container_name: auth-server
+    networks:
+      - music-network
+    environment:
+      - TZ=Asia/Seoul
+      - LANG=ko_KR.UTF-8
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db/member?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=music
+      - SPRING_DATASOURCE_PASSWORD=note
+
+networks:
+  music-network:
+    external: true
