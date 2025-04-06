@@ -3,20 +3,28 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 interface Movie {
-  id: number;
+  id: string;
   title: string;
+  overview: string;
   poster_path: string;
+  backdrop_path: string;
   release_date: string;
   vote_average: number;
-  genre_ids: number[];
+  genres: string[];
+  credits: {
+    name: string;
+    role: string;
+  }[];
+  runtime: number;
+  adult: boolean;
+  popularity: number;
 }
 
 interface MovieCarouselProps {
   movies: Movie[];
-  getGenreNames: (genreIds: number[]) => string[];
 }
 
-export default function MovieCarousel({ movies, getGenreNames }: MovieCarouselProps) {
+export default function MovieCarousel({ movies }: MovieCarouselProps) {
   const settings = {
     infinite: true,
     speed: 500,
@@ -29,20 +37,23 @@ export default function MovieCarousel({ movies, getGenreNames }: MovieCarouselPr
     pauseOnFocus: true,
     pauseOnDotsHover: true,
     arrows: false,
+    focusOnSelect: false,
+    accessibility: true,
+    swipeToSlide: true,
   };
 
   return (
     <>
       <Slider {...settings}>
         {movies.map((movie) => (
-          <div key={movie.id} className="relative h-[calc(97vh-320px)] rounded-lg overflow-hidden">
+          <div key={movie.id} className="relative h-[calc(97vh-280px)] rounded-lg overflow-hidden">
             <img
               src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
               alt={movie.title}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent">
-              <div className="absolute bottom-0 left-0 right-0 p-8">
+              <div className="absolute bottom-0 left-0 right-0 p-8 pb-4">
                 <h2 className="text-2xl font-medium text-white">{movie.title}</h2>
                 <div className="flex items-center gap-4 text-white/90 mb-2">
                   <span className="text-xl text-light-gray">
@@ -60,7 +71,7 @@ export default function MovieCarousel({ movies, getGenreNames }: MovieCarouselPr
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {getGenreNames(movie.genre_ids).map((genre, index) => (
+                  {movie.genres.map((genre, index) => (
                     <span
                       key={index}
                       className="px-3 py-1 bg-level3 text-white rounded-full text-sm"

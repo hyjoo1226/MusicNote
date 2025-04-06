@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import mascot from "@/assets/logo/mascot.webp";
 import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
-import { usePostData } from "@/hooks/useApi";
+import { useGetData } from "@/hooks/useApi";
 
 interface Movie {
   id: string;
@@ -39,27 +39,23 @@ export default function RecommendationDetail() {
   const animationRef = useRef<number | null>(null);
   const isDragging = useRef(false);
 
-  const currentMovie = movies[currentIndex];
+  const currentMovie = movies?.[currentIndex];
 
-  const { mutate, isLoading, status, message, data } = usePostData("recommend/movie");
+  const { data, isLoading, isError } = useGetData("recommendMovie", `recommend/movie`);
 
   useEffect(() => {
-    if (status === 200 && data) {
-      setMovies(data.movies);
-    } else if (status !== 0) {
-      console.log(status, message);
+    if (data) {
+      setMovies(data?.data?.movies);
+    } else if (isError) {
+      console.log(isError, data?.message);
     }
-  }, [status, data, message]);
+  }, [isError, data]);
 
   useEffect(() => {
     if (cardRef.current) {
       cardWidth.current = (cardRef.current as HTMLElement).offsetWidth;
     }
   }, [currentMovie]);
-
-  useEffect(() => {
-    mutate({ domain });
-  }, [mutate, domain]);
 
   // 스와이프 상태 초기화
   const resetSwipeState = () => {
@@ -86,19 +82,20 @@ export default function RecommendationDetail() {
   };
 
   const updateCardPosition = (newOffset: number) => {
-    const maxOffset = cardWidth.current * 0.2;
+    const maxOffset = cardWidth.current * 0.15;
     const limitedOffset = Math.max(-maxOffset, Math.min(maxOffset, newOffset));
 
-    if (newOffset > 10) {
+    if (newOffset > 40) {
       setDirection("right");
-    } else if (newOffset < -10) {
+    } else if (newOffset < -40) {
       setDirection("left");
     } else {
       setDirection("");
     }
 
     if (cardRef.current) {
-      (cardRef.current as HTMLElement).style.transform = `translateX(${limitedOffset}px)`;
+      const card = cardRef.current as HTMLElement;
+      card.style.transform = `translateX(${limitedOffset}px)`;
     }
 
     setOffsetX(limitedOffset);
@@ -328,7 +325,7 @@ export default function RecommendationDetail() {
         }
       }
     };
-    if (movies.length > 0 && currentIndex < movies.length) {
+    if (movies?.length > 0 && currentIndex < movies.length) {
       // 현재 영화 이후 3개 영화 이미지 미리 로드
       preloadImages(currentIndex + 1, 3);
     }
@@ -348,7 +345,7 @@ export default function RecommendationDetail() {
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
       <TopBar title={titleText} />
-      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100%-60px)]">
+      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100%-60px)] overflow-hidden">
         {isLoading ? (
           <div className="flex flex-col w-full h-full items-center justify-center gap-4">
             <img
