@@ -1,7 +1,5 @@
 package com.music.note.gateway.jwt;
 
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -13,13 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtUtil {
 
 	//TODO: yml 파일에 secretKey 를 넣고 가져오도록 수정
-
 	private String secretKey = "music-note-jwt-key";
 
 	public void isTokenValid(String token) {
 		try {
 			Jwts.parser()
-				.setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
+				.setSigningKey(secretKey)
 				.parseClaimsJws(token);
 
 			log.info("유효한 JWT 토큰입니다.");
@@ -32,13 +29,14 @@ public class JwtUtil {
 	// ✅ Claims 전체 추출
 	public Claims extractClaims(String token) {
 		return Jwts.parser()
-			.setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
+			.setSigningKey(secretKey)
 			.parseClaimsJws(token)
 			.getBody();
 	}
 
 	// ✅ 사용자 ID 추출
 	public String getUserId(String token) {
-		return extractClaims(token).get("id", String.class);
+		Object id = extractClaims(token).get("id");
+		return String.valueOf(id);
 	}
 }
