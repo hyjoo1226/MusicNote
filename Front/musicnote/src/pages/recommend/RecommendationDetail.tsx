@@ -1,23 +1,19 @@
 import TopBar from "@/components/layout/TopBar";
 import { useParams, useNavigate } from "react-router-dom";
 import mascot from "@/assets/logo/mascot.webp";
-import genreData from "@/assets/data/tmdb-genre-id.json";
 import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
+import { usePostData } from "@/hooks/useApi";
 
 interface Movie {
-  id: number;
+  id: string;
   title: string;
   overview: string;
+  runtime: number;
   poster_path: string;
   release_date: string;
   vote_average: number;
-  genre_ids: number[];
-}
-
-interface Genre {
-  id: number;
-  name: string;
+  genres: string[];
 }
 
 export default function RecommendationDetail() {
@@ -43,8 +39,17 @@ export default function RecommendationDetail() {
   const animationRef = useRef<number | null>(null);
   const isDragging = useRef(false);
 
-  const genreMap = new Map(genreData.genres.map((genre: Genre) => [genre.id, genre.name]));
   const currentMovie = movies[currentIndex];
+
+  const { mutate, isLoading, status, message, data } = usePostData("recommend/movie");
+
+  useEffect(() => {
+    if (status === 200 && data) {
+      setMovies(data.movies);
+    } else if (status !== 0) {
+      console.log(status, message);
+    }
+  }, [status, data, message]);
 
   useEffect(() => {
     if (cardRef.current) {
@@ -52,34 +57,9 @@ export default function RecommendationDetail() {
     }
   }, [currentMovie]);
 
-  const getGenreNames = (genreIds: number[]) => {
-    return genreIds.map((id) => genreMap.get(id) as string).filter(Boolean);
-  };
-
   useEffect(() => {
-    const fetchMovies = async () => {
-      const url =
-        "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-Kr&page=1&sort_by=popularity.desc";
-      const options = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZDhlOTlhZjcxZmQxMDQ2OTkwZjA1YzdlZDc1ZDFiMyIsIm5iZiI6MTczMTg5NzI3OS4xNDQsInN1YiI6IjY3M2FhN2JmM2M4MzFhMTMyOTUzY2M0OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UfKeIpOhTXLNJQzcYc8CNOEb7wWHhRU4wTk1sfC1PT0",
-        },
-      };
-
-      try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        setMovies(data.results);
-      } catch (error) {
-        console.error("영화 데이터를 불러오는데 실패했습니다:", error);
-      }
-    };
-
-    fetchMovies();
-  }, []);
+    mutate({ domain });
+  }, [mutate, domain]);
 
   // 스와이프 상태 초기화
   const resetSwipeState = () => {
@@ -368,8 +348,17 @@ export default function RecommendationDetail() {
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
       <TopBar title={titleText} />
-      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100vh-140px)]">
-        {currentMovie ? (
+      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100%-60px)]">
+        {isLoading ? (
+          <div className="flex flex-col w-full h-full items-center justify-center gap-4">
+            <img
+              src={mascot}
+              alt="mascot"
+              className="w-[200px] h-[200px] object-cover rounded-lg animate-bounce"
+            />
+            <h3 className="text-white text-2xl font-bold text-center">영화를 찾고 있짹!</h3>
+          </div>
+        ) : currentMovie ? (
           <>
             <div
               ref={cardRef}
@@ -415,7 +404,7 @@ export default function RecommendationDetail() {
                   <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
                     <div className="flex flex-col gap-0">
                       <span className="text-light-gray text-sm font-light">
-                        {getGenreNames(currentMovie.genre_ids).join(", ")}
+                        {currentMovie.genres.join(", ")}
                       </span>
                       <h3 className="text-white text-xl font-medium">{currentMovie.title}</h3>
                       <div className="flex items-center gap-2 text-light-gray text-sm">
@@ -443,7 +432,7 @@ export default function RecommendationDetail() {
                       <span>⭐ {currentMovie.vote_average.toFixed(1)}</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {getGenreNames(currentMovie.genre_ids).map((genre, index) => (
+                      {currentMovie.genres.map((genre, index) => (
                         <span
                           key={index}
                           className="px-3 py-1 bg-level2 rounded-full text-sm text-light-gray"

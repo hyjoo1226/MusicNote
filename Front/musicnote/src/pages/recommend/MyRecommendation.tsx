@@ -45,7 +45,7 @@ export default function MyRecommendation() {
   }, []);
 
   return (
-    <div className="text-white w-full h-[calc(100vh-80px)] max-h-full flex flex-col items-center overflow-y-auto">
+    <div className="text-white w-full h-full max-h-full flex flex-col items-center overflow-y-auto">
       <TopBar title="추천 보관함" />
       <div className="flex flex-col items-center justify-center w-auto mx-3 xs:mx-5 mb-3 xs:mb-5 p-2 pb-0 bg-level2 rounded-md">
         <div className="flex flex-row items-end justify-between w-full px-2">

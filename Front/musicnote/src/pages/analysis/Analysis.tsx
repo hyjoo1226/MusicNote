@@ -315,7 +315,7 @@ export default function Analysis() {
   };
 
   return (
-    <div className="h-full w-full flex flex-col max-w-[480px] pb-[80px] justify-evenly items-center overflow-y-auto">
+    <div className="h-full w-full flex flex-col max-w-[480px] justify-evenly items-center overflow-y-auto">
       <div className="mt-4"></div>
       <div className="flex flex-col w-[calc(100%-40px)] items-center bg-level2 rounded-lg pb-2">
         <Chart bigFiveScore={bigFiveScore} />

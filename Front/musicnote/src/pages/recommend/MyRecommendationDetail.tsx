@@ -85,7 +85,7 @@ export default function MyRecommendationDetail() {
   };
 
   return (
-    <div className="text-white w-full min-h-screen">
+    <div className="text-white w-full h-full">
       <TopBar title={`${domainMap[domain as keyof typeof domainMap]} 추천 보관함`} />
       <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-2 pb-0 mx-3 xs:mx-5 border border-solid border-border min-h-[calc(100vh-120px)] overflow-y-auto">
         {movies.map((movie: Movie, index: number) => (
