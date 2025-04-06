@@ -6,7 +6,7 @@ import WeeklyReport from "@/features/analysis/WeeklyReport";
 import NoteIcon from "../../assets/icon/note-icon.svg?react";
 import ShareIcon from "../../assets/icon/share-icon.svg?react";
 
-export default function Report() {
+export default function ReportWeekly() {
   const navigate = useNavigate();
   const { type } = useParams<{ type: "daily" | "weekly" }>();
   const reportRef = useRef<HTMLDivElement>(null);

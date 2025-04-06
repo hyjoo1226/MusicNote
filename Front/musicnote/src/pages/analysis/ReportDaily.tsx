@@ -15,7 +15,7 @@ interface ReportData {
   topText: string;
 }
 
-export default function Report() {
+export default function ReportDaily() {
   const navigate = useNavigate();
   const { reportId } = useParams<{ reportId: string }>();
   const reportRef = useRef<HTMLDivElement>(null);
@@ -152,11 +152,11 @@ export default function Report() {
         <div ref={reportRef} className="flex flex-col gap-y-5">
           <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
           <DailyReport
-            lowScore={report?.lowScore}
-            lowText={report?.lowText}
-            summary={report?.summary}
-            topScore={report?.topScore}
-            topText={report?.topText}
+            lowScore={report?.lowScore || ""}
+            lowText={report?.lowText || ""}
+            summary={report?.summary || ""}
+            topScore={report?.topScore || ""}
+            topText={report?.topText || ""}
           />
         </div>
       </div>

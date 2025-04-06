@@ -54,8 +54,12 @@ export default function LineTrend() {
 
   const { data: TrendData } = useGetData(
     `TrendData-${dateString}`, // key
-    `/recommend/type/trend/?date=${dateString}` // url
+    `/recommend/type/trend?date=${dateString}` // url
   );
+
+  if (TrendData) {
+    console.log(TrendData);
+  }
 
   const lineData: LineDataType[] = [
     { id: 1, name: "개방성", values: [65, 59, 80, 81, 56, 55, 40], color: traitColors["개방성"] },

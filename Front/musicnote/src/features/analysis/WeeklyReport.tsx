@@ -36,7 +36,7 @@ export default function WeeklyReport() {
         <p className="ml-1 mt-1">3. 트렌드 분석</p>
         {Object.entries(report.trends).map(([key, value]) => (
           <p key={key} className="text-light-gray ml-3 mt-1">
-            {traitMapping[key]} - {value}
+            {traitMapping[key as keyof typeof traitMapping]} - {value}
           </p>
         ))}
       </div>

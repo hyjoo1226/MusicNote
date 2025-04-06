@@ -39,7 +39,7 @@ export default function Calendar({
   // weeklyReports,
   enabledDays,
   onMonthChange,
-  onReportSelect,
+  // onReportSelect,
 }: CalendarProps) {
   // 선택 날짜
   const [selected, setSelected] = useState<Date>();
