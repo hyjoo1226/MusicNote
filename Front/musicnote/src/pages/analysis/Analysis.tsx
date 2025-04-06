@@ -6,22 +6,6 @@ import { ChartType } from "../../features/analysis/AnalysisType";
 import { eachDayOfInterval } from "date-fns";
 import { useGetData } from "@/hooks/useApi";
 
-interface ReportsData {
-  data: {
-    responseTypeWithReportIds: {
-      cratedAt: string;
-      typeDto: {
-        openness: number;
-        conscientiousness: number;
-        extraVersion: number;
-        agreeableness: number;
-        neuroticism: number;
-      };
-      reportId: string;
-    }[];
-  };
-}
-
 export default function Analysis() {
   const navigate = useNavigate();
   const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
@@ -102,10 +86,9 @@ export default function Analysis() {
     }[]
   >(() => {
     // 일간 리포트가 있을 경우 최신순 정렬
-    const reports = dailyReportsData?.data?.responseTypeWithReportIds;
-    if (reports && reports.length > 0) {
-      const sorted = [...reports].sort(
-        (a, b) => new Date(b.cratedAt).getTime() - new Date(a.cratedAt).getTime()
+    if (dailyReportsData?.data?.responseTypeWithReportIds?.length > 0) {
+      const sorted = [...dailyReportsData.data.responseTypeWithReportIds].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       const latestReport = sorted[0];
       return [
@@ -174,14 +157,14 @@ export default function Analysis() {
       if (!dailyReportsData?.data?.responseTypeWithReportIds) return [];
 
       return dailyReportsData.data.responseTypeWithReportIds.flatMap((report: any) => {
-        const date = new Date(report.cratedAt);
+        const date = new Date(report.createdAt);
         return eachDayOfInterval({ start: date, end: date });
       });
     } else {
       if (!weeklyReportsData?.data?.responseTypeWithReportIds) return [];
 
       return weeklyReportsData.data.responseTypeWithReportIds.flatMap((report: any) => {
-        const date = new Date(report.cratedAt);
+        const date = new Date(report.createdAt);
         // 주간 기간은 해당 날짜부터 7일간으로 가정
         const endDate = new Date(date);
         const startDate = new Date(endDate);
@@ -202,7 +185,7 @@ export default function Analysis() {
       if (!dailyReportsData?.data?.responseTypeWithReportIds) return;
 
       const selectedReport = dailyReportsData.data.responseTypeWithReportIds.find(
-        (report: any) => formatDateToString(new Date(report.cratedAt)) === dateString
+        (report: any) => formatDateToString(new Date(report.createdAt)) === dateString
       );
 
       if (selectedReport) {
@@ -241,7 +224,7 @@ export default function Analysis() {
       // 주간 리포트는 해당 날짜가 포함된 주의 리포트를 찾음
       const selectedReport = weeklyReportsData.data.responseTypeWithReportIds.find(
         (report: any) => {
-          const reportDate = new Date(report.cratedAt);
+          const reportDate = new Date(report.createdAt);
           const weekEndDate = new Date(reportDate);
           const weekStartDate = new Date(reportDate);
           weekStartDate.setDate(weekEndDate.getDate() - 6);
@@ -276,7 +259,7 @@ export default function Analysis() {
       if (!dailyReportsData?.data?.responseTypeWithReportIds?.length) return;
 
       const sorted = [...dailyReportsData.data.responseTypeWithReportIds].sort(
-        (a, b) => new Date(b.cratedAt).getTime() - new Date(a.cratedAt).getTime()
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
       if (sorted.length > 0) {
@@ -296,7 +279,7 @@ export default function Analysis() {
       if (!weeklyReportsData?.data?.responseTypeWithReportIds?.length) return;
 
       const sorted = [...weeklyReportsData.data.responseTypeWithReportIds].sort(
-        (a, b) => new Date(b.cratedAt).getTime() - new Date(a.cratedAt).getTime()
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
       if (sorted.length > 0) {

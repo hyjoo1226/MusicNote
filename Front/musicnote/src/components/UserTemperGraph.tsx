@@ -9,7 +9,7 @@ export default function UserTemperGraph({ scores }: { scores: number[] }) {
     { name: "신경성", key: "neuroticism" },
   ];
 
-  const [animatedScores, setAnimatedScores] = useState([0, 0, 0, 0, 0]);
+  const [animatedScores, setAnimatedScores] = useState(scores);
 
   // 이징 함수: 처음에는 느리게, 중간에는 빠르게, 끝에는 다시 느리게
   const easeInOutCubic = (t: number): number => {
