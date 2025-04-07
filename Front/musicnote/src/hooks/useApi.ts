@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient, spotifyApiClient } from "@/api/apiClient";
 
 // GET 요청을 위한 커스텀 훅
@@ -14,14 +14,21 @@ export const useGetData = (key: string, url: string, client: string = "default",
 };
 
 // POST 요청을 위한 커스텀 훅
-export const usePostData = (url: string) => {
+export const usePostData = (url: string, options = {}) => {
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
-    mutationFn: (data: any) =>
+    mutationFn: (data: any | null) =>
       apiClient.post(url, data).then((res: any) => {
         // 응답에서 status, message, data를 추출
         const { status, message, data: responseData } = res.data;
         return { status, message, data: responseData };
       }),
+    onSuccess: (data) => {
+      // 성공 시 캐시 업데이트
+      queryClient.setQueryData([url], data);
+    },
+    ...options,
   });
 
   return {
