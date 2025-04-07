@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 interface Music {
   id: string;
-  popularity: number;
+  duration_ms: number;
   track_name: string;
   artist_name: string;
   albumcover_path: string;
@@ -33,6 +33,12 @@ export default function MusicCarousel({ musics }: MusicCarouselProps) {
     swipeToSlide: true,
   };
 
+  const formatDuration = (durationMs: number) => {
+    const minutes = Math.floor(durationMs / 60000);
+    const seconds = Math.floor((durationMs % 60000) / 1000);
+    return `${minutes}분 ${seconds}초`;
+  };
+
   return (
     <>
       <Slider {...settings}>
@@ -44,26 +50,19 @@ export default function MusicCarousel({ musics }: MusicCarouselProps) {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent">
-              <div className="absolute bottom-0 left-0 right-0 p-8 pb-4">
-                <h2 className="text-2xl font-medium text-white">{music.track_name}</h2>
-                <div className="flex items-center gap-4 text-white/90 mb-2">
-                  <span className="text-xl text-light-gray">
-                    {music.release_date.split("-")[0]}
+              <div className="flex flex-col absolute bottom-0 left-0 right-0 p-8 pb-4 gap-y-2">
+                <h2 className="flex gap-x-2 text-2xl font-medium text-white">
+                  <span className="px-3 py-1 pt-[6px] bg-level3 text-white rounded-full text-sm">
+                    {music.artist_name}
+                  </span>
+                  {music.track_name}
+                </h2>
+                <div className="flex items-center gap-4 text-white/90 mb-2 pl-4">
+                  <span className="text-base text-light-gray">
+                    {music.release_date.split("-")[0]}년 발매
                   </span>
                   <span className="flex items-center gap-1 text-light-gray">
-                    <svg
-                      className="w-5 h-5 text-yellow-500"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    {music.popularity.toFixed(1)}
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-level3 text-white rounded-full text-sm">
-                    {music.artist_name}
+                    {formatDuration(music.duration_ms)}
                   </span>
                 </div>
               </div>

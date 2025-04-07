@@ -28,7 +28,7 @@ interface Movie {
 
 interface Music {
   id: string;
-  popularity: number;
+  duration_ms: number;
   track_name: string;
   artist_name: string;
   albumcover_path: string;
@@ -268,7 +268,7 @@ export default function Recommendations() {
           </div>
         </div>
       </div>
-      <div className="w-full bg-level2 flex flex-col justify-evenly items-center rounded-tr-lg rounded-b-lg h-[calc(100vh-230px)]">
+      <div className="w-full bg-level2 flex flex-col justify-evenly items-center rounded-tr-lg rounded-b-lg h-[calc(100dvh-230px)]">
         {renderContent()}
       </div>
     </div>

@@ -1,3 +1,11 @@
+import TopBar from "@/components/layout/TopBar";
+import { useNavigate } from "react-router-dom";
+import mascot from "@/assets/logo/mascot.webp";
+import { useState, useEffect, useRef } from "react";
+import "@/styles/RecommendationDetail.css";
+import { useGetData } from "@/hooks/useApi";
+import { useAuthStore } from "@/stores/authStore";
+
 declare global {
   interface Window {
     onSpotifyWebPlaybackSDKReady: () => void;
@@ -14,17 +22,9 @@ declare global {
   }
 }
 
-import TopBar from "@/components/layout/TopBar";
-import { useNavigate } from "react-router-dom";
-import mascot from "@/assets/logo/mascot.webp";
-import { useState, useEffect, useRef } from "react";
-import "@/styles/RecommendationDetail.css";
-import { useGetData } from "@/hooks/useApi";
-import { useAuthStore } from "@/stores/authStore";
-
 interface Music {
   id: string;
-  popularity: number;
+  duration_ms: number;
   track_name: string;
   artist_name: string;
   albumcover_path: string;
@@ -296,10 +296,16 @@ export default function RecommendationMusic() {
     }
   }, [currentIndex, musics]);
 
+  const formatDuration = (durationMs: number) => {
+    const minutes = Math.floor(durationMs / 60000);
+    const seconds = Math.floor((durationMs % 60000) / 1000);
+    return `${minutes}분 ${seconds}초`;
+  };
+
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
       <TopBar title={titleText} />
-      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100%-60px)] overflow-hidden flex flex-col justify-center items-center">
+      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100dvh-60px)] overflow-hidden flex flex-col justify-center items-center">
         {isLoading ? (
           <div className="flex flex-col w-full h-full items-center justify-center gap-4">
             <img
@@ -355,9 +361,12 @@ export default function RecommendationMusic() {
                           {currentMusic.track_name}
                         </h3>
                         <div className="flex items-center gap-2 text-light-gray text-sm">
-                          <span>{currentMusic.release_date.split("-")[0]}</span>
-                          <span>•</span>
-                          <span>⭐ {currentMusic.popularity.toFixed(1)}</span>
+                          <span className="text-base text-light-gray">
+                            {currentMusic.release_date.split("-")[0]}년 발매
+                          </span>
+                          <span className="flex items-center gap-1 text-light-gray">
+                            {formatDuration(currentMusic.duration_ms)}
+                          </span>
                         </div>
                       </div>
                     </div>
