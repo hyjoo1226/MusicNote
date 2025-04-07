@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { domToJpeg } from "modern-screenshot";
 import UserTemperGraph from "../../components/UserTemperGraph";
 import WeeklyReport from "@/features/analysis/WeeklyReport";
-import NoteIcon from "../../assets/icon/note-icon.svg?react";
 import ShareIcon from "../../assets/icon/share-icon.svg?react";
 
 export default function ReportWeekly() {
@@ -15,10 +14,7 @@ export default function ReportWeekly() {
   const handleBack = () => {
     navigate(-1);
   };
-  // 음악 리스트 아이콘 핸들러
-  const handleMusicListClick = () => {
-    navigate("/musiclist/리포트에-사용된-음악");
-  };
+
   // web share API
   // 지원 안하는 브라우저의 경우 클립보드 복사
   const [isCopied, setIsCopied] = useState(false);
@@ -125,7 +121,6 @@ export default function ReportWeekly() {
             {type === "daily" ? "일일" : "주간"} 리포트
           </span>
           <div className="absolute right-0 flex cursor-pointer">
-            <NoteIcon onClick={handleMusicListClick} className="mr-3" />
             <ShareIcon onClick={handleShare} />
           </div>
         </div>

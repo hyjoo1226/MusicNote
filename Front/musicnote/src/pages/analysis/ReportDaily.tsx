@@ -31,6 +31,17 @@ export default function ReportDaily() {
     `report-${reportId}`,
     `/recommend/type?reportId=${reportId}`
   );
+  // 리포트에 쓰인 음악 - 백엔드랑 url 대화 필요
+  const { data: reportMusiclistData } = useGetData(
+    `reportMusiclistData-${reportId}`,
+    "/recommend/music"
+  );
+
+  useEffect(() => {
+    if (reportMusiclistData) {
+      console.log(reportMusiclistData);
+    }
+  });
 
   useEffect(() => {
     if (reportData) {
