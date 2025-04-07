@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.WeeklyReportEvent;
-import com.music.note.musictype.consumer.service.ReportService;
+import com.music.note.musictype.consumer.service.DailyReportService;
+import com.music.note.musictype.consumer.service.WeeklyReportService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,16 +16,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TypeEventConsumer {
 
-	private final ReportService reportService;
+	private final DailyReportService dailyReportService;
+	private final WeeklyReportService weeklyReportService;
 
 	@KafkaListener(topics = "music-type", groupId = "music-type-group")
 	public void consumeTypeEvent(MusicListEvent event) {
-		reportService.processDailyTypeEvent(event);
+		dailyReportService.processDailyTypeEvent(event);
 	}
 
 	@KafkaListener(topics = "weekly-type", groupId = "music-type-group")
 	public void consumeWeeklyTypeEvent(WeeklyReportEvent event) {
-		reportService.processWeeklyTypeEvent(event);
+		weeklyReportService.processWeeklyTypeEvent(event);
 		log.info("Weekly Type Event consumed: {}", event);
 	}
 }

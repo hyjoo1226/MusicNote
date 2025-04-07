@@ -10,16 +10,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.NotificationEvent;
 import com.music.note.kafkaeventmodel.dto.WeeklyReportEvent;
-import com.music.note.musictype.consumer.converter.AudioFeatureConverter;
-import com.music.note.musictype.consumer.converter.PersonalityReportConverter;
 import com.music.note.musictype.consumer.converter.WeeklyReportConverter;
-import com.music.note.musictype.consumer.dto.daily.AudioFeaturesRequest;
-import com.music.note.musictype.consumer.dto.daily.PersonalityReportDto;
 import com.music.note.musictype.consumer.dto.weekly.BigFiveDto;
 import com.music.note.musictype.consumer.dto.weekly.WeeklyReportDto;
+import com.music.note.musictype.consumer.dto.weekly.WeeklyReportResponse;
 import com.music.note.musictype.consumer.kafka.proiducer.NotificationProducer;
 import com.music.note.musictype.consumer.repository.ReportRepository;
 import com.music.note.musictype.consumer.repository.WeeklyReportRepository;
@@ -30,15 +26,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
-public class ReportService {
-
-	private static final String FAILED_TO_GET_REPORT = "Python 서버에서 리포트를 가져오지 못했습니다";
+@Slf4j
+public class WeeklyReportService {
 	private static final String FAILED_TO_GET_WEEKLY_REPORT = "주간 리포트 데이터가 없습니다";
-	private static final String DAILY_REPORT_READY_MESSAGE = "일간 리포트 생성 완료";
 	private static final String WEEKLY_REPORT_READY_MESSAGE = "주간 리포트 생성 완료";
-	private static final String DAILY_REPORT_URL = "/data/api/predict/bigfive/daily";
 	private static final String WEEKLY_REPORT_URL = "/data/api/generate/report/weekly";
 
 	private final RestClient restClient;
@@ -46,35 +38,15 @@ public class ReportService {
 	private final NotificationProducer notificationProducer;
 	private final WeeklyReportRepository weeklyReportRepository;
 
-	public void processDailyTypeEvent(MusicListEvent event) {
+	public List<WeeklyReportResponse> getMonthlyWeeklyReports(String userId, int year, int month) {
+		LocalDateTime start = LocalDate.of(year, month, 1).atStartOfDay();
+		LocalDateTime end = start.withDayOfMonth(start.toLocalDate().lengthOfMonth())
+			.with(LocalTime.MAX);
 
-		// event 에서 AudioFeature 추출 및 request 객체 생성
-		AudioFeaturesRequest request = AudioFeaturesRequest.builder()
-			.tracks(AudioFeatureConverter.toList(event))
-			.build();
-
-		// python 서버에서 BigFive 및 리포트 받기
-		PersonalityReportDto result = restClient.post()
-			.uri(DAILY_REPORT_URL)
-			.body(request)
-			.retrieve()
-			.body(PersonalityReportDto.class);
-
-		// DB에 저장
-		if (result == null) {
-			throw new RuntimeException(FAILED_TO_GET_REPORT);
-		}
-		PersonalityReport entity = PersonalityReportConverter.toEntity(event, result);
-		reportRepository.save(entity);
-
-		log.info("Daily Report saved: {}", entity.getReport().toString());
-
-		// Notification 서버로 이벤트 전송
-		NotificationEvent notificationEvent = NotificationEvent.builder()
-			.userId(event.getUserId())
-			.message(DAILY_REPORT_READY_MESSAGE)
-			.build();
-		notificationProducer.sendMusicListEvent(notificationEvent);
+		return weeklyReportRepository.findByUserIdAndCreatedAtBetween(userId, start, end)
+			.stream()
+			.map(WeeklyReportResponse::fromEntity)
+			.toList();
 	}
 
 	public void processWeeklyTypeEvent(WeeklyReportEvent event) {
@@ -122,5 +94,4 @@ public class ReportService {
 		LocalDateTime end = saturday.atTime(LocalTime.MAX);
 		return reportRepository.findByUserIdAndCreatedAtBetween(event.getUserId().toString(), start, end);
 	}
-
 }
