@@ -3,16 +3,12 @@ import { useNavigate } from "react-router-dom";
 export default function TopBar({ title }: { title: string }) {
   const navigate = useNavigate();
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   return (
     <div className="flex flex-row mx-[10px] xs:mx-5 my-5 rounded-2xl px-3 py-1 items-center justify-center w-[calc(100%-20px)] xs:w-[calc(100%-40px)] h-[60px] bg-level2">
       <div className="relative flex items-center justify-center w-full h-[60px]">
         <div
           className="absolute left-0 cursor-pointer xs:w-12 xs:h-12 w-10 h-10 flex items-center justify-center"
-          onClick={handleBack}
+          onClick={() => navigate(-1)}
         >
           <svg
             width="24"
