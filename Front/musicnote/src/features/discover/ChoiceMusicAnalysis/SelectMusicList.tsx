@@ -14,7 +14,7 @@ export default function SelectMusicList({
 }: SelectMusicListProps) {
   return (
     <div className="w-full flex flex-col mt-4 px-[10px] xs:px-5 items-center overflow-hidden">
-      <div className="flex flex-col w-full h-[calc(100vh-240px)] justify-between bg-level2 rounded-lg overflow-y-auto">
+      <div className="flex flex-col w-full h-[calc(100vh-264px)] justify-between bg-level2 rounded-lg overflow-y-auto">
         {selectedTracks.length > 0 ? (
           <ul className="flex flex-col gap-2">
             {selectedTracks.map((track) => (

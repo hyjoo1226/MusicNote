@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Analysis from "../pages/analysis/Analysis";
-import Report from "../pages/analysis/Report";
+import ReportDaily from "../pages/analysis/ReportDaily";
+import ReportWeekly from "../pages/analysis/ReportWeekly";
 import Discover from "../pages/discover/Discover";
 import ChoiceMusicAnalysis from "../pages/discover/ChoiceMusicAnalysis";
 import LineChart from "../pages/discover/LineChart";
