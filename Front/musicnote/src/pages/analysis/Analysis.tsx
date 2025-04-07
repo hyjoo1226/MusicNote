@@ -10,7 +10,6 @@ export default function Analysis() {
   const navigate = useNavigate();
   const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
   const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
-
   const [targetMonth, setTargetMonth] = useState(new Date());
   const [year, setYear] = useState(targetMonth.getFullYear());
   const [month, setMonth] = useState(targetMonth.getMonth() + 1);
@@ -29,115 +28,30 @@ export default function Analysis() {
     `/recommend/type/daily?year=${year}&month=${month}` // url
   );
 
+  // big5 초기 점수
+  const [bigFiveScore, setBigFiveScore] = useState<{ bigFive: string; User: number }[]>([
+    { bigFive: "개방성", User: 0 },
+    { bigFive: "성실성", User: 0 },
+    { bigFive: "외향성", User: 0 },
+    { bigFive: "우호성", User: 0 },
+    { bigFive: "신경성", User: 0 },
+  ]);
   useEffect(() => {
-    console.log(dailyReportsData);
-  }, [dailyReportsData]);
-
-  // 주간 리포트 데이터 가져오기
-  // const {
-  //   data: weeklyReportsData,
-  //   isLoading: weeklyReportsLoading,
-  //   isError: weeklyReportsError,
-  // } = useGetData(
-  //   `weeklyReportsData-${year}-${month}`, // key
-  //   `/recommend/type/weekly?year=${year}&month=${month}` // url
-  // );
-
-  // 주간 리포트
-  // const [weeklyReportsData, setWeeklyReportsData] = useState({
-  //   data: {
-  //     "2025-03-08": {
-  //       reportId: "week1",
-  //       type: {
-  //         openness: 23,
-  //         conscientiousness: 17,
-  //         extraversion: 73,
-  //         agreeableness: 58,
-  //         neuroticism: 23,
-  //       },
-  //     },
-  //     "2025-03-15": {
-  //       reportId: "week2",
-  //       type: {
-  //         openness: 23,
-  //         conscientiousness: 17,
-  //         extraversion: 73,
-  //         agreeableness: 58,
-  //         neuroticism: 23,
-  //       },
-  //     },
-  //     "2025-03-22": {
-  //       reportId: "week3",
-  //       type: {
-  //         openness: 23,
-  //         conscientiousness: 17,
-  //         extraversion: 73,
-  //         agreeableness: 58,
-  //         neuroticism: 23,
-  //       },
-  //     },
-  //   },
-  // });
-
-  const [bigFiveScore, setBigFiveScore] = useState<
-    {
-      bigFive: "개방성" | "성실성" | "외향성" | "우호성" | "신경성";
-      User: number;
-    }[]
-  >(() => {
-    // 일간 리포트가 있을 경우 최신순 정렬
     if (dailyReportsData?.data?.responseTypeWithReportIds?.length > 0) {
       const sorted = [...dailyReportsData.data.responseTypeWithReportIds].sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       const latestReport = sorted[0];
-      return [
+
+      setBigFiveScore([
         { bigFive: "개방성", User: Math.round(latestReport.typeDto.openness * 100) },
         { bigFive: "성실성", User: Math.round(latestReport.typeDto.conscientiousness * 100) },
         { bigFive: "외향성", User: Math.round(latestReport.typeDto.extraVersion * 100) },
         { bigFive: "우호성", User: Math.round(latestReport.typeDto.agreeableness * 100) },
         { bigFive: "신경성", User: Math.round(latestReport.typeDto.neuroticism * 100) },
-      ];
+      ]);
     }
-    // 기본값
-    return [
-      // {
-      //   bigFive: "개방성",
-      //   User: Math.round(
-      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.openness * 100
-      //   ),
-      // },
-      // {
-      //   bigFive: "성실성",
-      //   User: Math.round(
-      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.conscientiousness * 100
-      //   ),
-      // },
-      // {
-      //   bigFive: "외향성",
-      //   User: Math.round(
-      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.extraVersion * 100
-      //   ),
-      // },
-      // {
-      //   bigFive: "우호성",
-      //   User: Math.round(
-      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.agreeableness * 100
-      //   ),
-      // },
-      // {
-      //   bigFive: "신경성",
-      //   User: Math.round(
-      //     dailyReportsData?.data?.responseTypeWithReportIds[0].typeDto.neuroticism * 100
-      //   ),
-      // },
-      { bigFive: "개방성", User: 0 },
-      { bigFive: "성실성", User: 0 },
-      { bigFive: "외향성", User: 0 },
-      { bigFive: "우호성", User: 0 },
-      { bigFive: "신경성", User: 0 },
-    ];
-  });
+  }, [dailyReportsData]);
 
   const handleReportClick = () => {
     navigate(`/analysis/report/${reportCycle}/${selectedReportId}`);
@@ -296,6 +210,32 @@ export default function Analysis() {
       }
     }
   };
+
+  useEffect(() => {
+    console.log("selectedReportId가 변경되었습니다:", selectedReportId);
+  }, [selectedReportId]);
+
+  // 초기 selectedReportId 설정
+  useEffect(() => {
+    if (reportCycle === "daily") {
+      // 일간 리포트 최신 ID 설정
+      if (dailyReportsData?.data?.responseTypeWithReportIds?.length > 0) {
+        const sorted = [...dailyReportsData.data.responseTypeWithReportIds].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setSelectedReportId(sorted[0].reportId);
+      }
+    } else {
+      // 주간 리포트 최신 ID 설정 (주간 리포트 API 사용 시 활성화)
+      if (weeklyReportsData?.data?.responseTypeWithReportIds?.length > 0) {
+        const sorted = [...weeklyReportsData.data.responseTypeWithReportIds].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setSelectedReportId(sorted[0].reportId);
+      }
+    }
+    // }, [dailyReportsData, weeklyReportsData, reportCycle]);
+  }, [dailyReportsData, reportCycle]);
 
   return (
     <div className="h-full w-full flex flex-col max-w-[480px] justify-evenly items-center overflow-y-auto">

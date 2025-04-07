@@ -42,7 +42,7 @@ export default function Calendar({
   // onReportSelect,
 }: CalendarProps) {
   // 선택 날짜
-  const [selected, setSelected] = useState<Date>();
+  const [selected, setSelected] = useState<Date | undefined>(() => new Date());
   // 리포트 주기
   // const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
 
