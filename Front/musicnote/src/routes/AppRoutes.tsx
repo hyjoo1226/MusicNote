@@ -8,11 +8,13 @@ import LineChart from "../pages/discover/LineChart";
 import Recommendations from "../pages/recommend/Recommendations";
 import Login from "../pages/Login";
 import MusicList from "../pages/MusicList";
-import RecommendationDetail from "../pages/recommend/RecommendationDetail";
-import MyRecommendationDetail from "../pages/recommend/MyRecommendationDetail";
 import MyRecommendation from "../pages/recommend/MyRecommendation";
 import NotFound from "../components/NotFound";
 import Notification from "../pages/Notification";
+import RecommendationMovie from "../pages/recommend/RecommendationMovie";
+import RecommendationMusic from "../pages/recommend/RecommendationMusic";
+import RecommendationBook from "../pages/recommend/RecommendationBook";
+import MyRecommendationDetail from "../pages/recommend/MyRecommendationDetail";
 
 export default function AppRoutes(): React.ReactElement {
   return (
@@ -27,9 +29,12 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/discover/choice-music-analysis" element={<ChoiceMusicAnalysis />} />
       <Route path="/discover/line-chart" element={<LineChart />} />
       <Route path="/recommendations" element={<Recommendations />} />
-      <Route path="/recommendations/detail/:domain" element={<RecommendationDetail />} />
+      <Route path="/recommendations/detail/movie" element={<RecommendationMovie />} />
+      <Route path="/recommendations/detail/music" element={<RecommendationMusic />} />
+      <Route path="/recommendations/detail/book" element={<RecommendationBook />} />
       <Route path="/recommendations/my" element={<MyRecommendation />} />
-      <Route path="/recommendations/my/:domain" element={<MyRecommendationDetail />} />
+      <Route path="/recommendations/my/movie" element={<MyRecommendationDetail />} />
+      <Route path="/recommendations/my/music" element={<MyRecommendationDetail />} />
       <Route path="/notification" element={<Notification />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
