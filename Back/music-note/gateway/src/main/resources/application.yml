@@ -66,9 +66,10 @@ spring:
         - id: type-consumer-route
           uri: lb://music-type-consumer
           predicates:
-            - Path=/api/type/actuator/health
+            - Path=/api/type/actuator/health, /api/type/weekly-report
           filters:
             - RewritePath=/api/type/(?<segment>/.*)?, /${segment}
+
 eureka:
   client:
     register-with-eureka: true
