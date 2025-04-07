@@ -1,85 +1,205 @@
 import logo from "@/assets/logo/logo.png";
 import logoRec from "@/assets/logo/logo-rec.png";
+import mascot from "@/assets/logo/mascot.webp";
+import { usePostData } from "@/hooks/useApi";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import genreData from "@/assets/data/tmdb-genre-id.json";
 import MovieCarousel from "@/features/recommend/MovieCarousel";
+import MusicCarousel from "@/features/recommend/MusicCarousel";
+import BookCarousel from "@/features/recommend/BookCarousel";
 
 interface Movie {
-  id: number;
+  id: string;
   title: string;
   overview: string;
   poster_path: string;
+  backdrop_path: string;
   release_date: string;
   vote_average: number;
-  genre_ids: number[];
+  genres: string[];
+  credits: {
+    name: string;
+    role: string;
+  }[];
+  runtime: number;
+  adult: boolean;
+  popularity: number;
 }
 
-interface Genre {
-  id: number;
-  name: string;
+interface Music {
+  id: string;
+  popularity: number;
+  track_name: string;
+  artist_name: string;
+  albumcover_path: string;
+  release_date: string;
+}
+
+interface Book {
+  author: string;
+  description: string;
+  id: string;
+  image: string;
+  isbn: string;
+  pubdate: string;
+  publisher: string;
+  title: string;
 }
 
 export default function Recommendations() {
   const navigate = useNavigate();
+  const [selectedDomain, setSelectedDomain] = useState<"영화" | "음악" | "책">("영화");
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [selectedDomain, setSelectedDomain] = useState<"영화" | "음악" | "활동">("영화");
-  const genreMap = new Map(genreData.genres.map((genre: Genre) => [genre.id, genre.name]));
+  const [musics, setMusics] = useState<Music[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
 
-  const getGenreNames = (genreIds: number[]) => {
-    return genreIds.map((id) => genreMap.get(id) as string).filter(Boolean);
-  };
+  const {
+    mutateAsync: getMovieRecommendations,
+    isLoading: movieRecommendationsLoading,
+    error: movieRecommendationsError,
+  } = usePostData("/recommend/movie");
+  const {
+    mutateAsync: getMusicRecommendations,
+    isLoading: musicRecommendationsLoading,
+    error: musicRecommendationsError,
+  } = usePostData("/recommend/music");
+  const {
+    mutateAsync: getBookRecommendations,
+    isLoading: bookRecommendationsLoading,
+    error: bookRecommendationsError,
+  } = usePostData("/recommend/book");
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const url =
-        "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-Kr&page=1&sort_by=popularity.desc";
-      const options = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZDhlOTlhZjcxZmQxMDQ2OTkwZjA1YzdlZDc1ZDFiMyIsIm5iZiI6MTczMTg5NzI3OS4xNDQsInN1YiI6IjY3M2FhN2JmM2M4MzFhMTMyOTUzY2M0OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UfKeIpOhTXLNJQzcYc8CNOEb7wWHhRU4wTk1sfC1PT0",
-        },
-      };
-
       try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        setMovies(data.results);
+        const response = await getMovieRecommendations({});
+        if (response.status === 200) {
+          setMovies(response.data.movies);
+        }
       } catch (error) {
         console.error("영화 데이터를 불러오는데 실패했습니다:", error);
       }
     };
 
+    const fetchMusic = async () => {
+      try {
+        const response = await getMusicRecommendations({});
+        if (response.status === 200) {
+          setMusics(response.data.musics);
+        }
+      } catch (error) {
+        console.error("음악 데이터를 불러오는데 실패했습니다:", error);
+      }
+    };
+    const fetchBook = async () => {
+      try {
+        const response = await getBookRecommendations({});
+        if (response.status === 200) {
+          setBooks(response.data.books);
+        }
+      } catch (error) {
+        console.error("책 데이터를 불러오는데 실패했습니다:", error);
+      }
+    };
     fetchMovies();
-  }, []);
+    fetchMusic();
+    fetchBook();
+  }, [getMovieRecommendations, getMusicRecommendations, getBookRecommendations]);
 
   const renderContent = () => {
     switch (selectedDomain) {
       case "영화":
         return (
-          <div className="w-full px-2 rounded-lg overflow-hidden">
-            <MovieCarousel movies={movies} getGenreNames={getGenreNames} />
+          <div className="w-full px-2 rounded-lg overflow-visible items-center justify-center">
+            {movieRecommendationsLoading && (
+              <div className="flex flex-col w-full h-full items-center justify-center gap-4 p-4">
+                <img
+                  src={mascot}
+                  alt="mascot"
+                  className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
+                />
+                <h3 className="text-white text-2xl font-bold text-center">영화를 찾고 있짹!</h3>
+              </div>
+            )}
+            {movieRecommendationsError && (
+              <div className="text-white">Error: {movieRecommendationsError.message}</div>
+            )}
+            {movies.length > 0 && (
+              <>
+                <MovieCarousel movies={movies} />
+                <button
+                  className="flex bg-main w-[200px] text-white text-xl p-2 pt-3 items-center justify-center text-center mx-auto rounded-xl"
+                  onClick={() => navigate("/recommendations/detail/movie")}
+                >
+                  영화 추천 더보기
+                </button>
+              </>
+            )}
           </div>
         );
       case "음악":
         return (
-          <div className="w-full px-2 mb-8 text-white text-center">
-            음악 추천 컴포넌트가 들어갈 자리입니다
+          <div className="w-full px-2 rounded-lg overflow-visible items-center justify-center">
+            {musicRecommendationsLoading && (
+              <div className="flex flex-col w-full h-full items-center justify-center gap-4 p-4">
+                <img
+                  src={mascot}
+                  alt="mascot"
+                  className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
+                />
+                <h3 className="te xt-white text-2xl font-bold text-center">음악을 찾고 있짹!</h3>
+              </div>
+            )}
+            {musicRecommendationsError && (
+              <div className="text-white">Error: {musicRecommendationsError.message}</div>
+            )}
+            {musics.length > 0 && (
+              <>
+                <MusicCarousel musics={musics} />
+                <button
+                  className="flex bg-main w-[200px] text-white text-xl p-2 pt-3 items-center justify-center text-center mx-auto rounded-xl"
+                  onClick={() => navigate("/recommendations/detail/music")}
+                >
+                  음악 추천 더보기
+                </button>
+              </>
+            )}
           </div>
         );
-      case "활동":
+      case "책":
         return (
-          <div className="w-full px-2 mb-8 text-white text-center">
-            활동 추천 컴포넌트가 들어갈 자리입니다
+          <div className="w-full px-2 rounded-lg overflow-visible items-center justify-center">
+            {bookRecommendationsLoading && (
+              <div className="flex flex-col w-full h-full items-center justify-center gap-4 p-4">
+                <img
+                  src={mascot}
+                  alt="mascot"
+                  className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
+                />
+                <h3 className="te xt-white text-2xl font-bold text-center">음악을 찾고 있짹!</h3>
+              </div>
+            )}
+            {bookRecommendationsError && (
+              <div className="text-white">Error: {bookRecommendationsError.message}</div>
+            )}
+            {books.length > 0 && (
+              <>
+                <BookCarousel books={books} />
+                <button
+                  className="flex bg-main w-[200px] text-white text-xl p-2 pt-3 items-center justify-center text-center mx-auto rounded-xl"
+                  onClick={() => navigate("/recommendations/detail/book")}
+                >
+                  책 추천 더보기
+                </button>
+              </>
+            )}
           </div>
         );
     }
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen w-full overflow-y-auto bg-level1 p-2 xs:p-6">
+    <div className="flex flex-col items-center w-full overflow-y-auto bg-level1 px-2 xs:px-4">
       <div className="flex flex-row w-full justify-between items-center">
         <div className="flex self-start justify-start mt-3 mb-1 gap-x-1">
           <img src={logo} alt="logo" className="w-[54px] h-[54px] mb-3" />
@@ -139,23 +259,17 @@ export default function Recommendations() {
 
           <div
             className={`bg-level2 py-1 flex flex-col items-center justify-center cursor-pointer rounded-tr-lg transition-all ${
-              selectedDomain === "활동" ? "bg-main" : "hover:bg-level3 border-b border-border"
+              selectedDomain === "책" ? "bg-main" : "hover:bg-level3 border-b border-border"
             }`}
-            onClick={() => setSelectedDomain("활동")}
+            onClick={() => setSelectedDomain("책")}
           >
-            <span className="text-xl xs:text-2xl">🎮</span>
-            <span className="text-white  text-base">활동</span>
+            <span className="text-xl xs:text-2xl">📚</span>
+            <span className="text-white  text-base">책</span>
           </div>
         </div>
       </div>
-      <div className="w-full bg-level2 flex flex-col p-2 justify-evenly items-center rounded-b-lg h-[calc(100vh-260px)]">
+      <div className="w-full bg-level2 flex flex-col justify-evenly items-center rounded-tr-lg rounded-b-lg h-[calc(100vh-230px)]">
         {renderContent()}
-        <button
-          className="bg-main w-[200px] text-white text-xl p-2 pt-3  rounded-xl"
-          onClick={() => navigate(`/recommendations/detail/${selectedDomain}`)}
-        >
-          {selectedDomain} 추천 더보기
-        </button>
       </div>
     </div>
   );
