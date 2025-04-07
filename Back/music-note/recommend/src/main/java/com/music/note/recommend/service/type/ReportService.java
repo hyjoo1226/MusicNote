@@ -16,6 +16,8 @@ import com.music.note.common.exception.exception.domain.personalityreport.Person
 import com.music.note.recommend.dto.report.ResponseReportDto;
 import com.music.note.recommend.dto.report.ResponseReportWithTypeDto;
 import com.music.note.recommend.dto.report.ResponseReportList;
+import com.music.note.recommend.dto.report.music.MusicDto;
+import com.music.note.recommend.dto.report.music.ResponseMusicDtoList;
 import com.music.note.recommend.dto.type.ResponseWeeklyTypeDto;
 import com.music.note.recommend.dto.type.TrendTypeDto;
 import com.music.note.recommend.dto.type.TypeDto;
@@ -81,6 +83,16 @@ public class ReportService {
 		return ResponseWeeklyTypeDto.builder()
 			.trendTypeDtoList(trendTypeDtoList)
 			.listSize(trendTypeDtoList.size())
+			.build();
+	}
+
+	public ResponseMusicDtoList readMusicDataByReportId(String reportId) {
+		PersonalityReport report = reportRepository.findById(reportId)
+			.orElseThrow(() -> new PersonalityNotFoundException(NOT_FOUND_PERSONALITY_REPORT));
+		List<MusicDto> musicDtos = reportMapper.reportToMusicDto(report);
+		return ResponseMusicDtoList.builder()
+			.musicDtoList(musicDtos)
+			.listSize(musicDtos.size())
 			.build();
 	}
 }
