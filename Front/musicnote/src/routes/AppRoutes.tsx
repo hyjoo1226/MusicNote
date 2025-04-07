@@ -30,7 +30,8 @@ export default function AppRoutes(): React.ReactElement {
         <Route path="/home" element={<Home />} />
         <Route path="/musiclist/:title/" element={<MusicList />} />
         <Route path="/analysis" element={<Analysis />} />
-        <Route path="/analysis/report" element={<Report />} />
+        <Route path="/analysis/report/daily/:reportId" element={<ReportDaily />} />
+        <Route path="/analysis/report/weekly/:reportId" element={<ReportWeekly />} />
         <Route path="/discover" element={<Discover />} />
         <Route path="/discover/choice-music-analysis" element={<ChoiceMusicAnalysis />} />
         <Route path="/discover/line-chart" element={<LineChart />} />
