@@ -63,18 +63,73 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/script\.ebay\.co\.kr\//,
+            // @ts-ignore
+            urlPattern: ({ url }) => url.pathname.includes("/api/notifications"),
+            handler: "CacheFirst",
+            options: {
+              cacheName: "notifications-cache",
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7일간 캐싱
+              },
+              backgroundSync: {
+                name: "notification-queue",
+                options: {
+                  maxRetentionTime: 60 * 24 * 7, // 7일간 재시도 (분 단위)
+                },
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/j12a308\.p\.ssafy\.io\/api\/notifications\/sse\/subscribe/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "sse-connection-cache",
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 2, // 2시간
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/j12a308\.p\.ssafy\.io\/api\//,
             handler: "NetworkFirst",
             options: {
               cacheName: "api-cache",
               expiration: {
-                maxEntries: 50,
+                maxEntries: 100,
                 maxAgeSeconds: 60 * 60 * 24, // 24시간
+              },
+              networkTimeoutSeconds: 10,
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            // @ts-ignore
+            urlPattern: ({ url }) => url.origin === window.location.origin,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "local-assets",
+              expiration: {
+                maxEntries: 200,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30일
               },
             },
           },
         ],
       },
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "custom-sw.js",
+      injectRegister: "auto",
     }),
     eslint({
       fix: true,
