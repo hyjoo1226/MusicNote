@@ -32,6 +32,7 @@ export default function ReportDaily() {
     `/recommend/type?reportId=${reportId}`
   );
   // 리포트에 쓰인 음악 - 백엔드랑 url 대화 필요
+  // 현재는 status200이나 레포트id 요구 안해서 음악리스트 없음
   const { data: reportMusiclistData } = useGetData(
     `reportMusiclistData-${reportId}`,
     "/recommend/music"

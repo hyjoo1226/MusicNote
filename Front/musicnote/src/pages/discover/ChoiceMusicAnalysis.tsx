@@ -45,6 +45,7 @@ export default function ChoiceMusicAnalysis() {
     console.log(musicList);
 
     // POST API
+    // 아직 백엔드 구현 안됨
     postChoiceMusicData(musicList, {
       onSuccess: (response) => {
         console.log("성공적으로 전송되었습니다:", response);

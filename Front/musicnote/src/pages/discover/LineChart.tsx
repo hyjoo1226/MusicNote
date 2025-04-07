@@ -9,6 +9,21 @@ interface LineDataType {
   color: string;
 }
 
+type TraitType =
+  | "openness"
+  | "conscientiousness"
+  | "extraVersion"
+  | "agreeableness"
+  | "neuroticism";
+interface TrendItem {
+  openness: number | null;
+  conscientiousness: number | null;
+  extraVersion: number | null;
+  agreeableness: number | null;
+  neuroticism: number | null;
+  createdAt: string;
+}
+
 const traitColors: Record<string, string> = {
   개방성: "var(--color-openness)",
   성실성: "var(--color-conscientiousness)",
@@ -52,22 +67,157 @@ export default function LineTrend() {
   const date = new Date();
   const dateString = formatDateToString(date);
 
-  const { data: TrendData } = useGetData(
-    `TrendData-${dateString}`, // key
-    `/recommend/type/trend?date=${dateString}` // url
-  );
+  // 현재 일주일 중 없는 날짜가 null이 아니라 아예 전송이 안된 상태라 하드코딩으로 대체
+  // const { data: TrendData } = useGetData(
+  //   `TrendData-${dateString}`, // key
+  //   `/recommend/type/trend?date=${dateString}` // url
+  // );
+  const TrendData = {
+    trendTypeDtoList: [
+      {
+        openness: 0.329532,
+        conscientiousness: 0.491833,
+        extraVersion: 0.620478,
+        agreeableness: 0.311398,
+        neuroticism: 0.772896,
+        createdAt: "2025-04-07T10:00:29.628",
+      },
+      {
+        openness: 0.6,
+        conscientiousness: 0.2,
+        extraVersion: 0.6,
+        agreeableness: 0.8,
+        neuroticism: 0.1,
+        createdAt: "2025-04-06T10:00:29.628",
+      },
+      {
+        openness: 0.3,
+        conscientiousness: 0.6,
+        extraVersion: 0.2,
+        agreeableness: 0.1,
+        neuroticism: 0.2,
+        createdAt: "2025-04-05T10:00:29.628",
+      },
+      {
+        openness: null,
+        conscientiousness: null,
+        extraVersion: null,
+        agreeableness: null,
+        neuroticism: null,
+        createdAt: "2025-04-04T10:00:29.628",
+      },
+      {
+        openness: 0.35,
+        conscientiousness: 0.46,
+        extraVersion: 0.6,
+        agreeableness: 0.3,
+        neuroticism: 0.75,
+        createdAt: "2025-04-03T10:00:29.628",
+      },
+      {
+        openness: 0.2,
+        conscientiousness: 0.16,
+        extraVersion: 0.2,
+        agreeableness: 0.1,
+        neuroticism: 0.1,
+        createdAt: "2025-04-02T10:00:29.628",
+      },
+      {
+        openness: null,
+        conscientiousness: null,
+        extraVersion: null,
+        agreeableness: null,
+        neuroticism: null,
+        createdAt: "2025-04-01T10:00:29.628",
+      },
+    ],
+  };
 
-  if (TrendData) {
-    console.log(TrendData);
-  }
+  const sortedData = TrendData?.trendTypeDtoList
+    ? [...TrendData.trendTypeDtoList].sort(
+        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      )
+    : [];
 
-  const lineData: LineDataType[] = [
-    { id: 1, name: "개방성", values: [65, 59, 80, 81, 56, 55, 40], color: traitColors["개방성"] },
-    { id: 2, name: "성실성", values: [28, 48, 40, 19, 86, 27, 90], color: traitColors["성실성"] },
-    { id: 3, name: "외향성", values: [80, 40, 32, 45, 78, 52, 63], color: traitColors["외향성"] },
-    { id: 4, name: "우호성", values: [45, 70, 75, 38, 25, 60, 85], color: traitColors["우호성"] },
-    { id: 5, name: "신경성", values: [20, 35, 60, 90, 50, 75, 30], color: traitColors["신경성"] },
-  ];
+  // const lineData: LineDataType[] = [
+  //   { id: 1, name: "개방성", values: [65, 59, 80, 81, 56, 55, 40], color: traitColors["개방성"] },
+  //   { id: 2, name: "성실성", values: [28, 48, 40, 19, 86, 27, 90], color: traitColors["성실성"] },
+  //   { id: 3, name: "외향성", values: [80, 40, 32, 45, 78, 52, 63], color: traitColors["외향성"] },
+  //   { id: 4, name: "우호성", values: [45, 70, 75, 38, 25, 60, 85], color: traitColors["우호성"] },
+  //   { id: 5, name: "신경성", values: [20, 35, 60, 90, 50, 75, 30], color: traitColors["신경성"] },
+  // ];
+
+  // null값의 경우 가장 가까운 이전/ 이후 날짜의 값 찾기
+  // 연속된 null 개수에 따라 중간값 넣도록 로직 수정 필요
+  const getNearestValue = (data: TrendItem[], currentIndex: number, trait: TraitType) => {
+    let value = data[currentIndex][trait];
+    if (value !== null) return value;
+
+    // 이전 날짜에서 값 탐색
+    for (let i = currentIndex - 1; i >= 0; i--) {
+      if (data[i][trait] !== null) {
+        value = data[i][trait];
+        break;
+      }
+    }
+
+    // 다음 날짜에서 값 탐색 (이전에 찾지 못한 경우)
+    if (value === null) {
+      for (let i = currentIndex + 1; i < data.length; i++) {
+        if (data[i][trait] !== null) {
+          value = data[i][trait];
+          break;
+        }
+      }
+    }
+
+    return value ?? 0; // 모든 값이 null일 경우 0 반환
+  };
+
+  const lineData: LineDataType[] = sortedData.length
+    ? [
+        {
+          id: 1,
+          name: "개방성",
+          values: sortedData.map((_, index) =>
+            Math.round(getNearestValue(sortedData, index, "openness") * 100)
+          ),
+          color: traitColors["개방성"],
+        },
+        {
+          id: 2,
+          name: "성실성",
+          values: sortedData.map((_, index) =>
+            Math.round(getNearestValue(sortedData, index, "conscientiousness") * 100)
+          ),
+          color: traitColors["성실성"],
+        },
+        {
+          id: 3,
+          name: "외향성",
+          values: sortedData.map((_, index) =>
+            Math.round(getNearestValue(sortedData, index, "extraVersion") * 100)
+          ),
+          color: traitColors["외향성"],
+        },
+        {
+          id: 4,
+          name: "우호성",
+          values: sortedData.map((_, index) =>
+            Math.round(getNearestValue(sortedData, index, "agreeableness") * 100)
+          ),
+          color: traitColors["우호성"],
+        },
+        {
+          id: 5,
+          name: "신경성",
+          values: sortedData.map((_, index) =>
+            Math.round(getNearestValue(sortedData, index, "neuroticism") * 100)
+          ),
+          color: traitColors["신경성"],
+        },
+      ]
+    : [];
 
   // 첫 번째 줄에 표시할 항목들 (개방성, 성실성, 외향성)
   const firstRowItems = lineData.filter((line) => line.id <= 3);
@@ -79,9 +229,15 @@ export default function LineTrend() {
   const lineContentWidth = lineWidth - padding * 2;
   const lineHeight = height.current - padding * 2;
 
-  const xPoints = lineData[0].values.map(
-    (_, i) => padding + i * (lineContentWidth / (lineData[0].values.length - 1))
-  );
+  // const xPoints = lineData[0].values.map(
+  //   (_, i) => padding + i * (lineContentWidth / (lineData[0].values.length - 1))
+  // );
+  const xPoints =
+    lineData.length > 0
+      ? lineData[0].values.map(
+          (_, i) => padding + i * (lineContentWidth / (lineData[0].values.length - 1))
+        )
+      : [];
 
   // 범례 클릭 핸들러
   const handleLegendClick = (lineId: number) => {
