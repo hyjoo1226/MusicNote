@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import TopBar from "@/components/layout/TopBar";
-import { useGetData } from "@/hooks/useApi";
+// import { useGetData } from "@/hooks/useApi";
 
 interface LineDataType {
   id: number;
@@ -66,6 +66,7 @@ export default function LineTrend() {
   };
   const date = new Date();
   const dateString = formatDateToString(date);
+  console.log(dateString);
 
   // 현재 일주일 중 없는 날짜가 null이 아니라 아예 전송이 안된 상태라 하드코딩으로 대체
   // const { data: TrendData } = useGetData(

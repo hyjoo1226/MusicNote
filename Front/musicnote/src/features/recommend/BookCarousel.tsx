@@ -50,9 +50,14 @@ export default function BookCarousel({ books }: BookCarouselProps) {
                   <span className="text-xl text-light-gray">{book.pubdate.split("-")[0]}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-level3 text-white rounded-full text-sm">
-                    {book.author}
-                  </span>
+                  {book.author.split(",").map((author) => (
+                    <span
+                      key={author}
+                      className="px-3 py-1 bg-level3 text-white rounded-full text-sm"
+                    >
+                      {author}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
