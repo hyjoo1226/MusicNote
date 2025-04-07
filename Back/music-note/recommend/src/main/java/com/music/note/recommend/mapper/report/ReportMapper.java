@@ -43,7 +43,7 @@ public class ReportMapper {
 		TypeDto typeDto = entityToTypeDto(report);
 		return ResponseReportWithTypeDto.builder()
 			.reportId(report.getId())
-			.createdAt(report.getCreatedAt().toLocalDateTime())
+			.createdAt(report.getCreatedAt())
 			.typeDto(typeDto)
 			.build();
 	}
