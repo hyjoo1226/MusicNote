@@ -3,6 +3,7 @@
 import os
 import time
 import requests
+import html
 from dotenv import load_dotenv
 
 from modelschemas.request_response import BigFiveScore, BookItem
@@ -24,6 +25,39 @@ class BookRecommender:
         self.job_recommender = JobRecommender()
         self.keyword_tool = KeywordTool()
 
+    def _is_valid_book(self, item: dict) -> bool:
+        title = item.get("title", "")
+        description = item.get("description", "")
+        publisher = item.get("publisher", "")
+        pubdate = item.get("pubdate", "0000")
+
+        # ❶ 제목 제외 키워드 필터
+        exclude_title_keywords = [
+            "주소록", "CD", "DVD", "지도", "자료집", "정보집", "연감", "실적",
+            "보고서", "수록", "전화번호부", "명부", "매뉴얼", "데이터북"
+        ]
+        if any(word in title for word in exclude_title_keywords):
+            return False
+
+        # ❷ 기존 제외 키워드 (자격증, 기출 등)
+        exclude_keywords = ["자격증", "기출", "요약", "매거진", "정리", "시험대비", "시험 대비"]
+        if any(word in title for word in exclude_keywords) or any(word in description for word in exclude_keywords):
+            return False
+
+        # ❸ 출판사 제외
+        exclude_publishers = ["에듀윌", "공단기", "시대고시기획", "월간", "한국콘텐츠미디어"]
+        if publisher in exclude_publishers:
+            return False
+
+        # ❹ 출판연도 필터
+        try:
+            year = int(pubdate[:4])
+            if year < 2008 or year > 2025:
+                return False
+        except:
+            pass
+
+        return True
 
     def recommend_books_from_bigfive(self, bigfive: BigFiveScore, top_n_jobs: int = 5, top_k_keywords: int = 5, total_per_keyword: int = 2) -> list[BookItem]:
         """
@@ -41,7 +75,8 @@ class BookRecommender:
             1 - bigfive.neuroticism  # stability로 변환
         ]
         keywords = self.job_recommender.get_keywords_from_bigfive(user_scores, top_n_jobs, top_k_keywords)
-        return self.collect_from_keywords(keywords, total_per_keyword=total_per_keyword)
+        kr_keywords = self.keyword_tool.translate_and_save_keywords(keywords)
+        return self.collect_from_keywords(kr_keywords, total_per_keyword=total_per_keyword)
 
     def fetch_books(self, query: str, display: int = 100, start: int = 1) -> dict:
         """
@@ -51,22 +86,39 @@ class BookRecommender:
             "query": query,
             "display": display,
             "start": start,
-            "sort": "sim"
+            "sort": "date"
         }
         response = requests.get(self.base_url, headers=self.headers, params=params)
-        return response.json()
+        # ✅ 추가 로그
+        print(f"📡 요청: {query} | 상태코드: {response.status_code}")
+        if response.status_code != 200:
+            print("❌ 응답 실패:", response.text)
+            return {}
+
+        json_data = response.json()
+        if not json_data.get("items"):
+            print(f"⚠️ '{query}'에 대한 결과 없음")
+        return json_data
 
     def collect_books(self, query: str, total: int = 40, delay: float = 0.8) -> list[BookItem]:
         results = []
         for start in range(1, total + 1, 20):
             data = self.fetch_books(query, display=10, start=start)
             for item in data.get("items", []):
+
+                if not self._is_valid_book(item):
+                    continue
+
+                author = str(html.unescape(item.get("author", "").replace("^", ", ") or "저자 미상")).strip()
+                publisher = str(html.unescape(item.get("publisher", "") or "출판사 미상")).strip()
+                description = str(html.unescape(item.get("description", "") or "설명 없음")).strip()
+
                 results.append(BookItem(
                     title=item.get("title"),
                     image=item.get("image"),
-                    author=item.get("author"),
-                    publisher=item.get("publisher"),
-                    description=item.get("description"),
+                    author=author,
+                    publisher=publisher,
+                    description=description,
                     isbn=item.get("isbn"),
                     pubdate=convert_pubdate(item.get("pubdate"))
                 ))

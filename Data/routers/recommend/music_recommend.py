@@ -8,6 +8,6 @@ router = APIRouter()
 music_recommender = MusicRecommender()
 
 @router.post("/music", response_model=MusicList)
-def recommend_books(data: BigFiveScore):
-    musics = music_recommender.recommend_books_from_bigfive(data)
-    return {"musics": musics}
+def recommend_music(data: BigFiveScore):
+    musics = music_recommender.recommend_musics_from_bigfive(bigfive=data)
+    return musics
