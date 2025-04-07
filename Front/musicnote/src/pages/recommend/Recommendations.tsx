@@ -96,7 +96,6 @@ export default function Recommendations() {
         const response = await getBookRecommendations({});
         if (response.status === 200) {
           setBooks(response.data.books);
-          console.log(response.data.books);
         }
       } catch (error) {
         console.error("책 데이터를 불러오는데 실패했습니다:", error);

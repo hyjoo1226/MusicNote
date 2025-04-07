@@ -13,6 +13,7 @@ import NotFound from "../components/NotFound";
 import Notification from "../pages/Notification";
 import RecommendationMovie from "../pages/recommend/RecommendationMovie";
 import RecommendationMusic from "../pages/recommend/RecommendationMusic";
+import RecommendationBook from "../pages/recommend/RecommendationBook";
 import MyRecommendationDetail from "../pages/recommend/MyRecommendationDetail";
 
 export default function AppRoutes(): React.ReactElement {
@@ -30,6 +31,7 @@ export default function AppRoutes(): React.ReactElement {
       <Route path="/recommendations" element={<Recommendations />} />
       <Route path="/recommendations/detail/movie" element={<RecommendationMovie />} />
       <Route path="/recommendations/detail/music" element={<RecommendationMusic />} />
+      <Route path="/recommendations/detail/book" element={<RecommendationBook />} />
       <Route path="/recommendations/my" element={<MyRecommendation />} />
       <Route path="/recommendations/my/movie" element={<MyRecommendationDetail />} />
       <Route path="/recommendations/my/music" element={<MyRecommendationDetail />} />

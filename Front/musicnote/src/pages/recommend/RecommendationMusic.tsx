@@ -40,17 +40,7 @@ export default function RecommendationMusic() {
   const [startX, setStartX] = useState(0);
   const [offsetX, setOffsetX] = useState(0);
   const [swiping, setSwiping] = useState(false);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isDraggedRecently, setIsDraggedRecently] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const scrollStartY = useRef(0);
-  const [isVerticalScrolling, setIsVerticalScrolling] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [deviceId, setDeviceId] = useState<string | null>(null);
-
-  const { spotifyAccessToken } = useAuthStore();
-  const startY = useRef(0);
+  const { spotifyAccessToken, product } = useAuthStore();
 
   const cardRef = useRef(null);
   const cardWidth = useRef(0);
@@ -59,7 +49,7 @@ export default function RecommendationMusic() {
 
   const currentMusic = musics?.[currentIndex];
 
-  const { data, isLoading, isError } = useGetData("recommendMusic", `recommend/music`);
+  const { data, isLoading, isError } = useGetData("/recommend/music", "recommend/music");
   // const { mutateAsync: likeMovie, error: likeMovieError } = usePostData("recommend/like/movie");
 
   useEffect(() => {
@@ -77,48 +67,45 @@ export default function RecommendationMusic() {
   }, [currentMusic]);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://sdk.scdn.co/spotify-player.js";
-    script.async = true;
-    document.body.appendChild(script);
+    console.log(product);
+    // product가 "free"가 아닐 때만 Spotify SDK 로드
+    if (product !== "free") {
+      const script = document.createElement("script");
+      script.src = "https://sdk.scdn.co/spotify-player.js";
+      script.async = true;
+      document.body.appendChild(script);
 
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new window.Spotify.Player({
-        name: "Web Playback SDK Player",
-        getOAuthToken: (cb) => {
-          cb(spotifyAccessToken || "");
-        },
-        volume: 0.5,
-      });
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        const player = new window.Spotify.Player({
+          name: "Web Playback SDK Player",
+          getOAuthToken: (cb) => {
+            cb(spotifyAccessToken || "");
+          },
+          volume: 0.5,
+        });
 
-      // 플레이어 상태 이벤트 리스너 등록
-      player.addListener("ready", ({ device_id }) => {
-        console.log("Ready with Device ID", device_id);
-        // device_id를 저장해두면 좋습니다
-        setDeviceId(device_id); // useState로 deviceId 상태 관리 필요
-      });
+        player.addListener("not_ready", ({ device_id }) => {
+          console.log("Device ID has gone offline", device_id);
+        });
 
-      player.addListener("not_ready", ({ device_id }) => {
-        console.log("Device ID has gone offline", device_id);
-      });
+        // 에러 처리
+        player.addListener("initialization_error", ({ message }) => {
+          console.error("Failed to initialize", message);
+        });
 
-      // 에러 처리
-      player.addListener("initialization_error", ({ message }) => {
-        console.error("Failed to initialize", message);
-      });
+        player.addListener("authentication_error", ({ message }) => {
+          console.error("Failed to authenticate", message);
+        });
 
-      player.addListener("authentication_error", ({ message }) => {
-        console.error("Failed to authenticate", message);
-      });
+        player.addListener("account_error", ({ message }) => {
+          console.error("Failed to validate Spotify account", message);
+        });
 
-      player.addListener("account_error", ({ message }) => {
-        console.error("Failed to validate Spotify account", message);
-      });
-
-      // 플레이어 연결
-      player.connect();
-    };
-  }, [spotifyAccessToken]);
+        // 플레이어 연결
+        player.connect();
+      };
+    }
+  }, [spotifyAccessToken, product]);
 
   // 스와이프 상태 초기화
   const resetSwipeState = () => {
@@ -170,36 +157,15 @@ export default function RecommendationMusic() {
       cancelAnimationFrame(animationRef.current);
     }
     setStartX(e.touches[0].clientX);
-    startY.current = e.touches[0].clientY;
-    setIsVerticalScrolling(false);
     isDragging.current = true;
     setSwiping(true);
-    setIsDraggedRecently(false);
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!isDragging.current) return;
 
     const currentX = e.touches[0].clientX;
-    const currentY = e.touches[0].clientY;
     const diffX = currentX - startX;
-    const diffY = currentY - startY.current;
-
-    // 처음 움직임이 감지될 때 방향 결정
-    if (!isVerticalScrolling && (Math.abs(diffX) > 5 || Math.abs(diffY) > 5)) {
-      // 세로 방향 움직임이 가로보다 큰 경우
-      if (Math.abs(diffY) > Math.abs(diffX)) {
-        setIsVerticalScrolling(true);
-        return;
-      }
-    }
-
-    // 세로 스크롤 중이면 가로 스와이프 처리 안함
-    if (isVerticalScrolling) return;
-
-    if (Math.abs(diffX) > 5) {
-      setIsDraggedRecently(true);
-    }
 
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
@@ -215,16 +181,11 @@ export default function RecommendationMusic() {
 
     isDragging.current = false;
     setSwiping(false);
-    setIsVerticalScrolling(false);
 
-    if (!isVerticalScrolling) {
-      if (direction === "right") {
-        handleLike(musics[currentIndex].id);
-      } else if (direction === "left") {
-        handleDislike(musics[currentIndex].id);
-      } else {
-        resetSwipeState();
-      }
+    if (direction === "right") {
+      handleLike(musics[currentIndex].id);
+    } else if (direction === "left") {
+      handleDislike(musics[currentIndex].id);
     } else {
       resetSwipeState();
     }
@@ -236,36 +197,15 @@ export default function RecommendationMusic() {
       cancelAnimationFrame(animationRef.current);
     }
     setStartX(e.clientX);
-    startY.current = e.clientY;
-    setIsVerticalScrolling(false);
     isDragging.current = true;
     setSwiping(true);
-    setIsDraggedRecently(false);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging.current) return;
 
     const currentX = e.clientX;
-    const currentY = e.clientY;
     const diffX = currentX - startX;
-    const diffY = currentY - startY.current;
-
-    // 처음 움직임이 감지될 때 방향 결정
-    if (!isVerticalScrolling && (Math.abs(diffX) > 5 || Math.abs(diffY) > 5)) {
-      // 세로 방향 움직임이 가로보다 큰 경우
-      if (Math.abs(diffY) > Math.abs(diffX)) {
-        setIsVerticalScrolling(true);
-        return;
-      }
-    }
-
-    // 세로 스크롤 중이면 가로 스와이프 처리 안함
-    if (isVerticalScrolling) return;
-
-    if (Math.abs(diffX) > 5) {
-      setIsDraggedRecently(true);
-    }
 
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
@@ -281,16 +221,11 @@ export default function RecommendationMusic() {
 
     isDragging.current = false;
     setSwiping(false);
-    setIsVerticalScrolling(false);
 
-    if (!isVerticalScrolling) {
-      if (direction === "right") {
-        handleLike(musics[currentIndex].id);
-      } else if (direction === "left") {
-        handleDislike(musics[currentIndex].id);
-      } else {
-        resetSwipeState();
-      }
+    if (direction === "right") {
+      handleLike(musics[currentIndex].id);
+    } else if (direction === "left") {
+      handleDislike(musics[currentIndex].id);
     } else {
       resetSwipeState();
     }
@@ -306,11 +241,6 @@ export default function RecommendationMusic() {
     if (!currentMusic) return;
     console.log(id);
     resetSwipeState();
-
-    // 카드가 뒤집혀 있다면 다시 앞면으로 전환
-    if (isFlipped) {
-      setIsFlipped(false);
-    }
 
     setTimeout(() => {
       goToNextMovie();
@@ -328,11 +258,6 @@ export default function RecommendationMusic() {
     if (!currentMusic) return;
     console.log(id);
     resetSwipeState();
-
-    // 카드가 뒤집혀 있다면 다시 앞면으로 전환
-    if (isFlipped) {
-      setIsFlipped(false);
-    }
 
     setTimeout(() => {
       goToNextMovie();
@@ -354,32 +279,7 @@ export default function RecommendationMusic() {
     }
   };
 
-  const handleCardClick = () => {
-    if (isAnimating || isDraggedRecently) return;
-    setIsAnimating(true);
-    setIsFlipped(!isFlipped);
-    setTimeout(() => setIsAnimating(false), 500);
-  };
-
-  const handleBackContentMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    scrollStartY.current = e.clientY;
-    setIsScrolling(false);
-  };
-
-  const handleBackContentMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (Math.abs(e.clientY - scrollStartY.current) > 5) {
-      setIsScrolling(true);
-    }
-  };
-
-  const handleBackContentMouseUp = () => {
-    if (!isScrolling) {
-      handleCardClick();
-    }
-    setIsScrolling(false);
-  };
-
-  // 현재 영화가 바뀔 때마다 다음 영화 이미지 미리 로드
+  // 현재 음악이 바뀔 때마다 다음 음악 이미지 미리 로드
   useEffect(() => {
     const preloadImages = (startIdx: number, count: number) => {
       for (let i = 0; i < count; i++) {
@@ -391,55 +291,10 @@ export default function RecommendationMusic() {
       }
     };
     if (musics?.length > 0 && currentIndex < musics.length) {
-      // 현재 영화 이후 3개 영화 이미지 미리 로드
+      // 현재 음악 이후 3개 음악 이미지 미리 로드
       preloadImages(currentIndex + 1, 3);
     }
   }, [currentIndex, musics]);
-
-  // useEffect를 추가하여 영화가 바뀔 때마다 스크롤 위치 초기화
-  useEffect(() => {
-    // 스크롤 위치 초기화
-    if (cardRef.current) {
-      const backContent = (cardRef.current as HTMLElement).querySelector(".bg-level1");
-      if (backContent) {
-        (backContent as HTMLElement).scrollTop = 0;
-      }
-    }
-  }, [currentIndex, musics]);
-
-  // 재생/일시정지를 토글하는 함수
-  const handlePlayMusic = async (id: string) => {
-    if (!deviceId || !currentMusic) return;
-
-    try {
-      if (!isPlaying) {
-        // 재생 시작
-        const trackUri = `spotify:track:${id}`;
-        await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-          method: "PUT",
-          body: JSON.stringify({
-            uris: [trackUri],
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${spotifyAccessToken}`,
-          },
-        });
-        setIsPlaying(true);
-      } else {
-        // 일시정지
-        await fetch(`https://api.spotify.com/v1/me/player/pause`, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${spotifyAccessToken}`,
-          },
-        });
-        setIsPlaying(false);
-      }
-    } catch (error) {
-      console.error("음악 재생 중 오류 발생:", error);
-    }
-  };
 
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
@@ -456,86 +311,70 @@ export default function RecommendationMusic() {
           </div>
         ) : currentMusic ? (
           <>
-            <div
-              ref={cardRef}
-              className={`movie-card ${direction} relative cursor-pointer flex-shrink-0 w-full aspect-square`}
-              style={{
-                transition: swiping ? "none" : "transform 0.3s ease",
-                cursor: swiping ? "grabbing" : "grab",
-                perspective: "1000px",
-                transform: `translateX(${offsetX}px)`,
-                userSelect: "none",
-              }}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
-              onDragStart={(e) => e.preventDefault()}
-              onClick={handleCardClick}
-            >
-              {direction && (
-                <div
-                  className={`direction-indicator ${direction}`}
-                  style={{ pointerEvents: "none" }}
-                >
-                  {direction === "right" ? "좋아요" : "싫어요"}
-                </div>
-              )}
+            {product === "free" ? (
               <div
-                className={`relative w-full aspect-square transition-transform duration-500 transform-style-3d ${isFlipped ? "rotate-y-180" : "rotate-y-0"}`}
-                style={{ pointerEvents: isFlipped ? "auto" : "none" }}
+                ref={cardRef}
+                className={`movie-card ${direction} relative cursor-pointer flex-shrink-0 w-full aspect-square`}
+                style={{
+                  transition: swiping ? "none" : "transform 0.3s ease",
+                  cursor: swiping ? "grabbing" : "grab",
+                  perspective: "1000px",
+                  transform: `translateX(${offsetX}px)`,
+                  userSelect: "none",
+                }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+                onDragStart={(e) => e.preventDefault()}
               >
-                {/* 앞면 */}
-                <div
-                  className={`absolute w-full h-full backface-hidden ${isFlipped ? "card-hidden" : "card-visible"}`}
-                >
-                  <img
-                    src={currentMusic.albumcover_path}
-                    alt={currentMusic.track_name}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                  <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
-                    <div className="flex flex-col gap-0">
-                      <span className="text-light-gray text-sm font-light">
-                        {currentMusic.artist_name}
-                      </span>
-                      <h3 className="text-white text-xl font-medium">{currentMusic.track_name}</h3>
-                      <div className="flex items-center gap-2 text-light-gray text-sm">
-                        <span>{currentMusic.release_date.split("-")[0]}</span>
-                        <span>•</span>
-                        <span>⭐ {currentMusic.popularity.toFixed(1)}</span>
+                {direction && (
+                  <div
+                    className={`direction-indicator ${direction}`}
+                    style={{ pointerEvents: "none" }}
+                  >
+                    {direction === "right" ? "좋아요" : "싫어요"}
+                  </div>
+                )}
+                <div>
+                  <div className={"absolute w-full h-full backface-hidden"}>
+                    <img
+                      src={currentMusic.albumcover_path}
+                      alt={currentMusic.track_name}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
+                      <div className="flex flex-col gap-0">
+                        <span className="text-light-gray text-sm font-light">
+                          {currentMusic.artist_name}
+                        </span>
+                        <h3 className="text-white text-xl font-medium">
+                          {currentMusic.track_name}
+                        </h3>
+                        <div className="flex items-center gap-2 text-light-gray text-sm">
+                          <span>{currentMusic.release_date.split("-")[0]}</span>
+                          <span>•</span>
+                          <span>⭐ {currentMusic.popularity.toFixed(1)}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                {/* 뒷면 */}
-                <div
-                  className={`absolute w-full h-full bg-level1 rounded-lg p-6 overflow-y-auto backface-hidden rotate-y-180 ${!isFlipped ? "card-hidden" : "card-visible"}`}
-                  style={{ userSelect: "none" }}
-                  onMouseDown={handleBackContentMouseDown}
-                  onMouseMove={handleBackContentMouseMove}
-                  onMouseUp={handleBackContentMouseUp}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-white text-2xl font-bold">{currentMusic.track_name}</h3>
-                    <div className="flex items-center gap-2 text-light-gray text-sm">
-                      <span>{currentMusic.release_date.split("-")[0]}</span>
-                      <span>•</span>
-                      <span>⭐ {currentMusic.popularity.toFixed(1)}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-3 py-1 bg-level2 rounded-full text-sm text-light-gray">
-                        {currentMusic.artist_name}
-                      </span>
-                    </div>
-                  </div>
-                </div>
               </div>
-            </div>
+            ) : (
+              <div className="spotify-player-container w-full h-[300px] rounded-lg overflow-hidden mb-4">
+                <iframe
+                  src={`https://open.spotify.com/embed/track/${currentMusic.id}`}
+                  width="100%"
+                  height="100%"
+                  allow="encrypted-media"
+                  className="rounded-lg"
+                ></iframe>
+              </div>
+            )}
             <div className="swipe-buttons flex justify-evenly w-full">
               <button
                 className="swipe-button dislike-button"
@@ -550,12 +389,6 @@ export default function RecommendationMusic() {
                 👍 좋아요
               </button>
             </div>
-            <button
-              className="play-button bg-white rounded-lg text-black px-4 py-2 my-2"
-              onClick={() => handlePlayMusic(currentMusic.id)}
-            >
-              {isPlaying ? "⏸️ 일시정지" : "▶️ 재생"}
-            </button>
           </>
         ) : (
           <div className="flex flex-col w-full h-full items-center justify-center gap-4">

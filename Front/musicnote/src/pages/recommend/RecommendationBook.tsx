@@ -5,21 +5,21 @@ import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
 import { useGetData } from "@/hooks/useApi";
 
-interface Movie {
+interface Book {
+  author: string;
+  description: string;
   id: string;
+  image: string;
+  isbn: string;
+  pubdate: string;
+  publisher: string;
   title: string;
-  overview: string;
-  runtime: number;
-  poster_path: string;
-  release_date: string;
-  vote_average: number;
-  genres: string[];
 }
 
-export default function RecommendationMovie() {
-  const titleText = "영화 추천";
+export default function RecommendationBook() {
+  const titleText = "책 추천";
   const navigate = useNavigate();
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("");
   const [startX, setStartX] = useState(0);
@@ -38,14 +38,14 @@ export default function RecommendationMovie() {
   const animationRef = useRef<number | null>(null);
   const isDragging = useRef(false);
 
-  const currentMovie = movies?.[currentIndex];
+  const currentBook = books?.[currentIndex];
 
-  const { data, isLoading, isError } = useGetData("/recommend/movie", "recommend/movie");
+  const { data, isLoading, isError } = useGetData("/recommend/book", "recommend/book");
   // const { mutateAsync: likeMovie, error: likeMovieError } = usePostData("recommend/like/movie");
 
   useEffect(() => {
     if (data) {
-      setMovies(data?.data?.movies);
+      setBooks(data?.data?.books);
     } else if (isError) {
       console.log(isError, data?.message);
     }
@@ -55,7 +55,7 @@ export default function RecommendationMovie() {
     if (cardRef.current) {
       cardWidth.current = (cardRef.current as HTMLElement).offsetWidth;
     }
-  }, [currentMovie]);
+  }, [currentBook]);
 
   // 스와이프 상태 초기화
   const resetSwipeState = () => {
@@ -156,9 +156,9 @@ export default function RecommendationMovie() {
 
     if (!isVerticalScrolling) {
       if (direction === "right") {
-        handleLike(movies[currentIndex].id);
+        handleLike(books[currentIndex].id);
       } else if (direction === "left") {
-        handleDislike(movies[currentIndex].id);
+        handleDislike(books[currentIndex].id);
       } else {
         resetSwipeState();
       }
@@ -222,9 +222,9 @@ export default function RecommendationMovie() {
 
     if (!isVerticalScrolling) {
       if (direction === "right") {
-        handleLike(movies[currentIndex].id);
+        handleLike(books[currentIndex].id);
       } else if (direction === "left") {
-        handleDislike(movies[currentIndex].id);
+        handleDislike(books[currentIndex].id);
       } else {
         resetSwipeState();
       }
@@ -240,7 +240,7 @@ export default function RecommendationMovie() {
   };
 
   const handleLike = (id: string) => {
-    if (!currentMovie) return;
+    if (!currentBook) return;
     console.log(id);
     resetSwipeState();
 
@@ -250,7 +250,7 @@ export default function RecommendationMovie() {
     }
 
     setTimeout(() => {
-      goToNextMovie();
+      goToNextBook();
       // 스크롤 위치 초기화
       if (cardRef.current) {
         const backContent = (cardRef.current as HTMLElement).querySelector(".bg-level1");
@@ -262,7 +262,7 @@ export default function RecommendationMovie() {
   };
 
   const handleDislike = (id: string) => {
-    if (!currentMovie) return;
+    if (!currentBook) return;
     console.log(id);
     resetSwipeState();
 
@@ -272,7 +272,7 @@ export default function RecommendationMovie() {
     }
 
     setTimeout(() => {
-      goToNextMovie();
+      goToNextBook();
       // 스크롤 위치 초기화
       if (cardRef.current) {
         const backContent = (cardRef.current as HTMLElement).querySelector(".bg-level1");
@@ -283,11 +283,11 @@ export default function RecommendationMovie() {
     }, 300);
   };
 
-  const goToNextMovie = () => {
-    if (currentIndex < movies.length - 1) {
+  const goToNextBook = () => {
+    if (currentIndex < books.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      setCurrentIndex(movies.length);
+      setCurrentIndex(books.length);
     }
   };
 
@@ -321,17 +321,17 @@ export default function RecommendationMovie() {
     const preloadImages = (startIdx: number, count: number) => {
       for (let i = 0; i < count; i++) {
         const idx = startIdx + i;
-        if (idx < movies.length) {
+        if (idx < books.length) {
           const img = new Image();
-          img.src = `https://image.tmdb.org/t/p/w500${movies[idx].poster_path}`;
+          img.src = books[idx].image;
         }
       }
     };
-    if (movies?.length > 0 && currentIndex < movies.length) {
+    if (books?.length > 0 && currentIndex < books.length) {
       // 현재 영화 이후 3개 영화 이미지 미리 로드
       preloadImages(currentIndex + 1, 3);
     }
-  }, [currentIndex, movies]);
+  }, [currentIndex, books]);
 
   // useEffect를 추가하여 영화가 바뀔 때마다 스크롤 위치 초기화
   useEffect(() => {
@@ -342,7 +342,7 @@ export default function RecommendationMovie() {
         (backContent as HTMLElement).scrollTop = 0;
       }
     }
-  }, [currentIndex, movies]);
+  }, [currentIndex, books]);
 
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
@@ -355,13 +355,13 @@ export default function RecommendationMovie() {
               alt="mascot"
               className="w-[200px] h-[200px] object-cover rounded-lg animate-bounce"
             />
-            <h3 className="text-white text-2xl font-bold text-center">영화를 찾고 있짹!</h3>
+            <h3 className="text-white text-2xl font-bold text-center">책을 찾고 있짹!</h3>
           </div>
-        ) : currentMovie ? (
+        ) : currentBook ? (
           <>
             <div
               ref={cardRef}
-              className={`movie-card ${direction} relative cursor-pointer`}
+              className={`book-card ${direction} relative cursor-pointer`}
               style={{
                 transition: swiping ? "none" : "transform 0.3s ease",
                 cursor: swiping ? "grabbing" : "grab",
@@ -396,20 +396,20 @@ export default function RecommendationMovie() {
                   className={`absolute w-full h-full backface-hidden ${isFlipped ? "card-hidden" : "card-visible"}`}
                 >
                   <img
-                    src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}
-                    alt={currentMovie.title}
+                    src={currentBook.image}
+                    alt={currentBook.title}
                     className="w-full h-full object-cover rounded-lg"
                   />
                   <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
                     <div className="flex flex-col gap-0">
                       <span className="text-light-gray text-sm font-light">
-                        {currentMovie.genres.join(", ")}
+                        {currentBook.author}
                       </span>
-                      <h3 className="text-white text-xl font-medium">{currentMovie.title}</h3>
+                      <h3 className="text-white text-xl font-medium">{currentBook.title}</h3>
                       <div className="flex items-center gap-2 text-light-gray text-sm">
-                        <span>{currentMovie.release_date.split("-")[0]}</span>
+                        <span>{currentBook.pubdate.split("-")[0]}</span>
                         <span>•</span>
-                        <span>⭐ {currentMovie.vote_average.toFixed(1)}</span>
+                        <span>{currentBook.publisher}</span>
                       </div>
                     </div>
                   </div>
@@ -424,24 +424,15 @@ export default function RecommendationMovie() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex flex-col gap-2">
-                    <h3 className="text-white text-2xl font-bold">{currentMovie.title}</h3>
+                    <h3 className="text-white text-2xl font-bold">{currentBook.title}</h3>
                     <div className="flex items-center gap-2 text-light-gray text-sm">
-                      <span>{currentMovie.release_date.split("-")[0]}</span>
+                      <span>{currentBook.pubdate.split("-")[0]}</span>
                       <span>•</span>
-                      <span>⭐ {currentMovie.vote_average.toFixed(1)}</span>
+                      <span>{currentBook.publisher}</span>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {currentMovie.genres.map((genre, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-level2 rounded-full text-sm text-light-gray"
-                        >
-                          {genre}
-                        </span>
-                      ))}
-                    </div>
+                    <div className="flex flex-wrap gap-2">{currentBook.author}</div>
                     <p className="text-light-gray text-base leading-relaxed">
-                      {currentMovie.overview}
+                      {currentBook.description}
                     </p>
                   </div>
                 </div>
@@ -450,13 +441,13 @@ export default function RecommendationMovie() {
             <div className="swipe-buttons">
               <button
                 className="swipe-button dislike-button"
-                onClick={() => handleDislike(movies[currentIndex].id)}
+                onClick={() => handleDislike(books[currentIndex].id)}
               >
                 👎 싫어요
               </button>
               <button
                 className="swipe-button like-button"
-                onClick={() => handleLike(movies[currentIndex].id)}
+                onClick={() => handleLike(books[currentIndex].id)}
               >
                 👍 좋아요
               </button>
@@ -476,7 +467,7 @@ export default function RecommendationMovie() {
             </h3>
             <button
               className="bg-main text-white text-lg font-bold px-4 py-2 rounded-lg cursor-pointer"
-              onClick={() => navigate(`/recommendations/my/movie`)}
+              onClick={() => navigate(`/recommendations/my/book`)}
             >
               보관함으로 가기
             </button>
