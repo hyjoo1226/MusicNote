@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "../api/apiClient";
 import { useNotificationStore } from "../stores/notificationStore";
+import { useGetData } from "@/hooks/useApi";
 
 export default function Notification() {
   const { notifications, connectionStatus, addNotification } = useNotificationStore();
@@ -27,24 +26,50 @@ export default function Notification() {
     }
   };
 
-  // useQuery 훅 직접 사용하여 수동으로 데이터 가져오기
-  const { data: Notification, refetch } = useQuery({
-    queryKey: ["notification"],
-    queryFn: () => apiClient.get("/main/preferences").then((res: any) => res.data),
-    enabled: false, // 처음에는 자동 실행하지 않음
-  });
+  const { data: dailyReport, refetch: refetchDailyReport } = useGetData(
+    "dailyReport",
+    "main/preferences"
+  );
 
-  console.log(Notification);
+  const { data: weeklyReport, refetch: refetchWeeklyReport } = useGetData(
+    "weeklyReport",
+    "main/preferences"
+  );
+  console.log(dailyReport);
+  console.log(weeklyReport);
 
-  const handleButtonClick = () => {
+  const handleDailyButtonClick = () => {
     // 버튼 클릭 시 데이터 가져오기
-    refetch()
+    refetchDailyReport()
       .then((result) => {
         if (result.data) {
           // Get 요청 결과를 알림에 추가
           addNotification({
             id: Date.now().toString(),
-            message: `Get 요청 결과: ${JSON.stringify(result.data)}`,
+            message: `일일 리포트 요청 결과: ${JSON.stringify(result.data)}`,
+            timestamp: new Date().toISOString(),
+          });
+        }
+      })
+      .catch((error) => {
+        // 오류가 발생하면 오류 메시지를 알림에 추가
+        addNotification({
+          id: Date.now().toString(),
+          message: `Get 요청 오류: ${error.message}`,
+          timestamp: new Date().toISOString(),
+        });
+      });
+  };
+
+  const handleWeeklyButtonClick = () => {
+    // 버튼 클릭 시 데이터 가져오기
+    refetchWeeklyReport()
+      .then((result) => {
+        if (result.data) {
+          // Get 요청 결과를 알림에 추가
+          addNotification({
+            id: Date.now().toString(),
+            message: `주간 리포트 요청 결과: ${JSON.stringify(result.data)}`,
             timestamp: new Date().toISOString(),
           });
         }
@@ -76,8 +101,17 @@ export default function Notification() {
               <span className={getStatusColor()}>{getStatusText()}</span>
             </div>
           </div>
-          <button onClick={handleButtonClick} className="bg-main text-white px-4 py-2 rounded-md">
-            Get 요청 보내기
+          <button
+            onClick={handleDailyButtonClick}
+            className="bg-main text-white px-4 py-2 rounded-md"
+          >
+            일일 리포트 요청 보내기
+          </button>
+          <button
+            onClick={handleWeeklyButtonClick}
+            className="bg-main text-white px-4 py-2 rounded-md"
+          >
+            주간 리포트 요청 보내기
           </button>
 
           <div className="w-full mt-4">
