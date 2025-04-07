@@ -33,7 +33,7 @@ export default function Notification() {
 
   const { data: weeklyReport, refetch: refetchWeeklyReport } = useGetData(
     "weeklyReport",
-    "main/preferences"
+    "main/weekly"
   );
   console.log(dailyReport);
   console.log(weeklyReport);
