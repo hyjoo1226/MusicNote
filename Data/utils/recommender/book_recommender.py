@@ -24,6 +24,34 @@ class BookRecommender:
         self.job_recommender = JobRecommender()
         self.keyword_tool = KeywordTool()
 
+    def _is_valid_book(self, item: dict) -> bool:
+        title = item.get("title", "")
+        description = item.get("description", "")
+        publisher = item.get("publisher", "")
+        pubdate = item.get("pubdate", "0000")
+        review_score = item.get("customerReviewRank", 0)  # NAVER API에는 없는 경우도 많음
+
+        # 제외 키워드 필터
+        exclude_keywords = ["자격증", "기출", "요약", "매거진", "정리", "시험대비", "시험 대비"]
+        if any(word in title for word in exclude_keywords) or any(word in description for word in exclude_keywords):
+            return False
+
+        # 출판사 필터
+        exclude_publishers = ["에듀윌", "공단기", "시대고시기획", "월간"]
+        if publisher in exclude_publishers:
+            return False
+
+        # 출판연도 필터
+        try:
+            year = int(pubdate[:4])
+            if year < 2008:
+                return False
+        except:
+            pass
+
+        return True
+
+
     def recommend_books_from_bigfive(self, bigfive: BigFiveScore, top_n_jobs: int = 5, top_k_keywords: int = 5, total_per_keyword: int = 2) -> list[BookItem]:
         """
         Big Five 성격 점수를 기반으로 키워드를 추출하고, 해당 키워드로 책을 추천합니다.
@@ -40,7 +68,8 @@ class BookRecommender:
             1 - bigfive.neuroticism  # stability로 변환
         ]
         keywords = self.job_recommender.get_keywords_from_bigfive(user_scores, top_n_jobs, top_k_keywords)
-        return self.collect_from_keywords(keywords, total_per_keyword=total_per_keyword)
+        kr_keywords = self.keyword_tool.translate_and_save_keywords(keywords)
+        return self.collect_from_keywords(kr_keywords, total_per_keyword=total_per_keyword)
 
     def fetch_books(self, query: str, display: int = 100, start: int = 1) -> dict:
         """
@@ -50,16 +79,29 @@ class BookRecommender:
             "query": query,
             "display": display,
             "start": start,
-            "sort": "sim"
+            "sort": "date"
         }
         response = requests.get(self.base_url, headers=self.headers, params=params)
-        return response.json()
+        # ✅ 추가 로그
+        print(f"📡 요청: {query} | 상태코드: {response.status_code}")
+        if response.status_code != 200:
+            print("❌ 응답 실패:", response.text)
+            return {}
+
+        json_data = response.json()
+        if not json_data.get("items"):
+            print(f"⚠️ '{query}'에 대한 결과 없음")
+        return json_data
 
     def collect_books(self, query: str, total: int = 40, delay: float = 0.8) -> list[BookItem]:
         results = []
         for start in range(1, total + 1, 20):
             data = self.fetch_books(query, display=10, start=start)
             for item in data.get("items", []):
+
+                if not self._is_valid_book(item):
+                    continue
+
                 author = item.get("author", "").strip() or "저자 미상"
                 publisher = item.get("publisher", "").strip() or "출판사 미상"
                 description = item.get("description", "").strip() or "설명 없음"
