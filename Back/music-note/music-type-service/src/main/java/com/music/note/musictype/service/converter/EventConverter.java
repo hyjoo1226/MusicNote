@@ -56,6 +56,7 @@ public class EventConverter {
 			.spotifyId(track.getSpotifyId())
 			.title(track.getTitle())
 			.artist(track.getArtist())
+			.imageUrl(track.getImageUrl())
 			.audioFeatures(convertAudioFeatures(track.getAudioFeatures()))
 			.build();
 	}
