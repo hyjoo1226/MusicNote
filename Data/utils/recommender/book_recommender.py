@@ -29,28 +29,34 @@ class BookRecommender:
         description = item.get("description", "")
         publisher = item.get("publisher", "")
         pubdate = item.get("pubdate", "0000")
-        review_score = item.get("customerReviewRank", 0)  # NAVER API에는 없는 경우도 많음
 
-        # 제외 키워드 필터
+        # ❶ 제목 제외 키워드 필터
+        exclude_title_keywords = [
+            "주소록", "CD", "DVD", "지도", "자료집", "정보집", "연감", "실적",
+            "보고서", "수록", "전화번호부", "명부", "매뉴얼", "데이터북"
+        ]
+        if any(word in title for word in exclude_title_keywords):
+            return False
+
+        # ❷ 기존 제외 키워드 (자격증, 기출 등)
         exclude_keywords = ["자격증", "기출", "요약", "매거진", "정리", "시험대비", "시험 대비"]
         if any(word in title for word in exclude_keywords) or any(word in description for word in exclude_keywords):
             return False
 
-        # 출판사 필터
-        exclude_publishers = ["에듀윌", "공단기", "시대고시기획", "월간"]
+        # ❸ 출판사 제외
+        exclude_publishers = ["에듀윌", "공단기", "시대고시기획", "월간", "한국콘텐츠미디어"]
         if publisher in exclude_publishers:
             return False
 
-        # 출판연도 필터
+        # ❹ 출판연도 필터
         try:
             year = int(pubdate[:4])
-            if year < 2008:
+            if year < 2008 or year > 2025:
                 return False
         except:
             pass
 
         return True
-
 
     def recommend_books_from_bigfive(self, bigfive: BigFiveScore, top_n_jobs: int = 5, top_k_keywords: int = 5, total_per_keyword: int = 2) -> list[BookItem]:
         """
@@ -102,7 +108,7 @@ class BookRecommender:
                 if not self._is_valid_book(item):
                     continue
 
-                author = item.get("author", "").strip() or "저자 미상"
+                author = item.get("author", "").replace("^", ", ").strip() or "저자 미상"
                 publisher = item.get("publisher", "").strip() or "출판사 미상"
                 description = item.get("description", "").strip() or "설명 없음"
 
