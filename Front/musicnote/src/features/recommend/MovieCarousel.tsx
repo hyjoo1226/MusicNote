@@ -46,7 +46,10 @@ export default function MovieCarousel({ movies }: MovieCarouselProps) {
     <>
       <Slider {...settings}>
         {movies.map((movie) => (
-          <div key={movie.id} className="relative h-[calc(97vh-280px)] rounded-lg overflow-hidden">
+          <div
+            key={movie.id}
+            className="relative h-[calc(var(--app-height)-320px)] rounded-lg overflow-hidden"
+          >
             <img
               src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
               alt={movie.title}
@@ -70,7 +73,7 @@ export default function MovieCarousel({ movies }: MovieCarouselProps) {
                     {movie.vote_average.toFixed(1)}
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap h-[30px] gap-2 overflow-x-auto">
                   {movie.genres.map((genre, index) => (
                     <span
                       key={index}

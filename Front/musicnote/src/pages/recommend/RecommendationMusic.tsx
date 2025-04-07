@@ -305,7 +305,7 @@ export default function RecommendationMusic() {
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
       <TopBar title={titleText} />
-      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100dvh-60px)] overflow-hidden flex flex-col justify-center items-center">
+      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(var(--app-height)-140px)] overflow-hidden flex flex-col justify-center items-center">
         {isLoading ? (
           <div className="flex flex-col w-full h-full items-center justify-center gap-4">
             <img
@@ -374,7 +374,7 @@ export default function RecommendationMusic() {
                 </div>
               </div>
             ) : (
-              <div className="spotify-player-container w-full h-[300px] rounded-lg overflow-hidden mb-4">
+              <div className="spotify-player-container w-full h-[calc(var(--app-height)-250px) rounded-lg overflow-hidden mb-4">
                 <iframe
                   src={`https://open.spotify.com/embed/track/${currentMusic.id}`}
                   width="100%"

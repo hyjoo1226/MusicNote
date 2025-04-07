@@ -347,7 +347,7 @@ export default function RecommendationMovie() {
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
       <TopBar title={titleText} />
-      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100dvh-230px)] overflow-hidden">
+      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(var(--app-height)-140px)] overflow-hidden">
         {isLoading ? (
           <div className="flex flex-col w-full h-full items-center justify-center gap-4">
             <img
@@ -388,7 +388,7 @@ export default function RecommendationMovie() {
                 </div>
               )}
               <div
-                className={`relative w-full h-[calc(100vh-240px)] transition-transform duration-500 transform-style-3d ${isFlipped ? "rotate-y-180" : "rotate-y-0"}`}
+                className={`relative w-full h-[calc(var(--app-height)-250px)] transition-transform duration-500 transform-style-3d ${isFlipped ? "rotate-y-180" : "rotate-y-0"}`}
                 style={{ pointerEvents: isFlipped ? "auto" : "none" }}
               >
                 {/* 앞면 */}

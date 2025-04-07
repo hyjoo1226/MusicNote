@@ -39,7 +39,10 @@ export default function BookCarousel({ books }: BookCarouselProps) {
     <>
       <Slider {...settings}>
         {books.map((book) => (
-          <div key={book.id} className="relative h-[calc(97vh-280px)] rounded-lg overflow-hidden">
+          <div
+            key={book.id}
+            className="relative h-[calc(var(--app-height)-320px)] rounded-lg overflow-hidden"
+          >
             <img src={`${book.image}`} alt={book.title} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent">
               <div className="absolute bottom-0 left-0 right-0 p-8 pb-4">

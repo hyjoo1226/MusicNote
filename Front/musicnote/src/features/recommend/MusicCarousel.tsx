@@ -43,7 +43,10 @@ export default function MusicCarousel({ musics }: MusicCarouselProps) {
     <>
       <Slider {...settings}>
         {musics.map((music) => (
-          <div key={music.id} className="relative h-[calc(97vh-280px)] rounded-lg overflow-hidden">
+          <div
+            key={music.id}
+            className="relative h-[calc(var(--app-height)-320px)] rounded-lg overflow-hidden"
+          >
             <img
               src={`${music.albumcover_path}`}
               alt={music.track_name}

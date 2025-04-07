@@ -347,7 +347,7 @@ export default function RecommendationBook() {
   return (
     <div className="text-white w-full h-full flex flex-col items-center">
       <TopBar title={titleText} />
-      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(100dvh-60px)] overflow-hidden">
+      <div className="recommendation-container bg-level2 rounded-2xl w-[calc(100%-20px)] xs:w-[calc(100%-40px)] p-4 h-[calc(var(--app-height)-140px)] overflow-hidden">
         {isLoading ? (
           <div className="flex flex-col w-full h-full items-center justify-center gap-4">
             <img
@@ -388,7 +388,7 @@ export default function RecommendationBook() {
                 </div>
               )}
               <div
-                className={`relative w-full h-[calc(100vh-240px)] transition-transform duration-500 transform-style-3d ${isFlipped ? "rotate-y-180" : "rotate-y-0"}`}
+                className={`relative w-full h-[calc(var(--app-height)-250px)] transition-transform duration-500 transform-style-3d ${isFlipped ? "rotate-y-180" : "rotate-y-0"}`}
                 style={{ pointerEvents: isFlipped ? "auto" : "none" }}
               >
                 {/* 앞면 */}
@@ -400,12 +400,14 @@ export default function RecommendationBook() {
                     alt={currentBook.title}
                     className="w-full h-full object-cover rounded-lg"
                   />
-                  <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
+                  <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[40%] rounded-b-lg">
                     <div className="flex flex-col gap-0">
                       <span className="text-light-gray text-sm font-light">
                         {currentBook.author}
                       </span>
-                      <h3 className="text-white text-xl font-medium">{currentBook.title}</h3>
+                      <h3 className="text-white text-xl font-medium line-clamp-2">
+                        {currentBook.title}
+                      </h3>
                       <div className="flex items-center gap-2 text-light-gray text-sm">
                         <span>{currentBook.pubdate.split("-")[0]}</span>
                         <span>•</span>
@@ -432,7 +434,7 @@ export default function RecommendationBook() {
                     </div>
                     <div className="flex flex-wrap gap-2">{currentBook.author}</div>
                     <p className="text-light-gray text-base leading-relaxed">
-                      {currentBook.description}
+                      {currentBook.description.replace(/\\n/g, "\n")}
                     </p>
                   </div>
                 </div>
