@@ -3,6 +3,7 @@
 import os
 import time
 import requests
+import html
 from dotenv import load_dotenv
 
 from modelschemas.request_response import BigFiveScore, BookItem
@@ -108,9 +109,9 @@ class BookRecommender:
                 if not self._is_valid_book(item):
                     continue
 
-                author = item.get("author", "").replace("^", ", ").strip() or "저자 미상"
-                publisher = item.get("publisher", "").strip() or "출판사 미상"
-                description = item.get("description", "").strip() or "설명 없음"
+                author = str(html.unescape(item.get("author", "").replace("^", ", ") or "저자 미상")).strip()
+                publisher = str(html.unescape(item.get("publisher", "") or "출판사 미상")).strip()
+                description = str(html.unescape(item.get("description", "") or "설명 없음")).strip()
 
                 results.append(BookItem(
                     title=item.get("title"),
