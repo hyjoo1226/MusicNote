@@ -22,6 +22,7 @@ class Music(BaseModel):
     albumcover_path: str
     release_date: date
     popularity: int
+    duration_ms : int
 
 class MusicScore(BaseModel):
     mellow: float
