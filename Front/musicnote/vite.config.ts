@@ -65,7 +65,7 @@ export default defineConfig({
           {
             // @ts-ignore
             urlPattern: ({ url }) => url.pathname.includes("/api/notifications"),
-            handler: "CacheFirst",
+            handler: "NetworkFirst",
             options: {
               cacheName: "notifications-cache",
               expiration: {
@@ -85,7 +85,7 @@ export default defineConfig({
           },
           {
             urlPattern: /^https:\/\/j12a308\.p\.ssafy\.io\/api\/notifications\/sse\/subscribe/,
-            handler: "StaleWhileRevalidate",
+            handler: "NetworkFirst",
             options: {
               cacheName: "sse-connection-cache",
               expiration: {
@@ -115,7 +115,7 @@ export default defineConfig({
           {
             // @ts-ignore
             urlPattern: ({ url }) => url.origin === window.location.origin,
-            handler: "StaleWhileRevalidate",
+            handler: "NetworkFirst",
             options: {
               cacheName: "local-assets",
               expiration: {
