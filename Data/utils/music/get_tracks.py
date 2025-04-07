@@ -1,9 +1,9 @@
 import json
 import os
-from datetime import date
-from lastfm_request import bf_to_track
+from datetime import datetime
+from utils.music.lastfm_request import bf_to_track
 from dotenv import load_dotenv
-from spotify_search import Spotify
+from utils.music.spotify_search import Spotify
 
 def init_model():
     model = {
@@ -16,7 +16,7 @@ def init_model():
     }
     return model
 
-def get_random_track(cnt):
+def get_random_track(spotify, cnt):
     '''
     bf 키워드에 매칭되는 트랙이 없을 경우
     파라미터에 tag:new를 적용해서 새로 발매한 앨범에서 곡 추출
@@ -30,8 +30,15 @@ def get_random_track(cnt):
     album = albums.get("albums", {}).get("items", {})[0]
 
     ## 앨범정보에서 발매일, 이미지 추출
-    # 발매일
-    model["release_date"] = album.get("release_date")
+    # 발매일 정보 입력
+    release_str = album.get("release_date")
+    # 형식 안맞는 release_date는 None 처리리
+    try:
+        release_date = datetime.strptime(release_str, "%Y-%m-%d").date()
+    except(ValueError, TypeError):
+        release_date = None
+    print(release_date)
+    model["release_date"] = release_date
     # 이미지 640*640
     images = album.get("images")
     albumcover_path = images[0].get("url")
@@ -60,7 +67,7 @@ def get_random_track(cnt):
 
     return model
 
-def search_track(name, artist):
+def search_track(spotify, name, artist):
     # 모델 생성
     model = init_model()
     # 쿼리를 통해 나온 제일 처음 노래 선정
@@ -79,11 +86,22 @@ def search_track(name, artist):
     album = result.get("album")
     images = album.get("images", {"url":None})
 
+    # 발매일 자료형 date로 변환
+    release_str = album.get("release_date") # yyyy-mm-dd
+    print(release_str)
+    # 형식 안맞는 release_date는 None으로 처리
+    try:
+        release_date = datetime.strptime(release_str, "%Y-%m-%d").date()
+    except(ValueError, TypeError):
+        release_date = None
+    print(release_date, type(release_date))
+    model["release_date"] = release_date
+
+    # 나머지 정보 입력력
     model["id"] = result.get("id")
     model["track_name"] = result.get("name")
     model["artist_name"] = artist_name
     model["duration_ms"] = result.get("duration_ms")
-    model["release_date"] = album.get("release_date")
     model["albumcover_path"] = images[0].get("url")
 
     return model

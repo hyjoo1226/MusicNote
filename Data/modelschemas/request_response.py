@@ -16,12 +16,11 @@ class AudioFeatures(BaseModel):
     danceability: float
 
 class Music(BaseModel):
-    id: int
+    id: str
     track_name: str
     artist_name: str
     albumcover_path: str
     release_date: date
-    popularity: int
     duration_ms : int
 
 class MusicScore(BaseModel):

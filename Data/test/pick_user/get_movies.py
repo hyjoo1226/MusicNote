@@ -1,5 +1,7 @@
 from tmdbv3api import TMDb, Discover, Movie
 import json
+import os
+from dotenv import load_dotenv
 '''
 1. 장르 리스트의 장르를 id로 전환
 2. 장르 id로 tmdb 응답 받아서 해당 장르의 value만큼 영화 추가 - 얘가 최종종
@@ -72,12 +74,13 @@ def response_model():
 	}
 	return model
 
-def init_tmdb(api_key='4feca631dd5c6770c207e60e8f469db0', lang='ko'):
-    tmdb = TMDb()
-    tmdb.api_key = api_key
-    tmdb.language = lang
-    tmdb.debug = False
-    return Discover(), Movie()
+def init_tmdb(lang='ko'):
+	load_dotenv()
+	tmdb = TMDb()
+	tmdb.api_key = os.getenv("TMDB_API_KEY")
+	tmdb.language = lang
+	tmdb.debug = False
+	return Discover(), Movie()
 
 
 # 원본데이터의 장르를 현재 장르 리스트에 맞게 변환
