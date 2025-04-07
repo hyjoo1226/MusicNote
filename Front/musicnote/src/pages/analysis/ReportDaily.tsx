@@ -1,14 +1,64 @@
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { domToJpeg } from "modern-screenshot";
 import UserTemperGraph from "../../components/UserTemperGraph";
-import ReportDetail from "../../features/analysis/ReportDetail";
+import DailyReport from "../../features/analysis/DailyReport";
 import NoteIcon from "../../assets/icon/note-icon.svg?react";
 import ShareIcon from "../../assets/icon/share-icon.svg?react";
+import { useGetData } from "@/hooks/useApi";
 
-export default function Report() {
+interface ReportData {
+  lowScore: string;
+  lowText: string;
+  summary: string;
+  topScore: string;
+  topText: string;
+  typeDto: {
+    openness: number;
+    conscientiousness: number;
+    extraVersion: number;
+    agreeableness: number;
+    neuroticism: number;
+  };
+}
+
+export default function ReportDaily() {
   const navigate = useNavigate();
+  const { reportId } = useParams<{ reportId: string }>();
   const reportRef = useRef<HTMLDivElement>(null);
+  const [report, setReport] = useState<ReportData | null>(null);
+  const { data: reportData } = useGetData(
+    `report-${reportId}`,
+    `/recommend/type?reportId=${reportId}`
+  );
+  // 리포트에 쓰인 음악 - 백엔드랑 url 대화 필요
+  // 현재는 status200이나 레포트id 요구 안해서 음악리스트 없음
+  const { data: reportMusiclistData } = useGetData(
+    `reportMusiclistData-${reportId}`,
+    "/recommend/music"
+  );
+
+  useEffect(() => {
+    if (reportMusiclistData) {
+      console.log(reportMusiclistData);
+    }
+  });
+
+  useEffect(() => {
+    if (reportData) {
+      const modifiedReport = {
+        ...reportData.data,
+        typeDto: {
+          openness: reportData.data.typeDto.openness * 100,
+          conscientiousness: reportData.data.typeDto.conscientiousness * 100,
+          extraVersion: reportData.data.typeDto.extraVersion * 100,
+          agreeableness: reportData.data.typeDto.agreeableness * 100,
+          neuroticism: reportData.data.typeDto.neuroticism * 100,
+        },
+      };
+      setReport(modifiedReport);
+    }
+  }, [reportData]);
 
   // top bar
   const handleBack = () => {
@@ -129,8 +179,22 @@ export default function Report() {
       </div>
       <div className="flex flex-col px-[10px] xs:px-5 gap-y-5 justify-between pb-[82px]">
         <div ref={reportRef} className="flex flex-col gap-y-5">
-          <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
-          <ReportDetail />
+          <UserTemperGraph
+            scores={[
+              report?.typeDto.openness ?? 0,
+              report?.typeDto.conscientiousness ?? 0,
+              report?.typeDto.extraVersion ?? 0,
+              report?.typeDto.agreeableness ?? 0,
+              report?.typeDto.neuroticism ?? 0,
+            ]}
+          />
+          <DailyReport
+            lowScore={report?.lowScore ?? ""}
+            lowText={report?.lowText ?? ""}
+            summary={report?.summary ?? ""}
+            topScore={report?.topScore ?? ""}
+            topText={report?.topText ?? ""}
+          />
         </div>
       </div>
       {isCopied && <span className="text-sm text-green-500">복사 완료!</span>}
