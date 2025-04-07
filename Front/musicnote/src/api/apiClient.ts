@@ -82,6 +82,11 @@ apiClient.interceptors.response.use(
           return axios(error.config);
         }
       }
+
+      // 토큰 갱신 실패 시 로그인 페이지로 리다이렉트
+      authStore.removeAccessToken();
+      window.location.href = "/";
+      return Promise.reject(new Error("인증이 만료되었습니다. 다시 로그인해주세요."));
     }
 
     return Promise.reject(error);
