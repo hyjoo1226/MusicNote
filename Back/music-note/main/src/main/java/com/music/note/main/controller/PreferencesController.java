@@ -41,6 +41,12 @@ public class PreferencesController {
 		return CommonResponse.success("일간 리포트(자동) 요청 성공");
 	}
 
+	@GetMapping("/daily")
+	public String testRequest(){
+		log.info("====== Test Request ======");
+		return "test";
+	}
+
 	@PostMapping("/daily")
 	public CommonResponse<String> dailyReport(
 		@RequestHeader("X-User-Id") String userId,
