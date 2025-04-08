@@ -36,7 +36,6 @@ class MusicRecommender:
         secret = os.getenv("SPOTIFY_SECRET")
         spotify = Spotify(client, secret)
         results = []
-        cnt = 0
 
         for track in tracks:
             if len(track) == 2:
@@ -44,10 +43,9 @@ class MusicRecommender:
                 print(type(song.get("release_date")))
                 results.append(song)
             else: # track 추천결과가 없을때 임의추천
-                song = get_random_track(spotify, cnt=cnt)
+                song = get_random_track(spotify)
                 results.append(song)
 
-            cnt += 1
         # print(results)
         return(results)
     

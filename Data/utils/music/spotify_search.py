@@ -1,6 +1,7 @@
 import requests
 import json  # json 모듈 추가
 import base64
+import random
 
 '''
 1. lastfm 곡 제목으로 api요청해서 -> 키워드로 노래 검색
@@ -61,7 +62,8 @@ class Spotify:
         return data
 
     # 곡 제목이 없을때 임의 앨범 써치치
-    def searchNone(self, cnt):
+    def searchNone(self):
+        offset = random.randint(1,100)
         access_token = self.get_access_token()
         # search 엔드포인트
         url = "https://api.spotify.com/v1/search"
@@ -70,7 +72,7 @@ class Spotify:
             "q" : "tag:new",
             "type" : "album",
             "market" : "KR",
-            'offset' : cnt
+            'offset' : offset
         }
 
         # API 요청 보내기

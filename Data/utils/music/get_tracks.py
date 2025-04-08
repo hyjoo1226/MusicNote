@@ -16,7 +16,7 @@ def init_model():
     }
     return model
 
-def get_random_track(spotify, cnt):
+def get_random_track(spotify):
     '''
     bf 키워드에 매칭되는 트랙이 없을 경우
     파라미터에 tag:new를 적용해서 새로 발매한 앨범에서 곡 추출
@@ -26,7 +26,7 @@ def get_random_track(spotify, cnt):
     model = init_model()
     
     # 추천할 노래가 포함될 앨범 선정
-    albums = spotify.searchNone(cnt)
+    albums = spotify.searchNone()
     album = albums.get("albums", {}).get("items", {})[0]
 
     ## 앨범정보에서 발매일, 이미지 추출
