@@ -39,7 +39,9 @@ public class RecommendBookLikeService {
 
 		if (optionalRecommendBookLikes.isPresent()){
 			RecommendBookLikes recommendBookLikes = optionalRecommendBookLikes.get();
-			recommendBookLikeRepository.addMovieLike(recommendBookLikes.getId(), recommendBook.getId());
+			if (!recommendBookLikes.isLiked(recommendBookLikeDto.getRecommendBookId())){
+				recommendBookLikeRepository.addMovieLike(recommendBookLikes.getId(), recommendBook.getId());
+			}
 
 		}
 		else {

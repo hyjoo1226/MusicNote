@@ -26,14 +26,8 @@ public class RecommendBookLikes {
 	private String userId;
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
-	public void addLike(String bookId) {
-		if (!likedBookIds.contains(bookId)) {
-			likedBookIds.add(bookId);
-		}
-	}
-
-	public void removeLike(String bookId) {
-		likedBookIds.remove(bookId);
+	public boolean isLiked(String bookId) {
+		return likedBookIds.contains(bookId);
 	}
 }
 
