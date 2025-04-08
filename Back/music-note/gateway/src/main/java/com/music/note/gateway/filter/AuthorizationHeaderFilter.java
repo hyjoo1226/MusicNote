@@ -24,7 +24,9 @@ public class AuthorizationHeaderFilter implements GlobalFilter, Ordered {
 
 	private static final List<String> EXCLUDE_URL_PATTERNS = List.of(
 		"/api/auth/login",
-		"/api/auth/signup"
+		"/api/auth/signup",
+		"/api/recommend/test",
+		"/api/auth/test"
 	);
 
 	private final JwtUtil jwtUtil;
