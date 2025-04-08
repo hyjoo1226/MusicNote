@@ -52,20 +52,23 @@ public class DailyReportService {
 		if (result == null) {
 			throw new RuntimeException(FAILED_TO_GET_REPORT);
 		}
+		String id = "";
 		if (event.getType().equals(RequestType.AUTOMATIC)) {
 			PersonalityReport entity = PersonalityReportConverter.toEntity(event, result);
 			reportRepository.save(entity);
+			id = entity.getId();
 			log.info("AUTOMATIC Daily Report saved: {}", entity.getReport().toString());
 		} else if (event.getType().equals(RequestType.MANUAL)) {
 			ManualReport entity = ManualReportConverter.toEntity(event, result);
 			manualReportRepository.save(entity);
+			id = entity.getId();
 			log.info("MANUAL Daily Report saved: {}", entity.getReport().toString());
 		}
 
 		// Notification 서버로 이벤트 전송
 		NotificationEvent notificationEvent = NotificationEvent.builder()
 			.userId(event.getUserId())
-			.message(DAILY_REPORT_READY_MESSAGE)
+			.message(id)
 			.type(event.getType())
 			.build();
 		notificationProducer.sendMusicListEvent(notificationEvent);
