@@ -25,7 +25,6 @@ function App() {
   const { accessToken, spotifyAccessToken } = useAuthStore();
   const { setConnectionStatus, addNotification } = useNotificationStore();
 
-  // 실제 배포 서버 주소
   const sseUrl = "https://j12a308.p.ssafy.io/api/notifications/sse/subscribe";
 
   // SSE 연결 설정 함수

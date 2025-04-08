@@ -110,7 +110,6 @@ export default function Login() {
             expires_at: Date.now() + 3600 * 1000,
             product: userData.product,
           };
-          console.log(newTokenData);
           removeSpotifyAuthState();
           setAccessToken(
             newTokenData.access_token,
