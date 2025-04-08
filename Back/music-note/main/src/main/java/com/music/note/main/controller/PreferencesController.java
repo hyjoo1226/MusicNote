@@ -37,7 +37,7 @@ public class PreferencesController {
 		return CommonResponse.success("일간 리포트(자동) 요청 성공");
 	}
 
-	@PostMapping("/preferences")
+	@PostMapping("/daily")
 	public CommonResponse<String> dailyReport(
 		@RequestHeader("X-User-Id") String userId,
 		@RequestBody List<MusicDto> musicList) {
