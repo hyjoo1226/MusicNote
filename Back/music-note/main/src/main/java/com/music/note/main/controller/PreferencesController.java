@@ -1,6 +1,7 @@
 package com.music.note.main.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,10 +44,21 @@ public class PreferencesController {
 	@PostMapping("/daily")
 	public CommonResponse<String> dailyReport(
 		@RequestHeader("X-User-Id") String userId,
-		@RequestBody List<MusicDto> musicList
+		@RequestBody List<SimpleMusicDto> musicList
 	) {
 		log.info("====== Manual Report Request ======");
-		preferencesService.publishManualPreferences(Long.parseLong(userId), musicList);
+		List<MusicDto> fullMusicList = musicList.stream()
+			.map(simple -> MusicDto.builder()
+				.spotifyId(simple.getSpotifyId())
+				.title(simple.getTitle())
+				.artist(simple.getArtist())
+				.imageUrl(simple.getImageUrl())
+				.audioFeatures(null) // 요청에 audioFeatures 없으므로 null 처리
+				.build())
+			.collect(Collectors.toList());
+
+		preferencesService.publishManualPreferences(Long.parseLong(userId), fullMusicList);
+		// preferencesService.publishManualPreferences(Long.parseLong(userId), musicList);
 		return CommonResponse.success("일간 리포트(수동) 요청 성공");
 	}
 
