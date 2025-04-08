@@ -7,17 +7,21 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.music.note.common.exception.exception.domain.personalityreport.PersonalityNotFoundByUserIdException;
 import com.music.note.common.exception.exception.domain.personalityreport.PersonalityNotFoundException;
+import com.music.note.recommend.dto.home.ResponseHomeDto;
 import com.music.note.recommend.dto.report.ResponseReportDto;
 import com.music.note.recommend.dto.report.ResponseReportWithTypeDto;
 import com.music.note.recommend.dto.report.ResponseReportList;
 import com.music.note.recommend.dto.report.music.MusicDto;
 import com.music.note.recommend.dto.report.music.ResponseMusicDtoList;
+import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
 import com.music.note.recommend.dto.type.ResponseWeeklyTypeDto;
 import com.music.note.recommend.dto.type.TrendTypeDto;
 import com.music.note.recommend.dto.type.TypeDto;
@@ -94,5 +98,37 @@ public class ReportService {
 			.musicDtoList(musicDtos)
 			.listSize(musicDtos.size())
 			.build();
+	}
+
+	public ResponseHomeDto readHomeData(String userId){
+		PersonalityReport report = recommendCommonService.getLatestReportByUserId(userId);
+		TypeDto typeDto = reportMapper.entityToTypeDto(report);
+		String msg = getTodayMsg(typeDto);
+		return reportMapper.reportToHomeDto(report, msg);
+
+	}
+	public String getTodayMsg(TypeDto typeDto) {
+		Map<String, Double> traits = new HashMap<>();
+		traits.put("openness", typeDto.getOpenness());
+		traits.put("conscientiousness", typeDto.getConscientiousness());
+		traits.put("extraversion", typeDto.getExtraversion());
+		traits.put("agreeableness", typeDto.getAgreeableness());
+		traits.put("neuroticism", typeDto.getNeuroticism());
+
+		// 최고 점수 특성 찾기
+		String maxTrait = traits.entrySet().stream()
+			.max(Map.Entry.comparingByValue())
+			.map(Map.Entry::getKey)
+			.orElse("");
+
+		// 특성별 오늘의 한마디
+		return switch (maxTrait) {
+			case "openness" -> "오늘은 개방성이 높으시네요. 새로운 아이디어나 창의적인 활동에 도전해보는 건 어떨까요?";
+			case "conscientiousness" -> "오늘은 성실성이 높으시네요. 계획을 세우고 성취감을 느껴보세요!";
+			case "extraversion" -> "오늘은 외향성이 높으시네요. 사람들과 어울리면서 많은 에너지를 얻는 건 어떨까요?";
+			case "agreeableness" -> "오늘은 친화성이 높으시네요. 주변 사람들과 따뜻한 시간을 보내보세요.";
+			case "neuroticism" -> "오늘은 신경성이 높으시네요. 잠시 휴식을 취하며 감정을 다독여보는 것도 좋아요.";
+			default -> "당신만의 특별한 성격을 발견해보세요!";
+		};
 	}
 }
