@@ -5,12 +5,16 @@ import org.springframework.web.client.RestClient;
 
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.NotificationEvent;
+import com.music.note.kafkaeventmodel.type.RequestType;
 import com.music.note.musictype.consumer.converter.AudioFeatureConverter;
+import com.music.note.musictype.consumer.converter.ManualReportConverter;
 import com.music.note.musictype.consumer.converter.PersonalityReportConverter;
 import com.music.note.musictype.consumer.dto.daily.AudioFeaturesRequest;
 import com.music.note.musictype.consumer.dto.daily.PersonalityReportDto;
 import com.music.note.musictype.consumer.kafka.proiducer.NotificationProducer;
+import com.music.note.musictype.consumer.repository.ManualReportRepository;
 import com.music.note.musictype.consumer.repository.ReportRepository;
+import com.music.note.typedomain.domain.ManualReport;
 import com.music.note.typedomain.domain.PersonalityReport;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ public class DailyReportService {
 
 	private final RestClient restClient;
 	private final ReportRepository reportRepository;
+	private final ManualReportRepository manualReportRepository;
 	private final NotificationProducer notificationProducer;
 
 	public void processDailyTypeEvent(MusicListEvent event) {
@@ -47,10 +52,15 @@ public class DailyReportService {
 		if (result == null) {
 			throw new RuntimeException(FAILED_TO_GET_REPORT);
 		}
-		PersonalityReport entity = PersonalityReportConverter.toEntity(event, result);
-		reportRepository.save(entity);
-
-		log.info("Daily Report saved: {}", entity.getReport().toString());
+		if (event.getType().equals(RequestType.AUTOMATIC)) {
+			PersonalityReport entity = PersonalityReportConverter.toEntity(event, result);
+			reportRepository.save(entity);
+			log.info("AUTOMATIC Daily Report saved: {}", entity.getReport().toString());
+		} else if (event.getType().equals(RequestType.MANUAL)) {
+			ManualReport entity = ManualReportConverter.toEntity(event, result);
+			manualReportRepository.save(entity);
+			log.info("MANUAL Daily Report saved: {}", entity.getReport().toString());
+		}
 
 		// Notification 서버로 이벤트 전송
 		NotificationEvent notificationEvent = NotificationEvent.builder()
