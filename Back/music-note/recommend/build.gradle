@@ -42,6 +42,8 @@ dependencies {
     implementation project(':jwt')
     implementation project(':type-domain')
     implementation project(':auth')
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 test {
