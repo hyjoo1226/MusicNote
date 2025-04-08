@@ -117,6 +117,35 @@ class ReportGenerator:
             top_fluctuation=top_fluctuation
         )
 
+    def generate_today_quote(self, data: BigFiveScore) -> str:
+        """
+        가장 높은 성향을 기준으로 오늘의 한마디를 반환합니다.
+        해당 성향이 높다는 점도 문구에 포함됩니다.
+        """
+        daily_quotes = {
+            "openness": "새로운 아이디어를 받아들이기에 딱 좋은 날입니다. 상상력을 마음껏 펼쳐보세요!",
+            "conscientiousness": "계획을 세우고 하나씩 실행해나가는 당신, 오늘도 성실한 하루가 될 거예요.",
+            "extraversion": "사람들과의 대화 속에서 에너지를 얻어보세요. 좋은 인연이 기다리고 있을지도 몰라요!",
+            "agreeableness": "당신의 따뜻한 말 한마디가 누군가에겐 큰 위로가 될 수 있어요.",
+            "neuroticism": "마음의 안정을 위해 오늘은 나를 위한 시간을 가져보는 건 어떨까요?"
+        }
+
+        trait_kor = {
+            "openness": "개방성",
+            "conscientiousness": "성실성",
+            "extraversion": "외향성",
+            "agreeableness": "우호성",
+            "neuroticism": "신경성"
+        }
+
+        data_dict = data.dict()
+        top_score = max(data_dict, key=data_dict.get)
+        top_trait_name = trait_kor.get(top_score, top_score.capitalize())
+        quote = daily_quotes.get(top_score, "")
+
+        return f"오늘은 '{top_trait_name}' 성향이 두드러집니다. {quote}"
+
+
     def _generate_natural_language_trend(self, trait: str, values: List[float]) -> str:
         min_required_len = 3
 
