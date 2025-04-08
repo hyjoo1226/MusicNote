@@ -43,7 +43,7 @@ function App() {
     eventSourceRef.current = new EventSourcePolyfill(sseUrl, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "Spotify-Access-Token": spotifyAccessToken,
+        "Spotify-Access-Token": spotifyAccessToken ?? "",
       },
       withCredentials: true,
     });
