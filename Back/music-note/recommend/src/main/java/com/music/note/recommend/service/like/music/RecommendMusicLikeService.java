@@ -12,6 +12,7 @@ import com.music.note.common.exception.exception.common.ErrorCode;
 import com.music.note.common.exception.exception.domain.recommend.like.book.RecommendBookLikesNotFoundException;
 import com.music.note.recommend.domain.like.music.RecommendMusicLikes;
 import com.music.note.recommend.domain.recommned.music.RecommendMusic;
+import com.music.note.recommend.dto.like.music.request.RequestRecommendMusicLikeDto;
 import com.music.note.recommend.dto.music.RecommendMusicDto;
 import com.music.note.recommend.dto.music.response.ResponseRecommendMusicList;
 import com.music.note.recommend.mapper.domain.music.RecommendMusicMapper;
@@ -33,15 +34,15 @@ public class RecommendMusicLikeService {
 	private final RecommendMusicLikeMapper recommendMusicLikeMapper;
 	private final RecommendMusicMapper recommendMusicMapper;
 
-	public void likeRecommendMusic(String userId, String recommendMusicId) {
-		RecommendMusic recommendMusic = recommendMusicService.findRecommendMusicById(recommendMusicId);
+	public void likeRecommendMusic(String userId, RequestRecommendMusicLikeDto requestRecommendMusicLikeDto) {
+		RecommendMusic recommendMusic = recommendMusicService.findRecommendMusicById(requestRecommendMusicLikeDto.getRecommendMusicId());
 		Optional<RecommendMusicLikes> optionalRecommendMusicLikes = recommendMusicLikeRepository.findByUserId(userId);
 		if (optionalRecommendMusicLikes.isPresent()){
 			RecommendMusicLikes recommendMusicLikes = optionalRecommendMusicLikes.get();
-			recommendMusicLikeRepository.addMovieLike(recommendMusicLikes.getId(), recommendMusicId);
+			recommendMusicLikeRepository.addMovieLike(recommendMusicLikes.getId(), requestRecommendMusicLikeDto.getRecommendMusicId());
 		}
 		else {
-			RecommendMusicLikes recommendMusicLikes = recommendMusicLikeMapper.createRecommendMusicLikes(recommendMusicId, userId);
+			RecommendMusicLikes recommendMusicLikes = recommendMusicLikeMapper.createRecommendMusicLikes(requestRecommendMusicLikeDto.getRecommendMusicId(), userId);
 			recommendMusicLikeRepository.save(recommendMusicLikes);
 		}
 	}
@@ -65,8 +66,8 @@ public class RecommendMusicLikeService {
 			.orElseThrow(() -> new RecommendBookLikesNotFoundException(NOT_FOUND_RECOMMEND_MUSIC_LIKES));
 	}
 
-	public void cancelRecommendMusicLike(String userId, String recommendMusicId) {
+	public void cancelRecommendMusicLike(String userId, RequestRecommendMusicLikeDto requestRecommendMusicLikeDto) {
 		RecommendMusicLikes recommendMusicLikes = findRecommendMusicLikesByUserId(userId);
-		recommendMusicLikeRepository.removeMusicLike(recommendMusicLikes.getId(), recommendMusicId);
+		recommendMusicLikeRepository.removeMusicLike(recommendMusicLikes.getId(), requestRecommendMusicLikeDto.getRecommendMusicId());
 	}
 }
