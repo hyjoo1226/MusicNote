@@ -36,6 +36,7 @@ public class PreferencesController {
 
 		preferencesService.publishUserMusicPreferences(Long.parseLong(userId), spotifyAccessToken);
 
+		log,into("====== Automatic Report Request ======");
 		return CommonResponse.success("일간 리포트(자동) 요청 성공");
 	}
 
