@@ -2,6 +2,7 @@ from tmdbv3api import TMDb, Discover, Movie
 import json
 import os
 from dotenv import load_dotenv
+import random
 '''
 1. 장르 리스트의 장르를 id로 전환
 2. 장르 id로 tmdb 응답 받아서 해당 장르의 value만큼 영화 추가 - 얘가 최종종
@@ -160,25 +161,40 @@ def convert_id_to_genre(movie_info):
 
 ## 장르 횟수만큼 영화 받아오기기
 def recommend(user_genre):
-	
 	user_genre = convert_genre_to_id(user_genre) # {action : 2} -> {28: 2}
 	discover, movie = init_tmdb()
 	recommendation = []
+	
+	# 중복방지 위한 검색 파라미터들들
+	sort_by_filter = ['popularity.desc', 'revenue.desc' 'vote_count.desc']
+	page = None
 
 	# user_genre를 순회하며 영화 받아오기
 	for id, cnt in user_genre.items():
-		print(id, cnt)
-		sort_by = ['popularity.desc', 'revenue.desc', 'vote_average.desc', 'vote_count.desc']
-		page = None
-
+		'''
+		검색 파라미터 랜덤하게 넣기
+		세가지 정렬방식 페이지 범위는 10
+		한 페이지에 20개 나옴
+		없을시엔 재탐색
+		'''
+		
+		idx = random.randrange(len(sort_by_filter))
+		sort_by = sort_by_filter[idx]
+		page = random.randint(1, 21)
 		# tmdb에서 장르로 영화 검색한 결과
-		response = discover.discover_movies({'with_genres' : id, 'sort_by' : 'popularity.desc', 'page' : 1})
+		response = discover.discover_movies({'with_genres':id, 'sort_by':sort_by, 'page':page, 'language':'ko-KR'})
 		results = response['results']
 		results = list(results)
 
 		print(len(results))
 		# 장르의 cnt만큼 영화 추가
 		for i in range(cnt):
+			'''
+			이 부분에 영화필터가 들어가야함
+			1. "language" : en, kr
+			2. "popularity" : en은 pop 7 이상, kr은 1 이상
+			3. idx가 19면 다음 페이지
+			'''
 			result = results[i]
 			movie_model = response_model() # response_model 불러오기
 
@@ -194,3 +210,4 @@ def recommend(user_genre):
 			recommendation.append(movie_model)
 		print(type(recommendation))
 	return recommendation
+

@@ -44,6 +44,7 @@ def return_cluster(bf_score):
     
     kmeans_model = load_kmeans_model()
     # fastapi로 입력받은 빅파이브 점수 2차원 리스트로 변환
+    print(bf_score)
     bigfive_dict = dict(bf_score)
     bigfive_list = [list(bigfive_dict.values())]
 
