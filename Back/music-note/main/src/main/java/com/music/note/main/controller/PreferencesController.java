@@ -33,38 +33,20 @@ public class PreferencesController {
 	public CommonResponse<String> preferences(
 		@RequestHeader("Authorization") String accessToken,
 		@RequestHeader("Spotify-Access-Token") String spotifyAccessToken,
-		@RequestHeader("X-User-Id") String userId) {
-
-		preferencesService.publishUserMusicPreferences(Long.parseLong(userId), spotifyAccessToken);
-
+		@RequestHeader("X-User-Id") String userId
+	) {
 		log.info("====== Automatic Report Request ======");
+		preferencesService.publishUserMusicPreferences(Long.parseLong(userId), spotifyAccessToken);
 		return CommonResponse.success("일간 리포트(자동) 요청 성공");
-	}
-
-	@GetMapping("/daily")
-	public String testRequest(){
-		log.info("====== Test Request ======");
-		return "test";
 	}
 
 	@PostMapping("/daily")
 	public CommonResponse<String> dailyReport(
 		@RequestHeader("X-User-Id") String userId,
-		@RequestBody List<SimpleMusicDto> musicList
+		@RequestBody List<MusicDto> musicList
 	) {
 		log.info("====== Manual Report Request ======");
-		List<MusicDto> fullMusicList = musicList.stream()
-			.map(simple -> MusicDto.builder()
-				.spotifyId(simple.getSpotifyId())
-				.title(simple.getTitle())
-				.artist(simple.getArtist())
-				.imageUrl(simple.getImageUrl())
-				.audioFeatures(null) // 요청에 audioFeatures 없으므로 null 처리
-				.build())
-			.collect(Collectors.toList());
-
-		preferencesService.publishManualPreferences(Long.parseLong(userId), fullMusicList);
-		// preferencesService.publishManualPreferences(Long.parseLong(userId), musicList);
+		preferencesService.publishManualPreferences(Long.parseLong(userId), musicList);
 		return CommonResponse.success("일간 리포트(수동) 요청 성공");
 	}
 
