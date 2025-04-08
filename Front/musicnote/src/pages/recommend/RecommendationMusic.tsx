@@ -259,7 +259,7 @@ export default function RecommendationMusic() {
     resetSwipeState();
 
     setTimeout(() => {
-      goToNextMovie();
+      goToNextMusic();
       // 스크롤 위치 초기화
       if (cardRef.current) {
         const backContent = (cardRef.current as HTMLElement).querySelector(".bg-level1");
@@ -276,7 +276,7 @@ export default function RecommendationMusic() {
     resetSwipeState();
 
     setTimeout(() => {
-      goToNextMovie();
+      goToNextMusic();
       // 스크롤 위치 초기화
       if (cardRef.current) {
         const backContent = (cardRef.current as HTMLElement).querySelector(".bg-level1");
@@ -287,7 +287,7 @@ export default function RecommendationMusic() {
     }, 300);
   };
 
-  const goToNextMovie = () => {
+  const goToNextMusic = () => {
     if (currentIndex < musics.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {

@@ -114,7 +114,8 @@ function openNotificationDB() {
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       if (!db.objectStoreNames.contains("notifications")) {
-        db.createObjectStore("notifications", { keyPath: "id" });
+        const store = db.createObjectStore("notifications", { keyPath: "id" });
+        store.createIndex("timestamp", "timestamp", { unique: false });
       }
     };
 

@@ -57,7 +57,7 @@ export default function MyRecommendation() {
 
   useEffect(() => {
     if (likedMusic) {
-      setMusics(likedMusic.data.music);
+      setMusics(likedMusic.data.musics);
     }
     console.log(likedMusic);
   }, [likedMusic]);
@@ -81,7 +81,7 @@ export default function MyRecommendation() {
       <div className="flex flex-col items-center justify-center w-auto mx-3 xs:mx-5 mb-3 xs:mb-5 p-2 pb-0 bg-level2 rounded-md">
         <div className="flex flex-row items-end justify-between w-full px-2">
           <h3 className="text-xl h-[26px] xs:h-[30px] xs:text-2xl font-bold">영화</h3>
-          {movies.length > 0 && (
+          {movies?.length > 0 && (
             <span
               className="text-light-gray text-sm xs:text-base cursor-pointer"
               onClick={() => navigate("/recommendations/my/movie")}
@@ -95,7 +95,7 @@ export default function MyRecommendation() {
             {movies.map(
               (movie, index) =>
                 index < 8 && (
-                  <div key={movie.id} className={`${index >= 6 ? "hidden sm:block" : ""}`}>
+                  <div key={index} className={`${index >= 6 ? "hidden sm:block" : ""}`}>
                     <img
                       src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                       alt={movie.title}
@@ -158,11 +158,11 @@ export default function MyRecommendation() {
                       alt={music.track_name}
                       className="w-full aspect-[1/1] object-cover rounded-t-sm mb-1 xs:mb-2"
                     />
-                    <div className="flex flex-col items-center justify-center h-2/5">
-                      <span className="flex items-center justify-center text-sm overflow-hidden text-ellipsis line-clamp-2 h-[70%]">
+                    <div className="flex flex-col w-full items-center justify-center h-2/5">
+                      <span className="flex items-center justify-center text-sm line-clamp-2 h-[70%]">
                         {music.track_name}
                       </span>
-                      <span className="text-xs text-light-gray text-ellipsis line-clamp-1 h-[30%]">
+                      <span className="text-xs text-light-gray line-clamp-1 h-[30%]">
                         {music.artist_name}
                       </span>
                     </div>

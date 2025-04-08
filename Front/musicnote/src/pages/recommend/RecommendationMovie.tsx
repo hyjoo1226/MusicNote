@@ -1,7 +1,7 @@
 import TopBar from "@/components/layout/TopBar";
 import { useNavigate } from "react-router-dom";
 import mascot from "@/assets/logo/mascot.webp";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import "@/styles/RecommendationDetail.css";
 import { useGetData, usePostData } from "@/hooks/useApi";
 
@@ -53,11 +53,29 @@ export default function RecommendationMovie() {
     }
   }, [likeMovieError]);
 
+  const goToNextMovie = useCallback(() => {
+    if (currentIndex < movies.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      setCurrentIndex(movies.length);
+    }
+  }, [currentIndex, movies.length]);
+
   useEffect(() => {
     if (isSuccess) {
       console.log("좋아요 성공");
+      setTimeout(() => {
+        goToNextMovie();
+        // 스크롤 위치 초기화
+        if (cardRef.current) {
+          const backContent = (cardRef.current as HTMLElement).querySelector(".bg-level1");
+          if (backContent) {
+            (backContent as HTMLElement).scrollTop = 0;
+          }
+        }
+      }, 300);
     }
-  }, [isSuccess]);
+  }, [isSuccess, goToNextMovie]);
 
   useEffect(() => {
     if (data) {
@@ -297,14 +315,6 @@ export default function RecommendationMovie() {
         }
       }
     }, 300);
-  };
-
-  const goToNextMovie = () => {
-    if (currentIndex < movies.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentIndex(movies.length);
-    }
   };
 
   const handleCardClick = () => {
