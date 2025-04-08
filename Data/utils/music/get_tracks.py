@@ -31,14 +31,8 @@ def get_random_track(spotify, cnt):
 
     ## 앨범정보에서 발매일, 이미지 추출
     # 발매일 정보 입력
-    release_str = album.get("release_date")
-    # 형식 안맞는 release_date는 None 처리리
-    try:
-        release_date = datetime.strptime(release_str, "%Y-%m-%d").date()
-    except(ValueError, TypeError):
-        release_date = None
-    print(release_date)
-    model["release_date"] = release_date
+    
+    model["release_date"] = album.get("release_date")
     # 이미지 640*640
     images = album.get("images")
     albumcover_path = images[0].get("url")
@@ -87,15 +81,8 @@ def search_track(spotify, name, artist):
     images = album.get("images", {"url":None})
 
     # 발매일 자료형 date로 변환
-    release_str = album.get("release_date") # yyyy-mm-dd
-    print(release_str)
-    # 형식 안맞는 release_date는 None으로 처리
-    try:
-        release_date = datetime.strptime(release_str, "%Y-%m-%d").date()
-    except(ValueError, TypeError):
-        release_date = None
-    print(release_date, type(release_date))
-    model["release_date"] = release_date
+    
+    model["release_date"] = album.get("release_date") # yyyy-mm-dd
 
     # 나머지 정보 입력력
     model["id"] = result.get("id")

@@ -1,5 +1,7 @@
 import os
 import sys
+import random
+import requests
 from dotenv import load_dotenv
 from modelschemas.request_response import BigFiveScore
 from utils.music.lastfm_request import bf_to_track
@@ -52,13 +54,22 @@ class MusicRecommender:
 
 if __name__ == "__main__":
     recommender = MusicRecommender()
-    bf_score = BigFiveScore(
-    openness=0.2,
-    conscientiousness=0.4,
-    extraversion=0.5,
-    agreeableness=0.7,
-    neuroticism=0.2
-)
-    results = recommender.recommend_musics_from_bigfive(bf_score)
-    print(results)
-    print(len(results))
+
+    url = "http://127.0.0.1:8000/data/api/recommend/music"  # 바꿔줘야 함
+
+    def generate_random_input():
+        random_list = [random.uniform(0, 1) for _ in range(5)]
+        data = {
+            "openness" : random_list[0],
+            "conscientiousness" : random_list[1],
+            "extraversion" : random_list[2],
+            "agreeableness" : random_list[3],
+            "neuroticism" : random_list[4]
+        }
+        return data
+
+    for _ in range(10):  # 원하는 반복 횟수
+        data = generate_random_input()
+        response = requests.post(url, json=data)
+        print(f"Request: {data}")
+        print(f"Response: {response.status_code}, {response.json()}")
