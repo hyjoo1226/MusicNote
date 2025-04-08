@@ -231,44 +231,44 @@ export default function Recommendations() {
         </div>
       </div>
 
-      <div className="w-full flex flex-row pr-2 justify-between items-center">
-        <div className="w-full flex flex-row grid grid-cols-4">
+      <div className="w-full flex flex-row justify-between items-center">
+        <div className="w-full flex flex-row grid grid-cols-3">
           <div
-            className={`bg-level2 py-1 flex flex-col items-center justify-center cursor-pointer rounded-tl-lg transition-all ${
+            className={`bg-level2 py-1 flex flex-col sm:flex-row gap-x-1 sm:py-3 items-center justify-center cursor-pointer rounded-tl-lg transition-all ${
               selectedDomain === "영화"
                 ? "bg-main"
                 : "hover:bg-level3 border-r border-b border-border "
             }`}
             onClick={() => setSelectedDomain("영화")}
           >
-            <span className="text-xl xs:text-2xl">🎬</span>
-            <span className="text-white  text-base">영화</span>
+            <span className="text-xl sm:text-2xl">🎬</span>
+            <span className="text-white text-base sm:text-xl">영화</span>
           </div>
 
           <div
-            className={`bg-level2 py-1 flex flex-col items-center justify-center cursor-pointer transition-all ${
+            className={`bg-level2 py-1 flex flex-col sm:flex-row gap-x-2 items-center justify-center cursor-pointer transition-all ${
               selectedDomain === "음악"
                 ? "bg-main"
                 : "hover:bg-level3 border-r border-b border-border "
             }`}
             onClick={() => setSelectedDomain("음악")}
           >
-            <span className="text-light-gray text-xl xs:text-2xl">♬</span>
-            <span className="text-white  text-base">음악</span>
+            <span className="text-light-gray text-xl sm:text-2xl">♬</span>
+            <span className="text-white text-base sm:text-xl">음악</span>
           </div>
 
           <div
-            className={`bg-level2 py-1 flex flex-col items-center justify-center cursor-pointer rounded-tr-lg transition-all ${
+            className={`bg-level2 py-1 flex flex-col sm:flex-row gap-x-2 items-center justify-center cursor-pointer rounded-tr-lg transition-all ${
               selectedDomain === "책" ? "bg-main" : "hover:bg-level3 border-b border-border"
             }`}
             onClick={() => setSelectedDomain("책")}
           >
-            <span className="text-xl xs:text-2xl">📚</span>
-            <span className="text-white  text-base">책</span>
+            <span className="text-xl sm:text-2xl">📚</span>
+            <span className="text-white text-base sm:text-xl">책</span>
           </div>
         </div>
       </div>
-      <div className="w-full bg-level2 flex flex-col justify-evenly items-center rounded-tr-lg rounded-b-lg h-[calc(100dvh-230px)]">
+      <div className="w-full bg-level2 flex flex-col justify-evenly items-center rounded-b-lg h-[calc(100dvh-230px)]">
         {renderContent()}
       </div>
     </div>

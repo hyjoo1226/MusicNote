@@ -96,14 +96,19 @@ export default function Analysis() {
     setMonth(targetMonth.getMonth() + 1);
   }, [targetMonth]);
 
-  const {
-    data: dailyReportsData,
-    // isLoading: dailyReportsLoading,
-    // isError: dailyReportsError,
-  } = useGetData(
+  const { data: dailyReportsData } = useGetData(
     `dailyReportsData-${year}-${month}`, // key
     `/recommend/type/daily?year=${year}&month=${month}` // url
   );
+
+  const { data: weeklyReportsData } = useGetData(
+    `weeklyReportsData-${year}-${month}`, // key
+    `type/weekly-report?year=${year}&month=${month}` // url
+  );
+
+  useEffect(() => {
+    console.log(weeklyReportsData);
+  }, [weeklyReportsData]);
 
   // big5 초기 점수
   const [bigFiveScore, setBigFiveScore] = useState<ChartType>([

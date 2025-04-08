@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { useGetData } from "../../../hooks/useApi";
-import SearchIcon from "../../../assets/icon/search-icon.svg?react";
-import { Track } from "./ChoiceMusicAnalysis";
+import { useGetData } from "@/hooks/useApi";
+import SearchIcon from "@/assets/icon/search-icon.svg?react";
+import { Track } from "@/pages/discover/ChoiceMusicAnalysis";
 
 interface SearchMusicProps {
   onTrackSelect: (track: Track) => void;
@@ -86,9 +86,15 @@ export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMus
   }, [isResultsVisible]);
 
   const handleTrackSelect = (track: any) => {
-    onTrackSelect(track);
-    setIsResultsVisible(false); // 트랙 선택 시 결과창 닫기
-    inputRef.current?.blur(); // 인풋 포커스 해제
+    const convertedTrack: Track = {
+      spotifyId: track.id,
+      title: track.name,
+      artist: track.artists.map((artist: any) => artist.name).join(", "),
+      imageUrl: track.album.images[0]?.url || "",
+    };
+    onTrackSelect(convertedTrack);
+    setIsResultsVisible(false);
+    inputRef.current?.blur();
   };
 
   return (
@@ -108,23 +114,23 @@ export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMus
 
       {isResultsVisible && searchResults.length > 0 && (
         <div className="absolute top-full left-0 right-0 z-100 mt-2 mx-[20px] bg-level3 rounded-lg shadow-xl max-h-[300px] overflow-y-auto">
-          {searchResults.map((track: Track) => (
+          {searchResults.map((track: any) => (
             <div
               key={track.id}
               className={`p-3 cursor-pointer ${
-                selectedTracks.some((t) => t.id === track.id) ? "bg-sub" : ""
+                selectedTracks.some((t) => t.spotifyId === track.id) ? "bg-sub" : ""
               }`}
               onClick={() => handleTrackSelect(track)}
             >
               <div className="flex items-center gap-3">
                 <img
-                  src={track.album.images[0]?.url}
+                  src={track.album.images[0].url}
                   alt="album cover"
                   className="w-10 h-10 flex-shrink-0"
                 />
                 <div className="pt-1 min-w-0 overflow-hidden">
                   <p className="text-light-gray font-light text-sm truncate">
-                    {track.artists.map((artist) => artist.name).join(", ")}
+                    {track.artists.map((artist: any) => artist.name).join(", ")}
                   </p>
                   <p className="truncate">{track.name}</p>
                 </div>

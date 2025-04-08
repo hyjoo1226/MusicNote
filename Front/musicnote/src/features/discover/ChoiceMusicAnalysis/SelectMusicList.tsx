@@ -1,10 +1,10 @@
 import DeleteIcon from "../../../assets/icon/delete-icon.svg?react";
-import { Track } from "./ChoiceMusicAnalysis";
+import { Track } from "../../../pages/discover/ChoiceMusicAnalysis";
 
 interface SelectMusicListProps {
   selectedTracks: Track[];
   onTrackDelete: (trackId: string) => void;
-  onAnalyze: (tracks: any[]) => void;
+  onAnalyze: (tracks: Track[]) => void;
 }
 
 export default function SelectMusicList({
@@ -19,27 +19,23 @@ export default function SelectMusicList({
           <ul className="flex flex-col gap-2">
             {selectedTracks.map((track) => (
               <li
-                key={track.id}
+                key={track.spotifyId}
                 className="flex justify-between items-center p-2 border-b border-solid border-border rounded-lg"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
-                  <img
-                    src={track.album.images[0]?.url}
-                    alt="album cover"
-                    className="w-15 h-15 rounded-lg"
-                  />
+                  <img src={track.imageUrl} alt="album cover" className="w-15 h-15 rounded-lg" />
                   <div className="min-w-[120px] flex-1 overflow-hidden">
                     <p className="w-full text-light-gray text-[14px] font-light truncate">
-                      {track.artists.map((artist) => artist.name).join(", ")}
+                      {track.artist}
                     </p>
                     <p className="text-white text-[14px] font-medium line-clamp-2 sm:line-clamp-1 sm:text-[16px]">
-                      {track.name}
+                      {track.title}
                     </p>
                   </div>
                 </div>
                 <DeleteIcon
                   className="mr-4 flex-shrink-0 cursor-pointer"
-                  onClick={() => onTrackDelete(track.id)}
+                  onClick={() => onTrackDelete(track.spotifyId)}
                 />
               </li>
             ))}

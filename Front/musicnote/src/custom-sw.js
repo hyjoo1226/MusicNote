@@ -3,7 +3,6 @@ import { registerRoute } from "workbox-routing";
 import { NetworkFirst, StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
 import { ExpirationPlugin } from "workbox-expiration";
 import { BackgroundSyncPlugin } from "workbox-background-sync";
-import { cacheNames } from "workbox-core";
 
 // 서비스 워커 설치 시 precache 실행
 precacheAndRoute(self.__WB_MANIFEST);

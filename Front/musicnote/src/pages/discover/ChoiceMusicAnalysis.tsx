@@ -6,18 +6,25 @@ import SearchMusic from "../../features/discover/ChoiceMusicAnalysis/SearchMusic
 import SelectMusicList from "../../features/discover/ChoiceMusicAnalysis/SelectMusicList";
 import { usePostData } from "../../hooks/useApi";
 
+export interface Track {
+  spotifyId: string;
+  title: string;
+  artist: string;
+  imageUrl: string;
+}
+
 export default function ChoiceMusicAnalysis() {
   const navigate = useNavigate();
 
-  const [selectedTracks, setSelectedTracks] = useState<any[]>([]);
-  const { mutate: postChoiceMusicData } = usePostData("/main/preferences");
+  const [selectedTracks, setSelectedTracks] = useState<Track[]>([]);
+  const { mutate: postChoiceMusicData } = usePostData("/main/daily");
 
   // 선택 곡 리스트 추가 핸들러
-  const handleTrackSelect = (track: any) => {
+  const handleTrackSelect = (track: Track) => {
     setSelectedTracks((prevTracks) => {
-      const isTrackSelected = prevTracks.some((t) => t.id === track.id);
+      const isTrackSelected = prevTracks.some((t) => t.spotifyId === track.spotifyId);
       if (isTrackSelected) {
-        return prevTracks.filter((t) => t.id !== track.id);
+        return prevTracks.filter((t) => t.spotifyId !== track.spotifyId);
       } else if (prevTracks.length < 20) {
         return [...prevTracks, track];
       }
@@ -26,21 +33,21 @@ export default function ChoiceMusicAnalysis() {
   };
   // 선택 곡 리스트 제거 핸들러
   const handleTrackDelete = (trackId: string) => {
-    setSelectedTracks((prevTracks) => prevTracks.filter((track) => track.id !== trackId));
+    setSelectedTracks((prevTracks) => prevTracks.filter((track) => track.spotifyId !== trackId));
   };
 
   // 분석하기 버튼 핸들러
-  const handleAnalyze = (tracks: any[]) => {
+  const handleAnalyze = (tracks: Track[]) => {
     if (tracks.length === 0) {
       alert("분석할 곡을 선택해주세요!");
       return;
     }
     // request
     const musicList = tracks.map((track) => ({
-      spotifyId: track.id,
-      title: track.name,
-      artist: track.artists.map((artist: any) => artist.name).join(", "),
-      imageUrl: track.album?.images?.[0]?.url,
+      spotifyId: track.spotifyId,
+      title: track.title,
+      artist: track.artist,
+      imageUrl: track.imageUrl,
     }));
     console.log(musicList);
 
