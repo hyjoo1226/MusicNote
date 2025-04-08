@@ -12,14 +12,15 @@ export default function Home() {
   const [todayScores, setTodayScores] = useState([0, 0, 0, 0, 0]);
   const [recentPlayedList, setRecentPlayedList] = useState([]);
   useEffect(() => {
+    console.log(today);
     if (today) {
       setWordOfToday(today.data.todayMessage);
       setTodayScores([
-        today.data.todayScores.openness,
-        today.data.todayScores.conscientiousness,
-        today.data.todayScores.extraversion,
-        today.data.todayScores.agreeableness,
-        today.data.todayScores.neuroticism,
+        today.data.typeDto.openness * 100,
+        today.data.typeDto.conscientiousness * 100,
+        today.data.typeDto.extraversion * 100,
+        today.data.typeDto.agreeableness * 100,
+        today.data.typeDto.neuroticism * 100,
       ]);
       setRecentPlayedList(today.data.musicDtoList);
     }

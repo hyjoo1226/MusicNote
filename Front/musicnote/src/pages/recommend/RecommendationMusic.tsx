@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import mascot from "@/assets/logo/mascot.webp";
 import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
-import { useGetData } from "@/hooks/useApi";
+import { useGetData, usePostData } from "@/hooks/useApi";
 import { useAuthStore } from "@/stores/authStore";
 
 declare global {
@@ -50,7 +50,23 @@ export default function RecommendationMusic() {
   const currentMusic = musics?.[currentIndex];
 
   const { data, isLoading, isError } = useGetData("/recommend/music", "recommend/music");
-  // const { mutateAsync: likeMovie, error: likeMovieError } = usePostData("recommend/like/movie");
+  const {
+    mutate: likeMusic,
+    isSuccess,
+    isError: likeMusicError,
+  } = usePostData("recommend/like/music");
+
+  useEffect(() => {
+    if (likeMusicError) {
+      console.log(likeMusicError);
+    }
+  }, [likeMusicError]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("좋아요 성공");
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     if (data) {
@@ -239,7 +255,7 @@ export default function RecommendationMusic() {
 
   const handleLike = (id: string) => {
     if (!currentMusic) return;
-    console.log(id);
+    likeMusic({ recommendMusicId: id });
     resetSwipeState();
 
     setTimeout(() => {

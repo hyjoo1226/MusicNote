@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import mascot from "@/assets/logo/mascot.webp";
 import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
-import { useGetData } from "@/hooks/useApi";
+import { useGetData, usePostData } from "@/hooks/useApi";
 
 interface Movie {
   id: string;
@@ -41,7 +41,23 @@ export default function RecommendationMovie() {
   const currentMovie = movies?.[currentIndex];
 
   const { data, isLoading, isError } = useGetData("/recommend/movie", "recommend/movie");
-  // const { mutateAsync: likeMovie, error: likeMovieError } = usePostData("recommend/like/movie");
+  const {
+    mutate: likeMovie,
+    isSuccess,
+    isError: likeMovieError,
+  } = usePostData("recommend/like/movie");
+
+  useEffect(() => {
+    if (likeMovieError) {
+      console.log(likeMovieError);
+    }
+  }, [likeMovieError]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("좋아요 성공");
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     if (data) {
@@ -241,9 +257,9 @@ export default function RecommendationMovie() {
 
   const handleLike = (id: string) => {
     if (!currentMovie) return;
-    console.log(id);
-    resetSwipeState();
 
+    resetSwipeState();
+    likeMovie({ recommendMovieId: id });
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
     if (isFlipped) {
       setIsFlipped(false);
