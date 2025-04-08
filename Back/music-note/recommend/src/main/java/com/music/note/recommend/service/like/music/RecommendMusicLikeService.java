@@ -39,7 +39,9 @@ public class RecommendMusicLikeService {
 		Optional<RecommendMusicLikes> optionalRecommendMusicLikes = recommendMusicLikeRepository.findByUserId(userId);
 		if (optionalRecommendMusicLikes.isPresent()){
 			RecommendMusicLikes recommendMusicLikes = optionalRecommendMusicLikes.get();
-			recommendMusicLikeRepository.addMovieLike(recommendMusicLikes.getId(), requestRecommendMusicLikeDto.getRecommendMusicId());
+			if (!recommendMusicLikes.isLiked(requestRecommendMusicLikeDto.getRecommendMusicId())){
+				recommendMusicLikeRepository.addMovieLike(recommendMusicLikes.getId(), requestRecommendMusicLikeDto.getRecommendMusicId());
+			}
 		}
 		else {
 			RecommendMusicLikes recommendMusicLikes = recommendMusicLikeMapper.createRecommendMusicLikes(requestRecommendMusicLikeDto.getRecommendMusicId(), userId);
