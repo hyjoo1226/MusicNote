@@ -28,15 +28,15 @@ public class RecommendMovieLikeService {
 	private final RecommendMovieService recommendMovieService;
 	private final RecommendMovieLikeRepository recommendMovieLikeRepository;
 	private final RecommendMovieLikeMapper recommendMovieLikeMapper;
-	public void likeRecommendMovie(String userId, String recommendMovieId) {
+	public void likeRecommendMovie(String userId, RequestRecommendMovieLikeDto requestRecommendMovieLikeDto) {
 
-		RecommendMovie recommendMovie = recommendMovieService.findRecommendMovieById(recommendMovieId);
+		RecommendMovie recommendMovie = recommendMovieService.findRecommendMovieById(requestRecommendMovieLikeDto.getRecommendMovieId());
 		Optional<RecommendMovieLikes> optionalRecommendMovieLikes = recommendMovieLikeRepository.findByUserId(userId);
 
 		if (optionalRecommendMovieLikes.isPresent()){
 
 			RecommendMovieLikes recommendMovieLikes = optionalRecommendMovieLikes.get();
-			recommendMovieLikeRepository.addMovieLike(recommendMovieLikes.getId(), recommendMovieId);
+			recommendMovieLikeRepository.addMovieLike(recommendMovieLikes.getId(), requestRecommendMovieLikeDto.getRecommendMovieId());
 
 
 		}
@@ -68,8 +68,8 @@ public class RecommendMovieLikeService {
 			.orElseThrow(()-> new RecommendMovieNotFoundException(ErrorCode.NOT_FOUND_RECOMMEND_MOVIE_LIKES));
 	}
 
-	public void cancelRecommendMovieLike(String userId, String recommendMovieId) {
+	public void cancelRecommendMovieLike(String userId, RequestRecommendMovieLikeDto requestRecommendMovieLikeDto) {
 		RecommendMovieLikes recommendMovieLikes = findRecommendMovieLikesByUserId(userId);
-		recommendMovieLikeRepository.removeMovieLike(recommendMovieLikes.getId(), recommendMovieId);
+		recommendMovieLikeRepository.removeMovieLike(recommendMovieLikes.getId(), requestRecommendMovieLikeDto.getRecommendMovieId());
 	}
 }
