@@ -20,4 +20,5 @@ public class ResponseHomeDto {
 	private TypeDto typeDto;
 	private String todayMessage;
 	private List<MusicDto> musicDtoList;
+	private String reportId;
 }
