@@ -36,7 +36,9 @@ public class RecommendMovieLikeService {
 		if (optionalRecommendMovieLikes.isPresent()){
 
 			RecommendMovieLikes recommendMovieLikes = optionalRecommendMovieLikes.get();
-			recommendMovieLikeRepository.addMovieLike(recommendMovieLikes.getId(), requestRecommendMovieLikeDto.getRecommendMovieId());
+			if (!recommendMovieLikes.isLiked(requestRecommendMovieLikeDto.getRecommendMovieId())){
+				recommendMovieLikeRepository.addMovieLike(recommendMovieLikes.getId(), requestRecommendMovieLikeDto.getRecommendMovieId());
+			}
 
 
 		}

@@ -27,8 +27,7 @@ public class RecommendMovieLikes {
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
-
-	public void removeLike(String musicId) {
-		likedMovieIds.remove(musicId);
+	public boolean isLiked(String movieId) {
+		return likedMovieIds.contains(movieId);
 	}
 }
