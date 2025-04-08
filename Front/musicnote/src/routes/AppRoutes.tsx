@@ -28,7 +28,7 @@ export default function AppRoutes(): React.ReactElement {
       {/* 인증이 필요한 라우트 */}
       <Route element={<PrivateRoute />}>
         <Route path="/home" element={<Home />} />
-        <Route path="/musiclist/:title/" element={<MusicList />} />
+        <Route path="/musiclist/:reportId" element={<MusicList />} />
         <Route path="/analysis" element={<Analysis />} />
         <Route path="/analysis/report/daily/:reportId" element={<ReportDaily />} />
         <Route path="/analysis/report/weekly/:reportId" element={<ReportWeekly />} />

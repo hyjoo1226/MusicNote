@@ -39,10 +39,9 @@ export default function Calendar({
   // weeklyReports,
   enabledDays,
   onMonthChange,
-  // onReportSelect,
 }: CalendarProps) {
   // 선택 날짜
-  const [selected, setSelected] = useState<Date | undefined>(() => new Date());
+  const [selected, setSelected] = useState<Date>();
   // 리포트 주기
   // const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
 
@@ -182,7 +181,6 @@ export default function Calendar({
             notInReport: "rdp-disabled",
           }}
           onMonthChange={(date) => {
-            console.log(date);
             onMonthChange(date);
           }}
         />

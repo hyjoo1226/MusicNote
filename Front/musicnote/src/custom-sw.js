@@ -67,6 +67,12 @@ registerRoute(
         maxAgeSeconds: 60 * 60 * 24 * 30, // 30일
       }),
     ],
+    matchOptions: {
+      ignoreSearch: true,
+    },
+    fetchOptions: {
+      credentials: "same-origin",
+    },
   })
 );
 
@@ -200,5 +206,50 @@ async function saveNotificationToIndexedDB(notification) {
     store.add(notificationWithId);
   } catch (error) {
     console.error("알림 저장 중 오류 발생:", error);
+  }
+}
+
+// 캐시 에러 핸들링
+self.addEventListener("error", (event) => {
+  if (event.message.includes("Cache.put")) {
+    console.warn("캐시 저장 실패:", event.message);
+    // 캐시 저장 실패 시 재시도 로직 추가
+    event.waitUntil(
+      caches.open("local-assets").then((cache) => {
+        return cache.match(event.request).then((response) => {
+          if (response) {
+            return cache.put(event.request, response.clone());
+          }
+          return Promise.reject("캐시된 응답이 없습니다.");
+        });
+      })
+    );
+  }
+});
+
+// 네트워크 상태 변경 감지
+self.addEventListener("online", () => {
+  console.log("온라인 상태로 전환됨");
+  // 온라인 상태로 전환 시 캐시 동기화
+  syncCache();
+});
+
+async function syncCache() {
+  try {
+    const cache = await caches.open("local-assets");
+    const keys = await cache.keys();
+
+    for (const request of keys) {
+      try {
+        const response = await fetch(request);
+        if (response.ok) {
+          await cache.put(request, response);
+        }
+      } catch (error) {
+        console.warn(`리소스 ${request.url} 캐시 동기화 실패:`, error);
+      }
+    }
+  } catch (error) {
+    console.error("캐시 동기화 중 오류 발생:", error);
   }
 }

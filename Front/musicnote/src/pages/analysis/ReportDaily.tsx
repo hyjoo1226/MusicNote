@@ -46,6 +46,7 @@ export default function ReportDaily() {
 
   useEffect(() => {
     if (reportData) {
+      console.log(reportData);
       const modifiedReport = {
         ...reportData.data,
         typeDto: {
@@ -66,7 +67,7 @@ export default function ReportDaily() {
   };
   // 음악 리스트 아이콘 핸들러
   const handleMusicListClick = () => {
-    navigate("/musiclist/리포트에-사용된-음악");
+    navigate(`/musiclist/${reportId}`);
   };
   // web share API
   // 지원 안하는 브라우저의 경우 클립보드 복사

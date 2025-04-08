@@ -63,7 +63,6 @@ export default function RecommendationMovie() {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("좋아요 성공");
       setTimeout(() => {
         goToNextMovie();
         // 스크롤 위치 초기화
@@ -192,7 +191,7 @@ export default function RecommendationMovie() {
       if (direction === "right") {
         handleLike(movies[currentIndex].id);
       } else if (direction === "left") {
-        handleDislike(movies[currentIndex].id);
+        handleDislike();
       } else {
         resetSwipeState();
       }
@@ -258,7 +257,7 @@ export default function RecommendationMovie() {
       if (direction === "right") {
         handleLike(movies[currentIndex].id);
       } else if (direction === "left") {
-        handleDislike(movies[currentIndex].id);
+        handleDislike();
       } else {
         resetSwipeState();
       }
@@ -295,9 +294,8 @@ export default function RecommendationMovie() {
     }, 300);
   };
 
-  const handleDislike = (id: string) => {
+  const handleDislike = () => {
     if (!currentMovie) return;
-    console.log(id);
     resetSwipeState();
 
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
@@ -474,10 +472,7 @@ export default function RecommendationMovie() {
               </div>
             </div>
             <div className="swipe-buttons">
-              <button
-                className="swipe-button dislike-button"
-                onClick={() => handleDislike(movies[currentIndex].id)}
-              >
+              <button className="swipe-button dislike-button" onClick={() => handleDislike()}>
                 👎 싫어요
               </button>
               <button

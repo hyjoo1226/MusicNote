@@ -107,7 +107,25 @@ export default function Analysis() {
   );
 
   useEffect(() => {
-    console.log(weeklyReportsData);
+    if (weeklyReportsData?.data) {
+      // 주간 리포트 데이터를 일요일 기준으로 정렬
+      const sortedReports = [...weeklyReportsData.data].sort((a: any, b: any) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+        return dateB.getTime() - dateA.getTime();
+      });
+
+      // 각 리포트의 details를 일요일 기준으로 정렬
+      sortedReports.forEach((report: any) => {
+        report.details.sort((a: any, b: any) => {
+          const dateA = new Date(a.createdAt);
+          const dateB = new Date(b.createdAt);
+          return dateA.getTime() - dateB.getTime();
+        });
+      });
+
+      console.log("정렬된 주간 리포트:", sortedReports);
+    }
   }, [weeklyReportsData]);
 
   // big5 초기 점수
@@ -157,17 +175,20 @@ export default function Analysis() {
         return eachDayOfInterval({ start: date, end: date });
       });
     } else {
-      // if (!weeklyReportsData?.data?.responseTypeWithReportIds) return [];
+      if (!weeklyReportsData?.data) return [];
+      return weeklyReportsData.data.map((report: any) => {
+        const date = new Date(report.createdAt);
+        // 주간 기간을 일요일부터 토요일까지로 고정
+        const endDate = new Date(date);
+        const startDate = new Date(endDate);
 
-      // return weeklyReportsData.data.responseTypeWithReportIds.flatMap((report: any) => {
-      //   const date = new Date(report.createdAt);
-      //   // 주간 기간은 해당 날짜부터 7일간으로 가정
-      //   const endDate = new Date(date);
-      //   const startDate = new Date(endDate);
-      //   startDate.setDate(endDate.getDate() - 6);
-      //   return eachDayOfInterval({ start: startDate, end: endDate });
-      // });
-      return;
+        // 선택한 날짜가 속한 주의 일요일과 토요일 찾기
+        const dayOfWeek = endDate.getDay(); // 0: 일요일, 6: 토요일
+        startDate.setDate(endDate.getDate() - dayOfWeek); // 일요일로 설정
+        endDate.setDate(startDate.getDate() + 6); // 토요일로 설정
+
+        return eachDayOfInterval({ start: startDate, end: endDate });
+      });
     }
   };
 
@@ -216,35 +237,56 @@ export default function Analysis() {
       }
     } else {
       // 주간 리포트 데이터 찾기
-      // if (!weeklyReportsData?.data?.responseTypeWithReportIds) return;
+      if (!weeklyReportsData?.data) return;
 
-      // // 주간 리포트는 해당 날짜가 포함된 주의 리포트를 찾음
-      // const selectedReport = weeklyReportsData.data.responseTypeWithReportIds.find(
-      //   (report: any) => {
-      //     const reportDate = new Date(report.createdAt);
-      //     const weekEndDate = new Date(reportDate);
-      //     const weekStartDate = new Date(reportDate);
-      //     weekStartDate.setDate(weekEndDate.getDate() - 6);
+      // 선택한 날짜가 속한 주의 일요일 찾기
+      const selectedDate = new Date(date);
+      const dayOfWeek = selectedDate.getDay();
+      const sunday = new Date(selectedDate);
+      sunday.setDate(selectedDate.getDate() - dayOfWeek);
+      const sundayString = formatDateToString(sunday);
 
-      //     return date >= weekStartDate && date <= weekEndDate;
-      //   }
-      // );
+      // 해당 일요일에 해당하는 주간 리포트 찾기
+      const selectedReport = weeklyReportsData.data.find((report: any) => {
+        const reportDate = new Date(report.createdAt);
+        const reportSunday = new Date(reportDate);
+        reportSunday.setDate(reportDate.getDate() - reportDate.getDay());
+        return formatDateToString(reportSunday) === sundayString;
+      });
 
-      // if (selectedReport) {
-      //   setSelectedReportId(selectedReport.reportId);
-      //   // 주간 리포트 형식에서 차트 형식으로 변환
-      //   const newScores: ChartType = [
-      //     { bigFive: "개방성", User: Math.round(selectedReport.typeDto.openness * 100) },
-      //     { bigFive: "성실성", User: Math.round(selectedReport.typeDto.conscientiousness * 100) },
-      //     { bigFive: "외향성", User: Math.round(selectedReport.typeDto.extraversion * 100) },
-      //     { bigFive: "우호성", User: Math.round(selectedReport.typeDto.agreeableness * 100) },
-      //     { bigFive: "신경성", User: Math.round(selectedReport.typeDto.neuroticism * 100) },
-      //   ];
-      //   setBigFiveScore(newScores);
-      // } else {
-      //   console.log(`선택한 날짜에 해당하는 주간 리포트가 없습니다.`);
-      // }
-      return;
+      if (selectedReport) {
+        setSelectedReportId(selectedReport.id);
+        // 주간 리포트의 평균값 계산
+        const avgScores = selectedReport.details.reduce(
+          (acc: any, detail: any) => {
+            acc.openness += detail.openness;
+            acc.conscientiousness += detail.conscientiousness;
+            acc.extraversion += detail.extraversion;
+            acc.agreeableness += detail.agreeableness;
+            acc.neuroticism += detail.neuroticism;
+            return acc;
+          },
+          {
+            openness: 0,
+            conscientiousness: 0,
+            extraversion: 0,
+            agreeableness: 0,
+            neuroticism: 0,
+          }
+        );
+
+        const count = selectedReport.details.length;
+        const newScores: ChartType = [
+          { bigFive: "개방성", User: Math.round((avgScores.openness / count) * 100) },
+          { bigFive: "성실성", User: Math.round((avgScores.conscientiousness / count) * 100) },
+          { bigFive: "외향성", User: Math.round((avgScores.extraversion / count) * 100) },
+          { bigFive: "우호성", User: Math.round((avgScores.agreeableness / count) * 100) },
+          { bigFive: "신경성", User: Math.round((avgScores.neuroticism / count) * 100) },
+        ];
+        setBigFiveScore(newScores);
+      } else {
+        console.log(`선택한 날짜에 해당하는 주간 리포트가 없습니다.`);
+      }
     }
   };
 

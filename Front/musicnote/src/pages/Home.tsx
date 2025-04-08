@@ -69,7 +69,7 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
           <div className="flex flex-row items-center justify-between w-full">
             <span className="text-white text-xl font-medium self-start">최근에 들은 음악</span>
-            <DetailButton url="/musiclist/최근에-들은-음악" />
+            <DetailButton url={`/musiclist/${reportId}`} />
           </div>
           <div className="flex flex-col items-start justify-start w-full gap-y-3">
             {Array.isArray(recentPlayedList) &&
