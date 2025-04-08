@@ -31,9 +31,9 @@ public class RecommendMovieLikeController {
 	@PostMapping("/like/movie")
 	public CommonResponse<String> likeRecommendMovies(
 		HttpServletRequest request,
-		@RequestParam String recommendMovieId) {
+		@RequestBody RequestRecommendMovieLikeDto requestRecommendMovieLikeDto) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
-		recommendMovieLikeService.likeRecommendMovie(userId, recommendMovieId);
+		recommendMovieLikeService.likeRecommendMovie(userId, requestRecommendMovieLikeDto);
 		return CommonResponse.success("ok");
 	}
 	@GetMapping("/like/movie")
@@ -47,9 +47,9 @@ public class RecommendMovieLikeController {
 	@DeleteMapping("like/movie")
 	public CommonResponse<String> CancelLikeRecommendMovies(
 		HttpServletRequest request,
-		@RequestParam String recommendMovieId) {
+		@RequestBody RequestRecommendMovieLikeDto requestRecommendMovieLikeDto) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
-		recommendMovieLikeService.cancelRecommendMovieLike(userId, recommendMovieId);
+		recommendMovieLikeService.cancelRecommendMovieLike(userId, requestRecommendMovieLikeDto);
 		return CommonResponse.success("ok");
 	}
 }

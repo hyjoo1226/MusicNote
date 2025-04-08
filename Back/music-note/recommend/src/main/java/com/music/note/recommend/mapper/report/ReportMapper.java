@@ -69,7 +69,7 @@ public class ReportMapper {
 			.neuroticism(report.getNeuroticism())
 			.conscientiousness(report.getConscientiousness())
 			.openness(report.getOpenness())
-			.createdAt(report.getCreatedAt().toLocalDateTime())
+			.createdAt(report.getCreatedAt())
 			.build();
 
 	}

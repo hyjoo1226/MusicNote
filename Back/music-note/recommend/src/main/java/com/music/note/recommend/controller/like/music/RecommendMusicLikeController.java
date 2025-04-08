@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.music.note.common.response.CommonResponse;
 import com.music.note.jwt.util.JwtUtil;
 import com.music.note.recommend.dto.book.response.ResponseRecommendBookList;
+import com.music.note.recommend.dto.like.music.request.RequestRecommendMusicLikeDto;
 import com.music.note.recommend.dto.music.response.ResponseRecommendMusicList;
 import com.music.note.recommend.service.like.music.RecommendMusicLikeService;
 
@@ -27,9 +29,9 @@ public class RecommendMusicLikeController {
 	@PostMapping("/like/music")
 	public CommonResponse<String> likeRecommendMusic(
 		HttpServletRequest request,
-		@RequestParam String recommendMusicId) {
+		@RequestBody RequestRecommendMusicLikeDto requestRecommendMusicLikeDto) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
-		recommendMusicLikeService.likeRecommendMusic(userId, recommendMusicId);
+		recommendMusicLikeService.likeRecommendMusic(userId, requestRecommendMusicLikeDto);
 		return CommonResponse.success("ok");
 	}
 	@GetMapping("/like/music")
@@ -42,9 +44,9 @@ public class RecommendMusicLikeController {
 	@DeleteMapping("like/music")
 	public CommonResponse<String> CancelLikeRecommendMovies(
 		HttpServletRequest request,
-		@RequestParam String recommendMusicId) {
+		@RequestBody RequestRecommendMusicLikeDto requestRecommendMusicLikeDto) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
-		recommendMusicLikeService.cancelRecommendMusicLike(userId, recommendMusicId);
+		recommendMusicLikeService.cancelRecommendMusicLike(userId, requestRecommendMusicLikeDto);
 		return CommonResponse.success("ok");
 	}
 
