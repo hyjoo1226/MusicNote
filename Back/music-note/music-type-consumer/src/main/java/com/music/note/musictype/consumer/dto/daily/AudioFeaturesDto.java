@@ -1,4 +1,4 @@
-package com.music.note.musictype.consumer.dto;
+package com.music.note.musictype.consumer.dto.daily;
 
 import lombok.Builder;
 import lombok.Getter;

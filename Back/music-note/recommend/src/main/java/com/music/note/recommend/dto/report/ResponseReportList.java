@@ -16,8 +16,5 @@ public class ResponseReportList {
 	private List<ResponseReportWithTypeDto> responseTypeWithReportIds = new ArrayList<>();
 	private int listSize;
 
-	public void allocateSize(){
-		this.listSize = responseTypeWithReportIds.size();
-	}
 }
 

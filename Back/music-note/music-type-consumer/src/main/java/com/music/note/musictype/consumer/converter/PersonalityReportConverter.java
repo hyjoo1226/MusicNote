@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.music.note.kafkaeventmodel.dto.MusicDto;
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
-import com.music.note.musictype.consumer.dto.PersonalityReportDto;
+import com.music.note.musictype.consumer.dto.daily.PersonalityReportDto;
 import com.music.note.typedomain.domain.PersonalityReport;
 
 public class PersonalityReportConverter {
