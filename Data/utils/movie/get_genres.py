@@ -5,7 +5,7 @@ import os
 userid 받아서 20개 장르 리스트
 0. 유저별 장르 개수 json 로드
 1. userid로 장르 개수 받음
-2. 장르 개수 20개에 맞춰서 반환환
+2. 장르 개수 20개에 맞춰서 반환
 '''
 
 # 유저별 장르 개수 데이터
@@ -46,9 +46,7 @@ def scaling_genre(user_genre, target_size=20):
 
 # 장르 개수 20개로 스케일링
 def user_genre(selected_user):
-
     # 선택된 유저의 장르 정보
     users_genre_data = load_json()
     user_genre = users_genre_data.get(selected_user)
-
     return scaling_genre(user_genre)
