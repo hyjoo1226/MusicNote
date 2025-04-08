@@ -15,7 +15,7 @@ public class RecommendMusicMapper {
 			.albumCoverPath(dto.getAlbumCoverPath())
 			.artistName(dto.getArtistName())
 			.releaseDate(dto.getReleaseDate())
-			.popularity(dto.getPopularity())
+			.durationMs(dto.getDurationMs())
 			.userId(userId)
 			.createdAt(LocalDateTime.now())
 			.build();
@@ -27,7 +27,7 @@ public class RecommendMusicMapper {
 			.albumCoverPath(recommendMusic.getAlbumCoverPath())
 			.trackName(recommendMusic.getTrackName())
 			.artistName(recommendMusic.getArtistName())
-			.popularity(recommendMusic.getPopularity())
+			.durationMs(recommendMusic.getDurationMs())
 			.releaseDate(recommendMusic.getReleaseDate())
 			.build();
 	}

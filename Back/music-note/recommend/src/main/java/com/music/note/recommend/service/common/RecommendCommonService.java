@@ -3,6 +3,7 @@ package com.music.note.recommend.service.common;
 import static com.music.note.common.exception.exception.common.ErrorCode.*;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -57,5 +58,13 @@ public class RecommendCommonService {
 			url, HttpMethod.POST, requestEntity, responseType);
 		log.info("data server response{}=", responseEntity.getBody());
 		return responseEntity.getBody();
+
+		// catch (HttpServerErrorException e){
+		// 	log.error("데이터  서버 오류 발생: {}", e.getResponseBodyAsString());
+		// }
+		// ResponseEntity<T> responseEntity = restTemplate.exchange(
+		// 	url, HttpMethod.POST, requestEntity, responseType);
+		// log.info("data server response{}=", responseEntity.getBody());
+		// return responseEntity.getBody();
 	}
 }
