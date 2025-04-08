@@ -6,7 +6,6 @@
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>elk-logstash:5000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"app_name":"spring-app","environment":"dev"}</customFields>
         </encoder>
     </appender>
 
