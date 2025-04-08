@@ -26,4 +26,7 @@ public class RecommendMusicLikes {
 	private String userId;
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
+	public boolean isLiked(String musicId) {
+		return likeMusicIds.contains(musicId);
+	}
 }

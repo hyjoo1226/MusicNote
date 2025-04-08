@@ -43,7 +43,7 @@ public class RecommendCommonService {
 		return personalityReportDto;
 	}
 
-	private PersonalityReport getLatestReportByUserId(String userId) {
+	public PersonalityReport getLatestReportByUserId(String userId) {
 		log.info("user id={}", userId);
 		return personalityRepository.findTopByUserIdOrderByCreatedAtDesc(userId)
 			.orElseThrow(() -> new PersonalityNotFoundByUserIdException(NOT_FOUND_PERSONALITY_REPORT));
@@ -59,12 +59,5 @@ public class RecommendCommonService {
 		log.info("data server response{}=", responseEntity.getBody());
 		return responseEntity.getBody();
 
-		// catch (HttpServerErrorException e){
-		// 	log.error("데이터  서버 오류 발생: {}", e.getResponseBodyAsString());
-		// }
-		// ResponseEntity<T> responseEntity = restTemplate.exchange(
-		// 	url, HttpMethod.POST, requestEntity, responseType);
-		// log.info("data server response{}=", responseEntity.getBody());
-		// return responseEntity.getBody();
 	}
 }
