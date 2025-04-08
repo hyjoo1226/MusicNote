@@ -3,6 +3,7 @@ package com.music.note.main.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,15 +34,15 @@ public class PreferencesController {
 
 		preferencesService.publishUserMusicPreferences(Long.parseLong(userId), spotifyAccessToken);
 
-		return CommonResponse.success("음악 타입 결과 요청 성공");
+		return CommonResponse.success("일간 리포트(자동) 요청 성공");
 	}
 
-	@GetMapping("/daily")
+	@PostMapping("/preferences")
 	public CommonResponse<String> dailyReport(
 		@RequestHeader("X-User-Id") String userId,
 		@RequestBody List<MusicDto> musicList) {
 		preferencesService.publishManualPreferences(Long.parseLong(userId), musicList);
-		return CommonResponse.success("일간 리포트 요청 성공");
+		return CommonResponse.success("일간 리포트(수동) 요청 성공");
 	}
 
 	// TODO : test 용도
