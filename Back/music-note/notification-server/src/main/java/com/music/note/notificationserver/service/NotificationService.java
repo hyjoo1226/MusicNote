@@ -72,7 +72,10 @@ public class NotificationService {
 			try {
 				emitter.send(SseEmitter.event()
 					.name("notification")
-					.data(event.getMessage()));
+					.data(Map.of(
+						"message", event.getMessage(),
+						"type", event.getType().name()
+					)));
 			} catch (IOException e) {
 				emitter.completeWithError(e);
 				emitterMap.remove(event.getUserId());
