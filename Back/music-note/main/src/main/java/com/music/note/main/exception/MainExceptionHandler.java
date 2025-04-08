@@ -9,7 +9,10 @@ import com.music.note.common.exception.exception.common.ErrorCode;
 import com.music.note.common.exception.exception.domain.BusinessBaseException;
 import com.music.note.common.exception.response.ErrorResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestControllerAdvice
+@Slf4j
 public class MainExceptionHandler {
 
 	@ExceptionHandler(BusinessBaseException.class)
@@ -21,6 +24,7 @@ public class MainExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> handleServerException(Exception exception) {
+		log.info("Server Error: {}", exception.getMessage());
 		return ResponseEntity
 			.status(HttpStatus.INTERNAL_SERVER_ERROR)
 			.body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR));
