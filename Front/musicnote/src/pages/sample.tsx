@@ -8,7 +8,9 @@ export default function Home() {
 
       {/* 성격 특성 배경과 텍스트 조합 */}
       <div className="bg-openness p-4 rounded-lg">
-        <span className="text-[var(--color-sub)] text-2xl font-bold">개방성 배경에 연한 회색 텍스트</span>
+        <span className="text-[var(--color-sub)] text-2xl font-bold">
+          개방성 배경에 연한 회색 텍스트
+        </span>
       </div>
 
       {/* 투명도 조절 (color-mix 기능 활용) */}

@@ -12,13 +12,13 @@ interface LineDataType {
 type TraitType =
   | "openness"
   | "conscientiousness"
-  | "extraVersion"
+  | "extraversion"
   | "agreeableness"
   | "neuroticism";
 interface TrendItem {
   openness: number | null;
   conscientiousness: number | null;
-  extraVersion: number | null;
+  extraversion: number | null;
   agreeableness: number | null;
   neuroticism: number | null;
   createdAt: string;
@@ -78,7 +78,7 @@ export default function LineTrend() {
       {
         openness: 0.329532,
         conscientiousness: 0.491833,
-        extraVersion: 0.620478,
+        extraversion: 0.620478,
         agreeableness: 0.311398,
         neuroticism: 0.772896,
         createdAt: "2025-04-07T10:00:29.628",
@@ -86,7 +86,7 @@ export default function LineTrend() {
       {
         openness: 0.6,
         conscientiousness: 0.2,
-        extraVersion: 0.6,
+        extraversion: 0.6,
         agreeableness: 0.8,
         neuroticism: 0.1,
         createdAt: "2025-04-06T10:00:29.628",
@@ -94,7 +94,7 @@ export default function LineTrend() {
       {
         openness: 0.3,
         conscientiousness: 0.6,
-        extraVersion: 0.2,
+        extraversion: 0.2,
         agreeableness: 0.1,
         neuroticism: 0.2,
         createdAt: "2025-04-05T10:00:29.628",
@@ -102,7 +102,7 @@ export default function LineTrend() {
       {
         openness: null,
         conscientiousness: null,
-        extraVersion: null,
+        extraversion: null,
         agreeableness: null,
         neuroticism: null,
         createdAt: "2025-04-04T10:00:29.628",
@@ -110,7 +110,7 @@ export default function LineTrend() {
       {
         openness: 0.35,
         conscientiousness: 0.46,
-        extraVersion: 0.6,
+        extraversion: 0.6,
         agreeableness: 0.3,
         neuroticism: 0.75,
         createdAt: "2025-04-03T10:00:29.628",
@@ -118,7 +118,7 @@ export default function LineTrend() {
       {
         openness: 0.2,
         conscientiousness: 0.16,
-        extraVersion: 0.2,
+        extraversion: 0.2,
         agreeableness: 0.1,
         neuroticism: 0.1,
         createdAt: "2025-04-02T10:00:29.628",
@@ -126,7 +126,7 @@ export default function LineTrend() {
       {
         openness: null,
         conscientiousness: null,
-        extraVersion: null,
+        extraversion: null,
         agreeableness: null,
         neuroticism: null,
         createdAt: "2025-04-01T10:00:29.628",
@@ -197,7 +197,7 @@ export default function LineTrend() {
           id: 3,
           name: "외향성",
           values: sortedData.map((_, index) =>
-            Math.round(getNearestValue(sortedData, index, "extraVersion") * 100)
+            Math.round(getNearestValue(sortedData, index, "extraversion") * 100)
           ),
           color: traitColors["외향성"],
         },

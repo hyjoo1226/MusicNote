@@ -12,7 +12,7 @@ interface ReportData {
 const traitMapping: Record<string, string> = {
   openness: "개방성",
   conscientiousness: "성실성",
-  extraVersion: "외향성",
+  extraversion: "외향성",
   agreeableness: "우호성",
   neuroticism: "신경성",
 };

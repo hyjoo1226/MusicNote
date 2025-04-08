@@ -16,7 +16,7 @@ interface ReportData {
   typeDto: {
     openness: number;
     conscientiousness: number;
-    extraVersion: number;
+    extraversion: number;
     agreeableness: number;
     neuroticism: number;
   };
@@ -51,7 +51,7 @@ export default function ReportDaily() {
         typeDto: {
           openness: reportData.data.typeDto.openness * 100,
           conscientiousness: reportData.data.typeDto.conscientiousness * 100,
-          extraVersion: reportData.data.typeDto.extraVersion * 100,
+          extraversion: reportData.data.typeDto.extraversion * 100,
           agreeableness: reportData.data.typeDto.agreeableness * 100,
           neuroticism: reportData.data.typeDto.neuroticism * 100,
         },
@@ -183,7 +183,7 @@ export default function ReportDaily() {
             scores={[
               report?.typeDto.openness ?? 0,
               report?.typeDto.conscientiousness ?? 0,
-              report?.typeDto.extraVersion ?? 0,
+              report?.typeDto.extraversion ?? 0,
               report?.typeDto.agreeableness ?? 0,
               report?.typeDto.neuroticism ?? 0,
             ]}

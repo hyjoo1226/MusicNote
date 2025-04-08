@@ -123,7 +123,7 @@ export default function Analysis() {
       setBigFiveScore([
         { bigFive: "개방성", User: Math.round(latestReport.typeDto.openness * 100) },
         { bigFive: "성실성", User: Math.round(latestReport.typeDto.conscientiousness * 100) },
-        { bigFive: "외향성", User: Math.round(latestReport.typeDto.extraVersion * 100) },
+        { bigFive: "외향성", User: Math.round(latestReport.typeDto.extraversion * 100) },
         { bigFive: "우호성", User: Math.round(latestReport.typeDto.agreeableness * 100) },
         { bigFive: "신경성", User: Math.round(latestReport.typeDto.neuroticism * 100) },
       ]);
@@ -194,7 +194,7 @@ export default function Analysis() {
           },
           {
             bigFive: "외향성",
-            User: Math.round(selectedReport.typeDto.extraVersion * 100),
+            User: Math.round(selectedReport.typeDto.extraversion * 100),
           },
           {
             bigFive: "우호성",
@@ -231,7 +231,7 @@ export default function Analysis() {
       //   const newScores: ChartType = [
       //     { bigFive: "개방성", User: Math.round(selectedReport.typeDto.openness * 100) },
       //     { bigFive: "성실성", User: Math.round(selectedReport.typeDto.conscientiousness * 100) },
-      //     { bigFive: "외향성", User: Math.round(selectedReport.typeDto.extraVersion * 100) },
+      //     { bigFive: "외향성", User: Math.round(selectedReport.typeDto.extraversion * 100) },
       //     { bigFive: "우호성", User: Math.round(selectedReport.typeDto.agreeableness * 100) },
       //     { bigFive: "신경성", User: Math.round(selectedReport.typeDto.neuroticism * 100) },
       //   ];
@@ -260,7 +260,7 @@ export default function Analysis() {
         const newScores: ChartType = [
           { bigFive: "개방성", User: Math.round(latest.typeDto.openness * 100) },
           { bigFive: "성실성", User: Math.round(latest.typeDto.conscientiousness * 100) },
-          { bigFive: "외향성", User: Math.round(latest.typeDto.extraVersion * 100) },
+          { bigFive: "외향성", User: Math.round(latest.typeDto.extraversion * 100) },
           { bigFive: "우호성", User: Math.round(latest.typeDto.agreeableness * 100) },
           { bigFive: "신경성", User: Math.round(latest.typeDto.neuroticism * 100) },
         ];
@@ -280,7 +280,7 @@ export default function Analysis() {
       //   const newScores: ChartType = [
       //     { bigFive: "개방성", User: Math.round(latest.typeDto.openness * 100) },
       //     { bigFive: "성실성", User: Math.round(latest.typeDto.conscientiousness * 100) },
-      //     { bigFive: "외향성", User: Math.round(latest.typeDto.extraVersion * 100) },
+      //     { bigFive: "외향성", User: Math.round(latest.typeDto.extraversion * 100) },
       //     { bigFive: "우호성", User: Math.round(latest.typeDto.agreeableness * 100) },
       //     { bigFive: "신경성", User: Math.round(latest.typeDto.neuroticism * 100) },
       //   ];
