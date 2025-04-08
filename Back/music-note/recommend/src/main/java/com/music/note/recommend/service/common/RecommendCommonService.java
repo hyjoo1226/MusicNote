@@ -3,6 +3,7 @@ package com.music.note.recommend.service.common;
 import static com.music.note.common.exception.exception.common.ErrorCode.*;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -42,7 +43,7 @@ public class RecommendCommonService {
 		return personalityReportDto;
 	}
 
-	private PersonalityReport getLatestReportByUserId(String userId) {
+	public PersonalityReport getLatestReportByUserId(String userId) {
 		log.info("user id={}", userId);
 		return personalityRepository.findTopByUserIdOrderByCreatedAtDesc(userId)
 			.orElseThrow(() -> new PersonalityNotFoundByUserIdException(NOT_FOUND_PERSONALITY_REPORT));
@@ -57,5 +58,6 @@ public class RecommendCommonService {
 			url, HttpMethod.POST, requestEntity, responseType);
 		log.info("data server response{}=", responseEntity.getBody());
 		return responseEntity.getBody();
+
 	}
 }

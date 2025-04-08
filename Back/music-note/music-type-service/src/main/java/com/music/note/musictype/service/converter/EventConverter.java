@@ -8,12 +8,13 @@ import com.music.note.kafkaeventmodel.dto.AudioFeaturesDto;
 import com.music.note.kafkaeventmodel.dto.MusicDto;
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.MusicListWithMissingEvent;
+import com.music.note.kafkaeventmodel.type.RequestType;
 import com.music.note.trackdomain.domain.AudioFeatures;
 import com.music.note.trackdomain.domain.Track;
 
 public class EventConverter {
 
-	public static MusicListEvent toMusicEvent(Long userId, List<Track> tracks) {
+	public static MusicListEvent toMusicEvent(Long userId, List<Track> tracks, RequestType type) {
 		List<MusicDto> musicList = tracks.stream()
 			.map(EventConverter::convertToDto)
 			.collect(Collectors.toList());
@@ -21,6 +22,7 @@ public class EventConverter {
 		return MusicListEvent.builder()
 			.userId(userId)
 			.musicList(musicList)
+			.type(type)
 			.build();
 	}
 
@@ -28,7 +30,8 @@ public class EventConverter {
 		Long userId,
 		List<Track> tracks,
 		List<MusicDto> existingTracks,
-		List<MusicDto> missingTracks
+		List<MusicDto> missingTracks,
+		RequestType type
 	) {
 		Map<String, Track> trackMap = tracks.stream()
 			.collect(Collectors.toMap(Track::getSpotifyId, track -> track));
@@ -45,6 +48,7 @@ public class EventConverter {
 			.userId(userId)
 			.existingTracks(completedExistingTracks)
 			.missingTracks(completedMissingTracks)
+			.type(type)
 			.build();
 	}
 

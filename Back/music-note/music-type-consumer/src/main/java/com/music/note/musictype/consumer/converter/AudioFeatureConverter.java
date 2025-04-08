@@ -3,7 +3,7 @@ package com.music.note.musictype.consumer.converter;
 import java.util.List;
 
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
-import com.music.note.musictype.consumer.dto.AudioFeaturesDto;
+import com.music.note.musictype.consumer.dto.daily.AudioFeaturesDto;
 
 public class AudioFeatureConverter {
 	public static List<AudioFeaturesDto> toList(MusicListEvent event) {
