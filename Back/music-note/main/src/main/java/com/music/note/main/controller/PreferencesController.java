@@ -1,6 +1,7 @@
 package com.music.note.main.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +18,11 @@ import com.music.note.main.service.PreferencesService;
 import com.music.note.main.service.SpotifyService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class PreferencesController {
 
 	private final PreferencesService preferencesService;
@@ -30,17 +33,19 @@ public class PreferencesController {
 	public CommonResponse<String> preferences(
 		@RequestHeader("Authorization") String accessToken,
 		@RequestHeader("Spotify-Access-Token") String spotifyAccessToken,
-		@RequestHeader("X-User-Id") String userId) {
-
+		@RequestHeader("X-User-Id") String userId
+	) {
+		log.info("====== Automatic Report Request ======");
 		preferencesService.publishUserMusicPreferences(Long.parseLong(userId), spotifyAccessToken);
-
 		return CommonResponse.success("일간 리포트(자동) 요청 성공");
 	}
 
-	@PostMapping("/preferences")
+	@PostMapping("/daily")
 	public CommonResponse<String> dailyReport(
 		@RequestHeader("X-User-Id") String userId,
-		@RequestBody List<MusicDto> musicList) {
+		@RequestBody List<MusicDto> musicList
+	) {
+		log.info("====== Manual Report Request ======");
 		preferencesService.publishManualPreferences(Long.parseLong(userId), musicList);
 		return CommonResponse.success("일간 리포트(수동) 요청 성공");
 	}
