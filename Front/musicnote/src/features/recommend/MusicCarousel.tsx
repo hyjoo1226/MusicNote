@@ -54,16 +54,14 @@ export default function MusicCarousel({ musics }: MusicCarouselProps) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent">
               <div className="flex flex-col absolute bottom-0 left-0 right-0 p-8 pb-4 gap-y-2">
-                <h2 className="flex gap-x-2 text-2xl font-medium text-white">
-                  <span className="px-3 py-1 pt-[6px] bg-level3 text-white rounded-full text-sm">
-                    {music.artist_name}
-                  </span>
-                  {music.track_name}
-                </h2>
-                <div className="flex items-center gap-4 text-white/90 mb-2 pl-4">
-                  <span className="text-base text-light-gray">
-                    {music.release_date.split("-")[0]}년 발매
-                  </span>
+                <h2 className="flex gap-x-2 text-2xl font-medium text-white">{music.track_name}</h2>
+                <div className="flex flex-col gap-4 text-white/90 mb-2 pl-4">
+                  <div className="flex items-center gap-1">
+                    <span className="text-base text-light-gray">{music.artist_name}</span>
+                    <span className="text-base text-light-gray">
+                      {music.release_date.split("-")[0]}
+                    </span>
+                  </div>
                   <span className="flex items-center gap-1 text-light-gray">
                     {formatDuration(music.duration_ms)}
                   </span>
