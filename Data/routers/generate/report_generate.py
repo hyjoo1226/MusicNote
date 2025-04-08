@@ -11,7 +11,9 @@ generator = ReportGenerator(use_korean=True)  # 또는 False
 
 @router.post("/daily/quote")
 def generate_daily_quote(data: BigFiveScore):
-    return generator.generate_today_quote(data)
+    return {
+    "quote" : generator.generate_today_quote(data)
+    }
 
 
 @router.post("/weekly", response_model=WeeklyReport)
