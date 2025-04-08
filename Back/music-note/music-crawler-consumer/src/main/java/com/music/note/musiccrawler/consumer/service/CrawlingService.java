@@ -54,6 +54,7 @@ public class CrawlingService {
 		MusicListEvent requestEvent = MusicListEvent.builder()
 			.userId(event.getUserId())
 			.musicList(combinedList)
+			.type(event.getType())
 			.build();
 
 		// Kafka 등으로 전송

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -20,18 +21,14 @@ import lombok.NoArgsConstructor;
 public class RecommendMovieLikes {
 	@Id
 	private String id;
-	private List<String> likedMusicIds = new ArrayList<>();
+	@Field("liked_movie_ids") // 필드명 지정
+	private List<String> likedMovieIds = new ArrayList<>();
 	private String userId;
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
-	public void addLike(String musicId) {
-		if (!likedMusicIds.contains(musicId)) {
-			likedMusicIds.add(musicId);
-		}
-	}
 
 	public void removeLike(String musicId) {
-		likedMusicIds.remove(musicId);
+		likedMovieIds.remove(musicId);
 	}
 }
