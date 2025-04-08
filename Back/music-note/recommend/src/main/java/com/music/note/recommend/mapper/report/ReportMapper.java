@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.music.note.recommend.dto.home.ResponseHomeDto;
 import com.music.note.recommend.dto.report.ResponseReportDto;
 import com.music.note.recommend.dto.report.music.MusicDto;
 import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
@@ -31,7 +32,7 @@ public class ReportMapper {
 	}
 	public TypeDto entityToTypeDto(PersonalityReport report) {
 		return TypeDto.builder()
-			.extraVersion(report.getExtraversion())
+			.extraversion(report.getExtraversion())
 			.agreeableness(report.getAgreeableness())
 			.neuroticism(report.getNeuroticism())
 			.conscientiousness(report.getConscientiousness())
@@ -86,5 +87,16 @@ public class ReportMapper {
 			list.add(musicDto);
 		}
 		return list;
+	}
+
+	public ResponseHomeDto reportToHomeDto(PersonalityReport report, String msg) {
+		List<MusicDto> musicDtoList =  reportToMusicDto(report);
+		TypeDto typeDto = entityToTypeDto(report);
+		return ResponseHomeDto.builder()
+			.reportId(report.getId())
+			.typeDto(typeDto)
+			.musicDtoList(musicDtoList)
+			.todayMessage(msg)
+			.build();
 	}
 }
