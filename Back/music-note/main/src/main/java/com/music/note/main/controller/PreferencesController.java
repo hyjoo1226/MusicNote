@@ -17,9 +17,11 @@ import com.music.note.main.service.PreferencesService;
 import com.music.note.main.service.SpotifyService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class PreferencesController {
 
 	private final PreferencesService preferencesService;
@@ -41,6 +43,7 @@ public class PreferencesController {
 	public CommonResponse<String> dailyReport(
 		@RequestHeader("X-User-Id") String userId,
 		@RequestBody List<MusicDto> musicList) {
+		log.info("====== Manual Report Request ======");
 		preferencesService.publishManualPreferences(Long.parseLong(userId), musicList);
 		return CommonResponse.success("일간 리포트(수동) 요청 성공");
 	}
