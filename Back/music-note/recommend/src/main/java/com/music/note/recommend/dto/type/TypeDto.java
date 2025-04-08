@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class TypeDto {
 	private double openness;
 	private double conscientiousness;
-	private double extraVersion;
+	private double extraversion;
 	private double agreeableness;
 	private double neuroticism;
 }
