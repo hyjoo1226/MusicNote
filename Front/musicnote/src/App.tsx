@@ -22,7 +22,7 @@ declare global {
 
 function App() {
   const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
-  const { accessToken } = useAuthStore();
+  const { accessToken, spotifyAccessToken } = useAuthStore();
   const { setConnectionStatus, addNotification } = useNotificationStore();
 
   // 실제 배포 서버 주소
@@ -43,6 +43,7 @@ function App() {
     eventSourceRef.current = new EventSourcePolyfill(sseUrl, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        "Spotify-Access-Token": spotifyAccessToken,
       },
       withCredentials: true,
     });
@@ -126,7 +127,7 @@ function App() {
         }
       }, 5000); // 5초 후 재시도
     };
-  }, [accessToken, sseUrl, addNotification, setConnectionStatus]);
+  }, [accessToken, spotifyAccessToken, sseUrl, addNotification, setConnectionStatus]);
 
   useEffect(() => {
     // PWA standalone 모드 감지
