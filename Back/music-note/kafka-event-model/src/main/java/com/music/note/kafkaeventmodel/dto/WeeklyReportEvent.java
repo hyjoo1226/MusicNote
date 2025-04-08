@@ -1,7 +1,5 @@
 package com.music.note.kafkaeventmodel.dto;
 
-import java.util.List;
-
 import com.music.note.kafkaeventmodel.type.RequestType;
 
 import lombok.AllArgsConstructor;
@@ -13,8 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestEvent {
+public class WeeklyReportEvent {
 	private Long userId;
-	private List<MusicDto> musicList;
+	private int year;
+	private int month;
+	private int day;
 	private RequestType type;
 }

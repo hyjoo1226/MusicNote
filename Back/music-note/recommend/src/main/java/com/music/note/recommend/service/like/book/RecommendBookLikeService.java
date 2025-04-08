@@ -33,8 +33,8 @@ public class RecommendBookLikeService {
 	private final RecommendBookLikeRepository recommendBookLikeRepository;
 	private final RecommendBookLikeMapper recommendBookLikeMapper;
 	private final RecommendBookMapper recommendBookMapper;
-	public void likeRecommendBook(String userId, String recommendBookId){
-		RecommendBook recommendBook = recommendBookService.findRecommendBookById(recommendBookId);
+	public void likeRecommendBook(String userId, RequestRecommendBookLikeDto recommendBookLikeDto){
+		RecommendBook recommendBook = recommendBookService.findRecommendBookById(recommendBookLikeDto.getRecommendBookId());
 		Optional<RecommendBookLikes> optionalRecommendBookLikes = recommendBookLikeRepository.findByUserId(userId);
 
 		if (optionalRecommendBookLikes.isPresent()){
@@ -68,8 +68,8 @@ public class RecommendBookLikeService {
 			.orElseThrow(()-> new RecommendBookLikesNotFoundException(NOT_FOUND_RECOMMEND_BOOK_LIKES));
 	}
 
-	public void deleteRecommendBookLike(String recommendBookId, String userid) {
+	public void deleteRecommendBookLike(RequestRecommendBookLikeDto recommendBookLikeDto, String userid) {
 		RecommendBookLikes recommendBookLike = findRecommendBookLikesByUserId(userid);
-		recommendBookLikeRepository.removeBookLike(recommendBookLike.getId(), recommendBookId);
+		recommendBookLikeRepository.removeBookLike(recommendBookLike.getId(), recommendBookLikeDto.getRecommendBookId());
 	}
 }
