@@ -41,11 +41,7 @@ public class PreferencesController {
 	}
 
 	@PostMapping("/daily")
-	public CommonResponse<String> dailyReport(
-		@RequestHeader("Authorization") String accessToken,
-		@RequestHeader("X-User-Id") String userId,
-		@RequestBody List<MusicDto> musicList
-	) {
+	public CommonResponse<String> dailyReport() {
 		log.info("====== Manual Report Request ======");
 		// preferencesService.publishManualPreferences(Long.parseLong(userId), musicList);
 		return CommonResponse.success("일간 리포트(수동) 요청 성공");
