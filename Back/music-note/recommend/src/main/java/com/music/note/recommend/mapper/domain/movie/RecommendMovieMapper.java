@@ -1,5 +1,6 @@
 package com.music.note.recommend.mapper.domain.movie;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,9 @@ public class RecommendMovieMapper {
 			.genres(genres)
 			.runtime(recommendDto.getRuntime())
 			.credits(credits)
-			.createdAt(recommendDto.getCreatedAt())
+			.popularity(recommendDto.getPopularity())
+			.backdropPath(recommendDto.getBackdropPath())
+			.createdAt(LocalDateTime.now())
 			.build();
 	}
 }

@@ -30,7 +30,7 @@ public class RecommendMusic {
 
 	private String releaseDate;
 
-	private int popularity;
+	private int durationMs;
 
 	private String userId;
 
