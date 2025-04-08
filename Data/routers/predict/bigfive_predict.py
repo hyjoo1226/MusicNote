@@ -9,7 +9,7 @@ router = APIRouter()
 
 # ✅ predictor 객체는 1회만 생성하여 재사용
 predictor = BigFivePredictor()
-generator = ReportGenerator()
+generator = ReportGenerator(use_korean=True)
 
 @router.post("/bigfive/daily", response_model=DailyReport)
 def predict_bigfive(data: FeatureList):
