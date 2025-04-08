@@ -56,6 +56,7 @@ public class DailyReportService {
 		NotificationEvent notificationEvent = NotificationEvent.builder()
 			.userId(event.getUserId())
 			.message(DAILY_REPORT_READY_MESSAGE)
+			.type(event.getType())
 			.build();
 		notificationProducer.sendMusicListEvent(notificationEvent);
 	}
