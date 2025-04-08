@@ -29,9 +29,9 @@ public class RecommendBookLikeController {
 	@PostMapping("/like/book")
 	public CommonResponse<String> likeRecommendMovies(
 		HttpServletRequest request,
-		@RequestParam String recommendBookId) {
+		@RequestBody RequestRecommendBookLikeDto recommendBookLikeDto) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);
-		recommendBookLikeService.likeRecommendBook(userId, recommendBookId);
+		recommendBookLikeService.likeRecommendBook(userId, recommendBookLikeDto);
 		return CommonResponse.success("ok");
 	}
 	@GetMapping("/like/book")
@@ -44,9 +44,9 @@ public class RecommendBookLikeController {
 	@DeleteMapping("like/book")
 	public CommonResponse<String> deleteRecommendBookLike(
 		HttpServletRequest request,
-		String recommendBookId){
+		@RequestBody RequestRecommendBookLikeDto recommendBookLikeDto){
 		String userid = JwtUtil.getUserIdByJwtToken(request, secretKey);
-		recommendBookLikeService.deleteRecommendBookLike(recommendBookId, userid);
+		recommendBookLikeService.deleteRecommendBookLike(recommendBookLikeDto, userid);
 		return CommonResponse.success("ok");
 
 	}

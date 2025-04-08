@@ -30,6 +30,6 @@ public class RecommendMusicDto {
 
 	@JsonProperty("release_date")
 	private String releaseDate;
-
-	private int popularity;
+	@JsonProperty("duration_ms")
+	private int durationMs;
 }

@@ -40,14 +40,14 @@ public class TrackService {
 		// DB에 전부 존재하는 경우 -> 성향 분석 Event 생생
 		if (missingTracks.isEmpty()) {
 			// AudioFeatures 가져와 넣어줌
-			MusicListEvent musicEvent = EventConverter.toMusicEvent(event.getUserId(), tracks);
+			MusicListEvent musicEvent = EventConverter.toMusicEvent(event.getUserId(), tracks, event.getType());
 			typeEventProducer.sendMusicListEvent(musicEvent);
 		}
 		// DB에 없는 음악이 있는 경우 -> 크롤링 Event 생성
 		else {
 			// AudioFeatures 가져와 넣어줌 (DB에 없는 음악은 null 로)
 			MusicListWithMissingEvent crawlEvent = EventConverter.toCrawlEvent(
-				event.getUserId(), tracks, existingTracks, missingTracks);
+				event.getUserId(), tracks, existingTracks, missingTracks, event.getType());
 			crawlingEventProducer.sendCrawlingEvent(crawlEvent);
 		}
 	}

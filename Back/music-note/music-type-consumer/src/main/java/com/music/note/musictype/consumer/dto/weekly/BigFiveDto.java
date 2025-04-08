@@ -1,6 +1,4 @@
-package com.music.note.recommend.dto.type;
-
-import java.time.LocalDateTime;
+package com.music.note.musictype.consumer.dto.weekly;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class TypeDto {
+public class BigFiveDto {
 	private double openness;
 	private double conscientiousness;
 	private double extraversion;
