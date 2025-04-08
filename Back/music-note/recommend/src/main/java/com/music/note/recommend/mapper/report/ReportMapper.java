@@ -93,6 +93,7 @@ public class ReportMapper {
 		List<MusicDto> musicDtoList =  reportToMusicDto(report);
 		TypeDto typeDto = entityToTypeDto(report);
 		return ResponseHomeDto.builder()
+			.reportId(report.getId())
 			.typeDto(typeDto)
 			.musicDtoList(musicDtoList)
 			.todayMessage(msg)
