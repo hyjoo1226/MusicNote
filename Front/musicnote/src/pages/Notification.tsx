@@ -26,17 +26,13 @@ export default function Notification() {
     }
   };
 
-  const { data: dailyReport, refetch: refetchDailyReport } = useGetData(
-    "dailyReport",
-    "main/preferences"
-  );
+  const { refetch: refetchDailyReport } = useGetData("dailyReport", "main/preferences", "default", {
+    enabled: false,
+  });
 
-  const { data: weeklyReport, refetch: refetchWeeklyReport } = useGetData(
-    "weeklyReport",
-    "main/weekly"
-  );
-  console.log(dailyReport);
-  console.log(weeklyReport);
+  const { refetch: refetchWeeklyReport } = useGetData("weeklyReport", "main/weekly", "default", {
+    enabled: false,
+  });
 
   const handleDailyButtonClick = () => {
     // 버튼 클릭 시 데이터 가져오기

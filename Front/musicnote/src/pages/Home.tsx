@@ -4,15 +4,16 @@ import shortLogo from "@/assets/logo/short-logo.png";
 import DetailButton from "../components/buttons/DetailButton";
 import { useGetData } from "../hooks/useApi";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const { data: today, isLoading, isError } = useGetData("today", "recommend/home");
-  console.log(isError);
+  const { data: today, isLoading } = useGetData("today", "recommend/home");
   const [wordOfToday, setWordOfToday] = useState("");
   const [todayScores, setTodayScores] = useState([0, 0, 0, 0, 0]);
   const [recentPlayedList, setRecentPlayedList] = useState([]);
+  const [reportId, setReportId] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
-    console.log(today);
     if (today) {
       setWordOfToday(today.data.todayMessage);
       setTodayScores([
@@ -23,6 +24,7 @@ export default function Home() {
         today.data.typeDto.neuroticism * 100,
       ]);
       setRecentPlayedList(today.data.musicDtoList);
+      setReportId(today.data.reportId);
     }
   }, [today]);
 
@@ -35,7 +37,10 @@ export default function Home() {
       </div>
       {/* 메인 페이지 */}
       <div className="flex flex-col min-h-[calc(100vh-210px)] h-auto px-4 gap-y-5 justify-evenly pb-[80px]">
-        <div className="flex flex-col items-center justify-evenly w-full bg-level2 rounded-lg p-4 px-6 gap-y-2">
+        <div
+          className="flex flex-col items-center justify-evenly w-full bg-level2 rounded-lg p-4 px-6 gap-y-2"
+          onClick={() => navigate(`/analysis/report/daily/${reportId}`)}
+        >
           <span className="text-white text-xl font-medium self-start">오늘의 한 마디</span>
           <div className="flex flex-row items-center justify-start gap-x-2">
             <div className="flex-shrink-0 w-[30px] h-[30px]">
@@ -58,7 +63,9 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <UserTemperGraph scores={todayScores} />
+        <div onClick={() => navigate(`/analysis/report/daily/${reportId}`)}>
+          <UserTemperGraph scores={todayScores} />
+        </div>
         <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
           <div className="flex flex-row items-center justify-between w-full">
             <span className="text-white text-xl font-medium self-start">최근에 들은 음악</span>
