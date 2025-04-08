@@ -147,7 +147,7 @@ export default function Recommendations() {
                   alt="mascot"
                   className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
                 />
-                <h3 className="te xt-white text-2xl font-bold text-center">음악을 찾고 있짹!</h3>
+                <h3 className="text-white text-2xl font-bold text-center">음악을 찾고 있짹!</h3>
               </div>
             )}
             {musicRecommendationsError && (
@@ -176,7 +176,7 @@ export default function Recommendations() {
                   alt="mascot"
                   className="w-[calc(min(30vw,30vh))] h-[calc(min(30vw,30vh))] object-cover rounded-lg animate-bounce overflow-visible"
                 />
-                <h3 className="te xt-white text-2xl font-bold text-center">책을 찾고 있짹!</h3>
+                <h3 className="text-white text-2xl font-bold text-center">책을 찾고 있짹!</h3>
               </div>
             )}
             {bookRecommendationsError && (

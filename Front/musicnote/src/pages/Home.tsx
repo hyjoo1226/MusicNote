@@ -1,13 +1,31 @@
 import UserTemperGraph from "../components/UserTemperGraph";
 import logo from "@/assets/logo/logo.png";
 import shortLogo from "@/assets/logo/short-logo.png";
-import recentPlayedList from "../assets/data/recent-played-list.json";
 import DetailButton from "../components/buttons/DetailButton";
-// import { useGetData } from "../hooks/useApi";
+import { useGetData } from "../hooks/useApi";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  const wordOfToday =
-    "오늘은 외향성이 높으시네요. 사람들과 어울리면서 많은 에너지를 얻기를 바라요!";
+  const { data: today, isLoading, isError } = useGetData("today", "recommend/home");
+  console.log(isError);
+  const [wordOfToday, setWordOfToday] = useState("");
+  const [todayScores, setTodayScores] = useState([0, 0, 0, 0, 0]);
+  const [recentPlayedList, setRecentPlayedList] = useState([]);
+  useEffect(() => {
+    console.log(today);
+    if (today) {
+      setWordOfToday(today.data.todayMessage);
+      setTodayScores([
+        today.data.typeDto.openness * 100,
+        today.data.typeDto.conscientiousness * 100,
+        today.data.typeDto.extraversion * 100,
+        today.data.typeDto.agreeableness * 100,
+        today.data.typeDto.neuroticism * 100,
+      ]);
+      setRecentPlayedList(today.data.musicDtoList);
+    }
+  }, [today]);
+
   return (
     <div className="flex flex-col items-center justify-start h-[calc(100vh-80px)] w-full overflow-y-auto bg-level1 xs:p-6">
       {/* 로고 + 이름 */}
@@ -36,35 +54,29 @@ export default function Home() {
               </svg>
             </div>
             <span className="flex-1 text-light-gray text-[16px] font-medium whitespace-normal break-keep">
-              {wordOfToday}
+              {isLoading ? "로딩 중" : wordOfToday}
             </span>
           </div>
         </div>
-        <UserTemperGraph scores={[75, 59, 85, 39, 51]} />
+        <UserTemperGraph scores={todayScores} />
         <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
           <div className="flex flex-row items-center justify-between w-full">
             <span className="text-white text-xl font-medium self-start">최근에 들은 음악</span>
             <DetailButton url="/musiclist/최근에-들은-음악" />
           </div>
           <div className="flex flex-col items-start justify-start w-full gap-y-3">
-            {Array.isArray(recentPlayedList.items) &&
-              recentPlayedList.items.slice(0, 6).map((item: any, index: number) => (
+            {Array.isArray(recentPlayedList) &&
+              recentPlayedList.slice(0, 6).map((item: any) => (
                 <div
-                  key={index}
+                  key={item.spotifyId}
                   className="recent-played-item flex flex-row items-center justify-start gap-x-2 w-full"
                 >
                   <div className="flex flex-row items-center justify-start gap-x-4 px-4 py-1 rounded-lg w-full">
-                    <img
-                      src={item.track?.album.images[2].url}
-                      alt={item.track?.name}
-                      className="w-12 h-12 rounded-lg"
-                    />
+                    <img src={item.imageUrl} alt={item.title} className="w-12 h-12 rounded-lg" />
                     <div className="flex flex-col">
-                      <span className="text-light-gray text-sm font-light">
-                        {item.track?.artists[0].name || "Unknown Artist"}
-                      </span>
+                      <span className="text-light-gray text-sm font-light">{item.artist}</span>
                       <span className="text-white text-sm font-medium text-[16px]">
-                        {item.track?.name || "Unknown Track"}
+                        {item.title}
                       </span>
                     </div>
                   </div>

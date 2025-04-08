@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import mascot from "@/assets/logo/mascot.webp";
 import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
-import { useGetData } from "@/hooks/useApi";
+import { useGetData, usePostData } from "@/hooks/useApi";
 
 interface Book {
   author: string;
@@ -41,7 +41,23 @@ export default function RecommendationBook() {
   const currentBook = books?.[currentIndex];
 
   const { data, isLoading, isError } = useGetData("/recommend/book", "recommend/book");
-  // const { mutateAsync: likeMovie, error: likeMovieError } = usePostData("recommend/like/movie");
+  const {
+    mutate: likeBook,
+    isSuccess,
+    isError: likeBookError,
+  } = usePostData("recommend/like/book");
+
+  useEffect(() => {
+    if (likeBookError) {
+      console.log(likeBookError);
+    }
+  }, [likeBookError]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("좋아요 성공");
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     if (data) {
@@ -241,7 +257,7 @@ export default function RecommendationBook() {
 
   const handleLike = (id: string) => {
     if (!currentBook) return;
-    console.log(id);
+    likeBook({ recommendBookId: id });
     resetSwipeState();
 
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
