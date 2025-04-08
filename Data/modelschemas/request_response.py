@@ -19,9 +19,9 @@ class Music(BaseModel):
     id: str
     track_name: str
     artist_name: str
-    albumcover_path: str
-    release_date: date
-    duration_ms : int
+    albumcover_path: Optional[str]
+    release_date: Optional[date]
+    duration_ms : Optional[int]
 
 class MusicScore(BaseModel):
     mellow: float
