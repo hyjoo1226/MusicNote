@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestRecommendMusicLikeDto {
 	private String recommendMusicId;
+	private String spotifyMusicId;
 }

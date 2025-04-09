@@ -36,13 +36,14 @@ public class RecommendMovie {
 	@JsonProperty("backdrop_path")
 	private String backdropPath;
 	private double popularity;
+	private int tmdbMovieId;
 
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 	public RecommendMovieDto EntityToDto(){
 		return RecommendMovieDto.builder()
-			.id(id)
+			.recommendMovieId(id)
 			.credits(credits)
 			.genres(genres)
 			.title(title)
@@ -54,9 +55,8 @@ public class RecommendMovie {
 			.createdAt(createdAt)
 			.popularity(popularity)
 			.backdropPath(backdropPath)
-
+			.tmdbMovieId(tmdbMovieId)
+			.recommendMovieId(id)
 			.build();
 	}
-
-
 }
