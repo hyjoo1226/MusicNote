@@ -36,6 +36,7 @@ public class RecommendBookMapper {
 			.isbn(recommendBook.getIsbn())
 			.title(recommendBook.getTitle())
 			.publisher(recommendBook.getPublisher())
+			.createdAt(recommendBook.getCreatedAt())
 			.build();
 	}
 }
