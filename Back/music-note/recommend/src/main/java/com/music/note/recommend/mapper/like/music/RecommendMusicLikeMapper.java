@@ -10,9 +10,9 @@ import com.music.note.recommend.domain.like.music.RecommendMusicLikes;
 
 @Component
 public class RecommendMusicLikeMapper {
-	public RecommendMusicLikes createRecommendMusicLikes(String recommendMusicId, String userId) {
+	public RecommendMusicLikes createRecommendMusicLikes(String spotifyMusicId, String userId) {
 		return RecommendMusicLikes.builder()
-			.likeMusicIds(new ArrayList<>(List.of(recommendMusicId)))
+			.likeMusicSpotifyMusicIds(new ArrayList<>(List.of(spotifyMusicId)))
 			.userId(userId)
 			.createdAt(LocalDateTime.now())
 			.build();

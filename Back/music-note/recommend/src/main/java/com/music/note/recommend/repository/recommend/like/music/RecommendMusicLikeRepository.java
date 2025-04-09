@@ -13,11 +13,19 @@ import com.music.note.recommend.domain.like.music.RecommendMusicLikes;
 public interface RecommendMusicLikeRepository extends MongoRepository<RecommendMusicLikes, String> {
 	@Query("{ '_id': ?0 }")
 	@Update("{ '$addToSet': { 'liked_music_ids': ?1 } }")
-	void addMovieLike(String recommendMusicLikesId, String musicId);
+	void addMusicLike(String recommendMusicLikesId, String musicId);
+
+	@Query("{ '_id': ?0 }")
+	@Update("{ '$addToSet': { 'liked_music_spotify_music_id': ?1 } }")
+	void addMusicLikeBySpotifyMusicId(String recommendMusicLikesId, String spotifyMusicId);
 
 	Optional<RecommendMusicLikes> findByUserId(String userId);
 
+	// @Query("{ '_id': ?0 }")
+	// @Update("{ '$pull': { 'liked_music_ids': ?1 } }")
+	// void removeMusicLike(String recommendMusicLikesId, String musicId);
+
 	@Query("{ '_id': ?0 }")
-	@Update("{ '$pull': { 'liked_music_ids': ?1 } }")
-	void removeMusicLike(String recommendMusicLikesId, String musicId);
+	@Update("{ '$pull': { 'liked_music_spotify_music_id': ?1 } }")
+	void removeMusicLike(String recommendMusicLikesId, String spotifyMusicId);
 }
