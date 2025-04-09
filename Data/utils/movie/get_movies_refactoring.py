@@ -200,15 +200,13 @@ def get_filtered_movies(cnt, id, sort_by, page):
     idx = 0
 
     movies_info = search_movies(id=id, sort_by=sort_by, page=page)
-    print(1)
     while c < cnt:
     ## 한페이지 20개를 전부 다 순회해도 모자랄때 
         if idx >= len(movies_info):
             idx = 0
-            page = random.randint(1, 11)
+            page = random.randint(1, 5)
             ## 다음 페이지에서 찾기기
             movies_info = search_movies(id=id, sort_by=sort_by, page=page)
-            print(id, page)
         
         # 영화 정보에서 필터링할 속성들 추출
         movie_info = movies_info[idx]
@@ -227,7 +225,6 @@ def get_filtered_movies(cnt, id, sort_by, page):
             # 데이터 보완
             add_runtime_credits(result)
             Converter.convert_id_to_genre(result)
-            print(3)
             movie_model = response_model() # response_model 불러오기
             # result를 순회하며 response_model 작성
             for key in result.keys(): # dict를 순회하면 key 값을 반환한다!
@@ -247,7 +244,6 @@ def recommend(user_genre):
     # 중복방지 위한 검색 파라미터들들
     sort_by_filter = ['popularity.desc', 'revenue.desc' 'vote_count.desc']
     page = None
-    print(user_genre)
     # user_genre를 순회하며 장르별 영화 받아오기
     for id, cnt in user_genre.items():
         '''
@@ -261,10 +257,7 @@ def recommend(user_genre):
         sort_by = sort_by_filter[idx]
         page = random.randint(1, 11)
         # tmdb에서 장르로 영화 검색한 결과
-        print(11)
         result = get_filtered_movies(cnt=cnt, id=id, sort_by=sort_by, page=page)
-        print(result)
         recommendation.extend(result)
-        print(len(recommendation))
     return recommendation
 

@@ -58,13 +58,10 @@ def extract_track_info(response):
 def bf_to_track(api_key, bf_score):
     # tag_list = random_keyword()
     bf_tags = keyword_extractor(bf_score)
-    print(bf_tags) # ['asdf', ...] len(5)
     results = []
     for tag in bf_tags:
-        print(tag)
         response = lastfm_request(tag, api_key=api_key)
         track_info = extract_track_info(response)
-        print(track_info)
         results.append(track_info)
 
     current_dir = os.path.dirname(__file__)

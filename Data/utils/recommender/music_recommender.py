@@ -24,8 +24,6 @@ class MusicRecommender:
         ]
         lastfm_key = os.getenv("LASTFM_API_KEY")
         tracks = bf_to_track(lastfm_key, user_score)
-        print(1)
-        print(tracks)
         # tracks = [{'name': 'Rock For Sustainable Capitalism', 'artist': 'Propagandhi'},
         #     {'tag': 'new'},
         #     {'name': 'Abteilungsleiter der Liebe', 'artist': 'K.I.Z.'},
@@ -40,7 +38,6 @@ class MusicRecommender:
         for track in tracks:
             if len(track) == 2:
                 song = search_track(spotify, name=track["name"], artist=track["artist"])
-                print(type(song.get("release_date")))
                 results.append(song)
             else: # track 추천결과가 없을때 임의추천
                 song = get_random_track(spotify)
