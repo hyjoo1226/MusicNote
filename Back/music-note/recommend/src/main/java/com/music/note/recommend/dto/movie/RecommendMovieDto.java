@@ -23,7 +23,10 @@ import lombok.ToString;
 public class RecommendMovieDto {
 	private List<String> genres = new ArrayList<>();
 	@Setter
-	private String id;
+	private String recommendMovieId;
+	@Setter
+	@JsonProperty("id")
+	private int tmdbMovieId;
 	private String overview;
 	@JsonProperty("poster_path")
 	private String posterPath;

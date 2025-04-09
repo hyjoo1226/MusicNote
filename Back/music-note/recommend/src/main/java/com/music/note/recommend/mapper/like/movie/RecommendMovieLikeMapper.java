@@ -10,9 +10,9 @@ import com.music.note.recommend.domain.like.movie.RecommendMovieLikes;
 
 @Component
 public class RecommendMovieLikeMapper {
-	public RecommendMovieLikes createRecommendMovieLikes(String id, String userId) {
+	public RecommendMovieLikes createRecommendMovieLikes(Integer tmdbId, String userId) {
 		return RecommendMovieLikes.builder()
-			.likedMovieIds(new ArrayList<>(List.of(id)))
+			.likedTmdbMovieIds(new ArrayList<>(List.of(tmdbId)))
 			.userId(userId)
 			.createdAt(LocalDateTime.now())
 			.build();

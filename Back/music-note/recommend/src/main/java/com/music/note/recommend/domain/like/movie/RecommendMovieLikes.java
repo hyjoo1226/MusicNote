@@ -21,8 +21,10 @@ import lombok.NoArgsConstructor;
 public class RecommendMovieLikes {
 	@Id
 	private String id;
-	@Field("liked_movie_ids") // 필드명 지정
+	@Field("liked_movie_ids")
 	private List<String> likedMovieIds = new ArrayList<>();
+	@Field("liked_tmdb_movie_ids")
+	private List<Integer> likedTmdbMovieIds = new ArrayList<>();
 	private String userId;
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
@@ -30,4 +32,8 @@ public class RecommendMovieLikes {
 	public boolean isLiked(String movieId) {
 		return likedMovieIds.contains(movieId);
 	}
+	public boolean isLikedTMDBMovie(int tmdbMovieId) {
+		return likedTmdbMovieIds.contains(tmdbMovieId);
+	}
+
 }
