@@ -46,7 +46,7 @@ public class RecommendMovieService {
 		for (RecommendMovieDto dto: movies){
 			RecommendMovie recommendMovie = recommendMovieMapper.dtoToEntity(dto, memberId);
 			RecommendMovie save = recommendMovieRepository.save(recommendMovie);
-			dto.setId(save.getId());
+			dto.setRecommendMovieId(save.getId());
 			dto.setCreatedAt(save.getCreatedAt());
 		}
 	}
@@ -75,5 +75,11 @@ public class RecommendMovieService {
 			.movies(recommendMovieDtoList)
 			.listSize(recommendMovieDtoList.size())
 			.build();
+	}
+
+	public RecommendMovie findRecommendMovieByTmdbId(int tmdbMovieID) {
+		return recommendMovieRepository.findFirstByTmdbMovieId(tmdbMovieID)
+			.orElseThrow(() -> new RecommendMovieNotFoundException(NOT_FOUND_RECOMMEND_MOVIE));
+
 	}
 }
