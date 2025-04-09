@@ -417,7 +417,7 @@ export default function RecommendationMusic() {
             </h3>
             <button
               className="bg-main text-white text-lg font-bold px-4 py-2 rounded-lg cursor-pointer"
-              onClick={() => navigate(`/recommendations/my/movie`)}
+              onClick={() => navigate(`/recommendations/my/music`)}
             >
               보관함으로 가기
             </button>

@@ -45,6 +45,26 @@ export const usePostData = (url: string, options = {}) => {
   };
 };
 
+// DELETE 요청을 위한 커스텀 훅
+export const useDeleteData = (url: string, options = {}) => {
+  const mutation = useMutation({
+    mutationFn: (data: any) =>
+      apiClient.delete(url, { data: data }).then((res: any) => {
+        // 응답에서 status, message, data를 추출
+        const { status, message, data: responseData } = res.data;
+        return { status, message, data: responseData };
+      }),
+    ...options,
+  });
+
+  return {
+    mutate: mutation.mutate,
+    isError: mutation.isError,
+    error: mutation.error,
+    isSuccess: mutation.isSuccess,
+  };
+};
+
 // 예시
 // 컴포넌트에서 사용
 // import { useGetData, usePostData } from '../hooks/useApi';

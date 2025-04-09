@@ -1,71 +1,81 @@
 import TopBar from "@/components/layout/TopBar";
-import genreData from "@/assets/data/tmdb-genre-id.json";
 import { useEffect, useState } from "react";
 import EmptyHeart from "@/assets/icon/empty-heart.svg?react";
 import FilledHeart from "@/assets/icon/filled-heart.svg?react";
-import RecommandModal from "@/features/recommend/RecommandModal";
+import RecommandModalMovie from "@/features/recommend/RecommandModalMovie";
+import { Movie } from "@/features/recommend/recommendType";
+import { useGetData, usePostData, useDeleteData } from "@/hooks/useApi";
 
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  release_date: string;
-  genre_ids: number[];
-  is_liked: boolean;
-  overview: string;
-  vote_average: number;
-}
-
-interface Genre {
-  id: number;
-  name: string;
-}
-
-export default function MyRecommendationDetail() {
+export default function MyRecommendationMovie() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false);
+  const [isLikeProcessing, setIsLikeProcessing] = useState(false);
 
-  const genreMap = new Map(genreData.genres.map((genre: Genre) => [genre.id, genre.name]));
-  const getGenreNames = (genreIds: number[]) => {
-    return genreIds.map((id) => genreMap.get(id) as string).filter(Boolean);
-  };
+  const { data: likedMovies, refetch: refetchLikedMovies } = useGetData(
+    "likedMovies",
+    "recommend/like/movie"
+  );
 
-  const likeHandler = (id: number) => {
+  const {
+    mutate: likeMovie,
+    isError: isLikeMovieError,
+    error: likeMovieError,
+  } = usePostData("recommend/like/movie");
+
+  const {
+    mutate: deleteLikedMovie,
+    isError: isDeleteLikedMovieError,
+    error: deleteLikedMovieError,
+  } = useDeleteData("recommend/like/movie");
+
+  const likeHandler = (id: string) => {
+    setIsLikeProcessing(true);
+    const foundMovie = movies.find((movie: Movie) => movie.id === id);
+
+    // 영화가 존재하고 is_liked가 true인 경우 좋아요 취소
+    if (foundMovie && foundMovie.is_liked === true) {
+      deleteLikedMovie({
+        recommendMovieId: id,
+      });
+    } else {
+      // 그렇지 않으면 좋아요 추가
+      likeMovie({
+        recommendMovieId: id,
+      });
+    }
     setMovies(
       movies.map((movie) => (movie.id === id ? { ...movie, is_liked: !movie.is_liked } : movie))
     );
+    setIsLikeProcessing(false);
   };
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const url =
-        "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-Kr&page=1&sort_by=popularity.desc";
-      const options = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZDhlOTlhZjcxZmQxMDQ2OTkwZjA1YzdlZDc1ZDFiMyIsIm5iZiI6MTczMTg5NzI3OS4xNDQsInN1YiI6IjY3M2FhN2JmM2M4MzFhMTMyOTUzY2M0OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UfKeIpOhTXLNJQzcYc8CNOEb7wWHhRU4wTk1sfC1PT0",
-        },
-      };
+    if (isLikeMovieError) {
+      console.log(likeMovieError);
+    }
+  }, [isLikeMovieError, likeMovieError]);
 
-      try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        setMovies(
-          data.results.map((movie: Movie) => ({
-            ...movie,
-            is_liked: true,
-          }))
-        );
-      } catch (error) {
-        console.error("영화 데이터를 불러오는데 실패했습니다:", error);
-      }
-    };
+  useEffect(() => {
+    if (isDeleteLikedMovieError) {
+      console.log(deleteLikedMovieError);
+    }
+  }, [isDeleteLikedMovieError, deleteLikedMovieError]);
 
-    fetchMovies();
-  }, []);
+  useEffect(() => {
+    if (likedMovies) {
+      const moviesWithLiked = likedMovies.data.movies.map((movie: Movie) => ({
+        ...movie,
+        is_liked: true,
+      }));
+      setMovies(moviesWithLiked.reverse());
+    }
+    if (!isUpdated) {
+      setIsUpdated(true);
+      refetchLikedMovies();
+    }
+  }, [likedMovies, refetchLikedMovies, isUpdated]);
 
   const handleMovieClick = (movie: Movie) => {
     setSelectedMovie(movie);
@@ -93,7 +103,7 @@ export default function MyRecommendationDetail() {
               />
               <div className="flex flex-col w-full min-w-0 overflow-hidden">
                 <span className="text-light-gray text-sm font-light truncate">
-                  {getGenreNames(movie.genre_ids).join("/")}
+                  {movie.genres.join("/")}
                 </span>
                 <span className="text-white text-base font-medium line-clamp-2">{movie.title}</span>
               </div>
@@ -104,7 +114,9 @@ export default function MyRecommendationDetail() {
                   likeHandler(movie.id);
                 }}
               >
-                {movie.is_liked ? <FilledHeart /> : <EmptyHeart />}
+                <div className={`${isLikeProcessing ? "opacity-50 pointer-events-none" : ""}`}>
+                  {movie.is_liked ? <FilledHeart /> : <EmptyHeart />}
+                </div>
               </div>
             </div>
           </div>
@@ -112,7 +124,7 @@ export default function MyRecommendationDetail() {
       </div>
       <div className="h-[20px]"></div>
       {isModalOpen && selectedMovie && (
-        <RecommandModal movie={selectedMovie} onClose={() => setIsModalOpen(false)} />
+        <RecommandModalMovie movie={selectedMovie} onClose={() => setIsModalOpen(false)} />
       )}
     </div>
   );

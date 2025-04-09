@@ -14,6 +14,7 @@ export interface Movie {
   adult: boolean;
   popularity: number;
   overview: string;
+  is_liked: boolean;
 }
 
 export interface Music {
@@ -23,6 +24,7 @@ export interface Music {
   albumcover_path: string;
   release_date: string;
   duration_ms: number;
+  is_liked: boolean;
 }
 
 export interface Book {
@@ -34,4 +36,5 @@ export interface Book {
   pubdate: string;
   publisher: string;
   description: string;
+  is_liked: boolean;
 }

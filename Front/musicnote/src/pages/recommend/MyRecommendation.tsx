@@ -3,71 +3,63 @@ import { useNavigate } from "react-router-dom";
 import TopBar from "@/components/layout/TopBar";
 import Mascot from "@/assets/logo/mascot.webp";
 import { useGetData } from "@/hooks/useApi";
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-}
-
-interface Music {
-  id: number;
-  track_name: string;
-  artist_name: string;
-  albumcover_path: string;
-  release_date: string;
-  duration_ms: number;
-}
-
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  image: string;
-  isbn: string;
-  pubdate: string;
-  publisher: string;
-}
+import { Movie, Music, Book } from "@/features/recommend/recommendType";
 
 export default function MyRecommendation() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [musics, setMusics] = useState<Music[]>([]);
   const [books, setBooks] = useState<Book[]>([]);
 
+  const [isMovieUpdated, setIsMovieUpdated] = useState(false);
+  const [isMusicUpdated, setIsMusicUpdated] = useState(false);
+  const [isBookUpdated, setIsBookUpdated] = useState(false);
+
   const navigate = useNavigate();
-  const { data: likedMovies, isError: likedMoviesError } = useGetData(
-    "likedMovies",
-    "recommend/like/movie"
-  );
-  const { data: likedMusic, isError: likedMusicError } = useGetData(
-    "likedMusic",
-    "recommend/like/music"
-  );
-  const { data: likedBook, isError: likedBookError } = useGetData(
-    "likedBook",
-    "recommend/like/book"
-  );
+  const {
+    data: likedMovies,
+    isError: likedMoviesError,
+    refetch: refetchLikedMovies,
+  } = useGetData("likedMovies", "recommend/like/movie");
+  const {
+    data: likedMusic,
+    isError: likedMusicError,
+    refetch: refetchLikedMusic,
+  } = useGetData("likedMusic", "recommend/like/music");
+  const {
+    data: likedBook,
+    isError: likedBookError,
+    refetch: refetchLikedBook,
+  } = useGetData("likedBook", "recommend/like/book");
 
   useEffect(() => {
     if (likedMovies) {
-      setMovies(likedMovies.data.movies);
+      setMovies(likedMovies.data.movies.reverse());
     }
-    console.log(likedMovies);
-  }, [likedMovies]);
+    if (!isMovieUpdated) {
+      setIsMovieUpdated(true);
+      refetchLikedMovies();
+    }
+  }, [likedMovies, refetchLikedMovies, isMovieUpdated]);
 
   useEffect(() => {
     if (likedMusic) {
-      setMusics(likedMusic.data.musics);
+      setMusics(likedMusic.data.musics.reverse());
     }
-    console.log(likedMusic);
-  }, [likedMusic]);
+    if (!isMusicUpdated) {
+      setIsMusicUpdated(true);
+      refetchLikedMusic();
+    }
+  }, [likedMusic, refetchLikedMusic, isMusicUpdated]);
 
   useEffect(() => {
     if (likedBook) {
-      setBooks(likedBook.data.books);
+      setBooks(likedBook.data.books.reverse());
     }
-    console.log(likedBook);
-  }, [likedBook]);
+    if (!isBookUpdated) {
+      setIsBookUpdated(true);
+      refetchLikedBook();
+    }
+  }, [likedBook, refetchLikedBook, isBookUpdated]);
 
   useEffect(() => {
     if (likedMoviesError || likedMusicError || likedBookError) {

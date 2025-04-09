@@ -15,7 +15,9 @@ import Notification from "../pages/Notification";
 import RecommendationMovie from "../pages/recommend/RecommendationMovie";
 import RecommendationMusic from "../pages/recommend/RecommendationMusic";
 import RecommendationBook from "../pages/recommend/RecommendationBook";
-import MyRecommendationDetail from "../pages/recommend/MyRecommendationDetail";
+import MyRecommendationMovie from "../pages/recommend/MyRecommendationMovie";
+import MyRecommendationMusic from "../pages/recommend/MyRecommendationMusic";
+import MyRecommendationBook from "../pages/recommend/MyRecommendationBook";
 import PrivateRoute from "../components/PrivateRoute";
 
 export default function AppRoutes(): React.ReactElement {
@@ -40,8 +42,9 @@ export default function AppRoutes(): React.ReactElement {
         <Route path="/recommendations/detail/music" element={<RecommendationMusic />} />
         <Route path="/recommendations/detail/book" element={<RecommendationBook />} />
         <Route path="/recommendations/my" element={<MyRecommendation />} />
-        <Route path="/recommendations/my/movie" element={<MyRecommendationDetail />} />
-        <Route path="/recommendations/my/music" element={<MyRecommendationDetail />} />
+        <Route path="/recommendations/my/movie" element={<MyRecommendationMovie />} />
+        <Route path="/recommendations/my/music" element={<MyRecommendationMusic />} />
+        <Route path="/recommendations/my/book" element={<MyRecommendationBook />} />
         <Route path="/notification" element={<Notification />} />
       </Route>
 
