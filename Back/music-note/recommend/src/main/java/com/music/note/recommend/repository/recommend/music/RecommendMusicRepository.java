@@ -1,6 +1,7 @@
 package com.music.note.recommend.repository.recommend.music;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,7 @@ import com.music.note.recommend.domain.recommned.music.RecommendMusic;
 public interface RecommendMusicRepository extends MongoRepository<RecommendMusic, String> {
 
 	List<RecommendMusic> findTop20ByUserIdOrderByCreatedAtDesc(String userId);
+
+
+	Optional<RecommendMusic> findFirstBySpotifyMusicId(String spotifyMusicId);
 }

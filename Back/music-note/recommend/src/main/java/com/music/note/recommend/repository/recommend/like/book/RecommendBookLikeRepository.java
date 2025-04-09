@@ -13,12 +13,15 @@ import com.music.note.recommend.domain.like.movie.RecommendMovieLikes;
 @Repository
 public interface RecommendBookLikeRepository extends MongoRepository<RecommendBookLikes, String> {
 	@Query("{ '_id': ?0 }")
-	@Update("{ '$addToSet': { 'liked_book_ids': ?1 } }")
-	void addMovieLike(String recommendBookLikesId, String bookId);
+	@Update("{ '$addToSet': { 'liked_isbn_ids': ?1 } }")
+	void addBookLike(String recommendBookLikesId, String isbn);
 
 	Optional<RecommendBookLikes> findByUserId(String userId);
 
+	// @Query("{ '_id': ?0 }")
+	// @Update("{ '$pull': { 'liked_book_ids': ?1 } }")
+	// void removeBookLike(String recommendBookLikesId, String bookId);
 	@Query("{ '_id': ?0 }")
-	@Update("{ '$pull': { 'liked_book_ids': ?1 } }")
-	void removeBookLike(String recommendBookLikesId, String bookId);
+	@Update("{ '$pull': { 'liked_isbn_ids': ?1 } }")
+	void removeBookLike(String recommendBookLikesId, String isbn);
 }
