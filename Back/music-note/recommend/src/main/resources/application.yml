@@ -40,3 +40,9 @@ eureka:
 
 jwt:
   secret: music-note-jwt-key
+
+
+logging:
+  level:
+    root: INFO
+    com.music.note.recommend: INFO
