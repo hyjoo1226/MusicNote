@@ -26,6 +26,7 @@ public class RecommendMovieController {
 	private String secretKey;
 	@GetMapping("/test")
 	public String test() {
+		log.info("로그 테스트!");
 		return "테스트 호출 - 추천 서버";
 	}
 
