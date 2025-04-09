@@ -151,9 +151,7 @@ export default function MyRecommendation() {
                       className="w-full aspect-[1/1] object-cover rounded-t-sm mb-1 xs:mb-2"
                     />
                     <div className="flex flex-col w-full items-center justify-center h-2/5">
-                      <span className="flex items-center justify-center text-sm line-clamp-2 h-[70%]">
-                        {music.track_name}
-                      </span>
+                      <span className="text-sm line-clamp-2 h-[70%]">{music.track_name}</span>
                       <span className="text-xs text-light-gray line-clamp-1 h-[30%]">
                         {music.artist_name}
                       </span>
