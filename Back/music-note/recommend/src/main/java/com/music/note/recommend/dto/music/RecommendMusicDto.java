@@ -17,7 +17,7 @@ import lombok.Setter;
 public class RecommendMusicDto {
 
 	@Setter
-	private String id;
+	private String recommendMusicId;
 
 	@JsonProperty("track_name")
 	private String trackName;
@@ -32,4 +32,6 @@ public class RecommendMusicDto {
 	private String releaseDate;
 	@JsonProperty("duration_ms")
 	private int durationMs;
+	@JsonProperty("id")
+	private String spotifyMusicId;
 }

@@ -21,13 +21,13 @@ import lombok.NoArgsConstructor;
 public class RecommendBookLikes {
 	@Id
 	private String id;
-	@Field("liked_book_ids") // 필드명 지정
-	private List<String> likedBookIds = new ArrayList<>();
+	@Field("liked_isbn_ids") // 필드명 지정
+	private List<String> likedIsbns = new ArrayList<>();
 	private String userId;
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
-	public boolean isLiked(String bookId) {
-		return likedBookIds.contains(bookId);
+	public boolean isLiked(String isbn) {
+		return likedIsbns.contains(isbn);
 	}
 }
 

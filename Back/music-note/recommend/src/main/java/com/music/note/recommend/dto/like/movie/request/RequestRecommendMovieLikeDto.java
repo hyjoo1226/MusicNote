@@ -6,5 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class RequestRecommendMovieLikeDto {
+	private int tmdbMovieId;
 	private String recommendMovieId;
 }

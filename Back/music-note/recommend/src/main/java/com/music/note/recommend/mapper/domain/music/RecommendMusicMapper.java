@@ -18,17 +18,19 @@ public class RecommendMusicMapper {
 			.durationMs(dto.getDurationMs())
 			.userId(userId)
 			.createdAt(LocalDateTime.now())
+			.spotifyMusicId(dto.getSpotifyMusicId())
 			.build();
 	}
 
 	public RecommendMusicDto entityToRecommendMusicDto(RecommendMusic recommendMusic) {
 		return RecommendMusicDto.builder()
-			.id(recommendMusic.getId())
+			.recommendMusicId(recommendMusic.getId())
 			.albumCoverPath(recommendMusic.getAlbumCoverPath())
 			.trackName(recommendMusic.getTrackName())
 			.artistName(recommendMusic.getArtistName())
 			.durationMs(recommendMusic.getDurationMs())
 			.releaseDate(recommendMusic.getReleaseDate())
+			.spotifyMusicId(recommendMusic.getSpotifyMusicId())
 			.build();
 	}
 }

@@ -28,6 +28,7 @@ public class RecommendMovieMapper {
 			.popularity(recommendDto.getPopularity())
 			.backdropPath(recommendDto.getBackdropPath())
 			.createdAt(LocalDateTime.now())
+			.tmdbMovieId(recommendDto.getTmdbMovieId())
 			.build();
 	}
 }
