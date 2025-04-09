@@ -34,6 +34,8 @@ public class RecommendMusic {
 
 	private String userId;
 
+	private String spotifyMusicId;
+
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 }

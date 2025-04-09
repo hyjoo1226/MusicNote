@@ -44,7 +44,7 @@ public class RecommendMusicService {
 		for (RecommendMusicDto dto: dtoList){
 			RecommendMusic recommendMusic = recommendMusicMapper.dtoToEntity(dto, memberId);
 			RecommendMusic save = recommendMusicRepository.save(recommendMusic);
-			dto.setId(save.getId());
+			dto.setRecommendMusicId(save.getId());
 		}
 	}
 
@@ -63,6 +63,12 @@ public class RecommendMusicService {
 
 	public RecommendMusic findRecommendMusicById(String recommendMusicId) {
 		return recommendMusicRepository.findById(recommendMusicId)
+			.orElseThrow(()-> new RecommendMusicNotFoundException(ErrorCode.NOT_FOUND_RECOMMEND_MUSIC));
+	}
+
+
+	public RecommendMusic findRecommendMusicBySpotifyId(String spotifyMusicId) {
+		return recommendMusicRepository.findFirstBySpotifyMusicId(spotifyMusicId)
 			.orElseThrow(()-> new RecommendMusicNotFoundException(ErrorCode.NOT_FOUND_RECOMMEND_MUSIC));
 	}
 }
