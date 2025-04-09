@@ -134,9 +134,6 @@ def response_model():
     return model
 
 
-
-
-
 def add_runtime_credits(movie_info):
     tmdb = TMDBClient()
     movie = tmdb.get_movie()
@@ -204,7 +201,8 @@ def get_filtered_movies(cnt, id, sort_by, page):
     ## 한페이지 20개를 전부 다 순회해도 모자랄때 
         if idx >= len(movies_info):
             idx = 0
-            page = random.randint(1, 5)
+            page = random.randint(1, 10)
+            print(id, sort_by, page)
             ## 다음 페이지에서 찾기기
             movies_info = search_movies(id=id, sort_by=sort_by, page=page)
         
@@ -213,9 +211,10 @@ def get_filtered_movies(cnt, id, sort_by, page):
         original_language = movie_info.get("original_language")
         vote_average = movie_info.get("vote_average")
         popularity = movie_info.get("popularity")
+        vote_count = movie_info.get("vote_count")
 
         result = None
-        if  original_language == 'en' and vote_average >= 7.0 and popularity >= 10.0 :
+        if  original_language == 'en' and vote_average >= 7.0 and (popularity >= 10.0 or vote_count >= 100):
             result = movie_info
         elif original_language == 'kr' and vote_average >= 7.0 and popularity >= 1.0 :
             result = movie_info
@@ -242,7 +241,7 @@ def recommend(user_genre):
     user_genre = Converter.convert_genre_to_id(user_genre) # {action : 2} -> {28: 2}
     recommendation = []
     # 중복방지 위한 검색 파라미터들들
-    sort_by_filter = ['popularity.desc', 'revenue.desc' 'vote_count.desc']
+    sort_by_filter = ['popularity.desc', 'revenue.desc', 'vote_count.desc']
     page = None
     # user_genre를 순회하며 장르별 영화 받아오기
     for id, cnt in user_genre.items():
