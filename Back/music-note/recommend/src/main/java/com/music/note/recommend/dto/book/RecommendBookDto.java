@@ -1,5 +1,7 @@
 package com.music.note.recommend.dto.book;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -25,4 +27,5 @@ public class RecommendBookDto {
 	private String userId;
 	private String pubdate;
 	private String image;
+	private LocalDateTime createdAt;
 }
