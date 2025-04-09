@@ -4,17 +4,7 @@ import mascot from "@/assets/logo/mascot.webp";
 import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
 import { useGetData, usePostData } from "@/hooks/useApi";
-
-interface Book {
-  author: string;
-  description: string;
-  id: string;
-  image: string;
-  isbn: string;
-  pubdate: string;
-  publisher: string;
-  title: string;
-}
+import { Book } from "@/features/recommend/recommendType";
 
 export default function RecommendationBook() {
   const titleText = "책 추천";
@@ -32,6 +22,7 @@ export default function RecommendationBook() {
   const scrollStartY = useRef(0);
   const [isVerticalScrolling, setIsVerticalScrolling] = useState(false);
   const startY = useRef(0);
+  const [isLikeProcessing, setIsLikeProcessing] = useState(false);
 
   const cardRef = useRef(null);
   const cardWidth = useRef(0);
@@ -41,23 +32,13 @@ export default function RecommendationBook() {
   const currentBook = books?.[currentIndex];
 
   const { data, isLoading, isError } = useGetData("/recommend/book", "recommend/book");
-  const {
-    mutate: likeBook,
-    isSuccess,
-    isError: likeBookError,
-  } = usePostData("recommend/like/book");
+  const { mutate: likeBook, isError: likeBookError } = usePostData("recommend/like/book");
 
   useEffect(() => {
     if (likeBookError) {
       console.log(likeBookError);
     }
   }, [likeBookError]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      console.log("좋아요 성공");
-    }
-  }, [isSuccess]);
 
   useEffect(() => {
     if (data) {
@@ -101,9 +82,9 @@ export default function RecommendationBook() {
     const maxOffset = cardWidth.current * 0.15;
     const limitedOffset = Math.max(-maxOffset, Math.min(maxOffset, newOffset));
 
-    if (newOffset > 40) {
+    if (newOffset > 20) {
       setDirection("right");
-    } else if (newOffset < -40) {
+    } else if (newOffset < -20) {
       setDirection("left");
     } else {
       setDirection("");
@@ -174,7 +155,7 @@ export default function RecommendationBook() {
       if (direction === "right") {
         handleLike(books[currentIndex].id);
       } else if (direction === "left") {
-        handleDislike(books[currentIndex].id);
+        handleDislike();
       } else {
         resetSwipeState();
       }
@@ -240,7 +221,7 @@ export default function RecommendationBook() {
       if (direction === "right") {
         handleLike(books[currentIndex].id);
       } else if (direction === "left") {
-        handleDislike(books[currentIndex].id);
+        handleDislike();
       } else {
         resetSwipeState();
       }
@@ -257,6 +238,7 @@ export default function RecommendationBook() {
 
   const handleLike = (id: string) => {
     if (!currentBook) return;
+    setIsLikeProcessing(true);
     likeBook({ recommendBookId: id });
     resetSwipeState();
 
@@ -274,12 +256,13 @@ export default function RecommendationBook() {
           (backContent as HTMLElement).scrollTop = 0;
         }
       }
+      setIsLikeProcessing(false);
     }, 300);
   };
 
-  const handleDislike = (id: string) => {
+  const handleDislike = () => {
     if (!currentBook) return;
-    console.log(id);
+    setIsLikeProcessing(true);
     resetSwipeState();
 
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
@@ -296,6 +279,7 @@ export default function RecommendationBook() {
           (backContent as HTMLElement).scrollTop = 0;
         }
       }
+      setIsLikeProcessing(false);
     }, 300);
   };
 
@@ -458,14 +442,16 @@ export default function RecommendationBook() {
             </div>
             <div className="swipe-buttons">
               <button
-                className="swipe-button dislike-button"
-                onClick={() => handleDislike(books[currentIndex].id)}
+                className={`swipe-button dislike-button ${direction === "left" ? "bg-red-500/10" : ""} ${isLikeProcessing ? "opacity-50" : ""}`}
+                onClick={handleDislike}
+                disabled={isLikeProcessing}
               >
                 👎 싫어요
               </button>
               <button
-                className="swipe-button like-button"
+                className={`swipe-button like-button ${direction === "right" ? "bg-green-500/10" : ""} ${isLikeProcessing ? "opacity-50" : ""}`}
                 onClick={() => handleLike(books[currentIndex].id)}
+                disabled={isLikeProcessing}
               >
                 👍 좋아요
               </button>

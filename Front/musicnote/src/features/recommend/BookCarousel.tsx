@@ -1,17 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-interface Book {
-  author: string;
-  description: string;
-  id: string;
-  image: string;
-  isbn: string;
-  pubdate: string;
-  publisher: string;
-  title: string;
-}
+import { Book } from "./recommendType";
 
 interface BookCarouselProps {
   books: Book[];

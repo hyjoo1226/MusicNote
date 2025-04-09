@@ -1,15 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-interface Music {
-  id: string;
-  duration_ms: number;
-  track_name: string;
-  artist_name: string;
-  albumcover_path: string;
-  release_date: string;
-}
+import { Music } from "./recommendType";
 
 interface MusicCarouselProps {
   musics: Music[];

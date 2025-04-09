@@ -51,5 +51,8 @@
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-pwa": "^1.0.0",
     "vite-plugin-svgr": "^4.3.0"
+  },
+  "overrides": {
+    "glob": "^9.3.5"
   }
 }

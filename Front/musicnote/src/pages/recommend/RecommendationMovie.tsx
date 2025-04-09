@@ -4,17 +4,7 @@ import mascot from "@/assets/logo/mascot.webp";
 import { useState, useEffect, useRef, useCallback } from "react";
 import "@/styles/RecommendationDetail.css";
 import { useGetData, usePostData } from "@/hooks/useApi";
-
-interface Movie {
-  id: string;
-  title: string;
-  overview: string;
-  runtime: number;
-  poster_path: string;
-  release_date: string;
-  vote_average: number;
-  genres: string[];
-}
+import { Movie } from "@/features/recommend/recommendType";
 
 export default function RecommendationMovie() {
   const titleText = "영화 추천";
@@ -38,14 +28,12 @@ export default function RecommendationMovie() {
   const animationRef = useRef<number | null>(null);
   const isDragging = useRef(false);
 
+  const [isLikeProcessing, setIsLikeProcessing] = useState(false);
+
   const currentMovie = movies?.[currentIndex];
 
   const { data, isLoading, isError } = useGetData("/recommend/movie", "recommend/movie");
-  const {
-    mutate: likeMovie,
-    isSuccess,
-    isError: likeMovieError,
-  } = usePostData("recommend/like/movie");
+  const { mutate: likeMovie, isError: likeMovieError } = usePostData("recommend/like/movie");
 
   useEffect(() => {
     if (likeMovieError) {
@@ -60,21 +48,6 @@ export default function RecommendationMovie() {
       setCurrentIndex(movies.length);
     }
   }, [currentIndex, movies.length]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      setTimeout(() => {
-        goToNextMovie();
-        // 스크롤 위치 초기화
-        if (cardRef.current) {
-          const backContent = (cardRef.current as HTMLElement).querySelector(".bg-level1");
-          if (backContent) {
-            (backContent as HTMLElement).scrollTop = 0;
-          }
-        }
-      }, 300);
-    }
-  }, [isSuccess, goToNextMovie]);
 
   useEffect(() => {
     if (data) {
@@ -118,9 +91,9 @@ export default function RecommendationMovie() {
     const maxOffset = cardWidth.current * 0.15;
     const limitedOffset = Math.max(-maxOffset, Math.min(maxOffset, newOffset));
 
-    if (newOffset > 40) {
+    if (newOffset > 20) {
       setDirection("right");
-    } else if (newOffset < -40) {
+    } else if (newOffset < -20) {
       setDirection("left");
     } else {
       setDirection("");
@@ -274,7 +247,7 @@ export default function RecommendationMovie() {
 
   const handleLike = (id: string) => {
     if (!currentMovie) return;
-
+    setIsLikeProcessing(true);
     resetSwipeState();
     likeMovie({ recommendMovieId: id });
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
@@ -291,12 +264,14 @@ export default function RecommendationMovie() {
           (backContent as HTMLElement).scrollTop = 0;
         }
       }
+      setIsLikeProcessing(false);
     }, 300);
   };
 
   const handleDislike = () => {
     if (!currentMovie) return;
     resetSwipeState();
+    setIsLikeProcessing(true);
 
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
     if (isFlipped) {
@@ -312,6 +287,7 @@ export default function RecommendationMovie() {
           (backContent as HTMLElement).scrollTop = 0;
         }
       }
+      setIsLikeProcessing(false);
     }, 300);
   };
 
@@ -472,12 +448,17 @@ export default function RecommendationMovie() {
               </div>
             </div>
             <div className="swipe-buttons">
-              <button className="swipe-button dislike-button" onClick={() => handleDislike()}>
+              <button
+                className={`swipe-button dislike-button ${direction === "left" ? "bg-red-500/10" : ""} ${isLikeProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
+                onClick={() => handleDislike()}
+                disabled={isLikeProcessing}
+              >
                 👎 싫어요
               </button>
               <button
-                className="swipe-button like-button"
+                className={`swipe-button like-button ${direction === "right" ? "bg-green-500/10" : ""} ${isLikeProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
                 onClick={() => handleLike(movies[currentIndex].id)}
+                disabled={isLikeProcessing}
               >
                 👍 좋아요
               </button>

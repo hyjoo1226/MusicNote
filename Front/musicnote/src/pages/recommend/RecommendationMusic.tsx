@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
 import { useGetData, usePostData } from "@/hooks/useApi";
 import { useAuthStore } from "@/stores/authStore";
+import { Music } from "@/features/recommend/recommendType";
 
 declare global {
   interface Window {
@@ -22,15 +23,6 @@ declare global {
   }
 }
 
-interface Music {
-  id: string;
-  duration_ms: number;
-  track_name: string;
-  artist_name: string;
-  albumcover_path: string;
-  release_date: string;
-}
-
 export default function RecommendationMusic() {
   const titleText = "음악 추천";
   const navigate = useNavigate();
@@ -46,27 +38,18 @@ export default function RecommendationMusic() {
   const cardWidth = useRef(0);
   const animationRef = useRef<number | null>(null);
   const isDragging = useRef(false);
+  const [isLikeProcessing, setIsLikeProcessing] = useState(false);
 
   const currentMusic = musics?.[currentIndex];
 
   const { data, isLoading, isError } = useGetData("/recommend/music", "recommend/music");
-  const {
-    mutate: likeMusic,
-    isSuccess,
-    isError: likeMusicError,
-  } = usePostData("recommend/like/music");
+  const { mutate: likeMusic, isError: likeMusicError } = usePostData("recommend/like/music");
 
   useEffect(() => {
     if (likeMusicError) {
       console.log(likeMusicError);
     }
   }, [likeMusicError]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      console.log("좋아요 성공");
-    }
-  }, [isSuccess]);
 
   useEffect(() => {
     if (data) {
@@ -151,9 +134,9 @@ export default function RecommendationMusic() {
     const maxOffset = cardWidth.current * 0.15;
     const limitedOffset = Math.max(-maxOffset, Math.min(maxOffset, newOffset));
 
-    if (newOffset > 40) {
+    if (newOffset > 20) {
       setDirection("right");
-    } else if (newOffset < -40) {
+    } else if (newOffset < -20) {
       setDirection("left");
     } else {
       setDirection("");
@@ -201,7 +184,7 @@ export default function RecommendationMusic() {
     if (direction === "right") {
       handleLike(musics[currentIndex].id);
     } else if (direction === "left") {
-      handleDislike(musics[currentIndex].id);
+      handleDislike();
     } else {
       resetSwipeState();
     }
@@ -241,7 +224,7 @@ export default function RecommendationMusic() {
     if (direction === "right") {
       handleLike(musics[currentIndex].id);
     } else if (direction === "left") {
-      handleDislike(musics[currentIndex].id);
+      handleDislike();
     } else {
       resetSwipeState();
     }
@@ -255,6 +238,7 @@ export default function RecommendationMusic() {
 
   const handleLike = (id: string) => {
     if (!currentMusic) return;
+    setIsLikeProcessing(true);
     likeMusic({ recommendMusicId: id });
     resetSwipeState();
 
@@ -267,12 +251,13 @@ export default function RecommendationMusic() {
           (backContent as HTMLElement).scrollTop = 0;
         }
       }
+      setIsLikeProcessing(false);
     }, 300);
   };
 
-  const handleDislike = (id: string) => {
+  const handleDislike = () => {
     if (!currentMusic) return;
-    console.log(id);
+    setIsLikeProcessing(true);
     resetSwipeState();
 
     setTimeout(() => {
@@ -284,6 +269,7 @@ export default function RecommendationMusic() {
           (backContent as HTMLElement).scrollTop = 0;
         }
       }
+      setIsLikeProcessing(false);
     }, 300);
   };
 
@@ -402,14 +388,16 @@ export default function RecommendationMusic() {
             )}
             <div className="swipe-buttons flex justify-evenly w-full">
               <button
-                className="swipe-button dislike-button"
-                onClick={() => handleDislike(musics[currentIndex].id)}
+                className={`swipe-button dislike-button ${direction === "left" ? "bg-red-500/10" : ""} ${isLikeProcessing ? "opacity-50" : ""}`}
+                onClick={handleDislike}
+                disabled={isLikeProcessing}
               >
                 👎 싫어요
               </button>
               <button
-                className="swipe-button like-button"
+                className={`swipe-button like-button ${direction === "right" ? "bg-green-500/10" : ""} ${isLikeProcessing ? "opacity-50" : ""}`}
                 onClick={() => handleLike(musics[currentIndex].id)}
+                disabled={isLikeProcessing}
               >
                 👍 좋아요
               </button>

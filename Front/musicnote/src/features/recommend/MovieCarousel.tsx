@@ -1,24 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-interface Movie {
-  id: string;
-  title: string;
-  overview: string;
-  poster_path: string;
-  backdrop_path: string;
-  release_date: string;
-  vote_average: number;
-  genres: string[];
-  credits: {
-    name: string;
-    role: string;
-  }[];
-  runtime: number;
-  adult: boolean;
-  popularity: number;
-}
+import { Movie } from "./recommendType";
 
 interface MovieCarouselProps {
   movies: Movie[];

@@ -7,44 +7,7 @@ import { useNavigate } from "react-router-dom";
 import MovieCarousel from "@/features/recommend/MovieCarousel";
 import MusicCarousel from "@/features/recommend/MusicCarousel";
 import BookCarousel from "@/features/recommend/BookCarousel";
-
-interface Movie {
-  id: string;
-  title: string;
-  overview: string;
-  poster_path: string;
-  backdrop_path: string;
-  release_date: string;
-  vote_average: number;
-  genres: string[];
-  credits: {
-    name: string;
-    role: string;
-  }[];
-  runtime: number;
-  adult: boolean;
-  popularity: number;
-}
-
-interface Music {
-  id: string;
-  duration_ms: number;
-  track_name: string;
-  artist_name: string;
-  albumcover_path: string;
-  release_date: string;
-}
-
-interface Book {
-  author: string;
-  description: string;
-  id: string;
-  image: string;
-  isbn: string;
-  pubdate: string;
-  publisher: string;
-  title: string;
-}
+import { Movie, Music, Book } from "@/features/recommend/recommendType";
 
 export default function Recommendations() {
   const navigate = useNavigate();

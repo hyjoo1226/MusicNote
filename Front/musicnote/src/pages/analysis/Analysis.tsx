@@ -192,6 +192,25 @@ export default function Analysis() {
     }
   };
 
+  // 주간 리포트 구간 생성
+  const getWeeklyReports = () => {
+    if (!weeklyReportsData?.data) return [];
+
+    return weeklyReportsData.data.map((report: any) => {
+      const date = new Date(report.createdAt);
+      // 주간 기간을 일요일부터 토요일까지로 고정
+      const endDate = new Date(date);
+      const startDate = new Date(endDate);
+
+      // 해당 날짜가 속한 주의 일요일과 토요일 찾기
+      const dayOfWeek = endDate.getDay(); // 0: 일요일, 6: 토요일
+      startDate.setDate(endDate.getDate() - dayOfWeek); // 일요일로 설정
+      endDate.setDate(startDate.getDate() + 6); // 토요일로 설정
+
+      return { from: startDate, to: endDate };
+    });
+  };
+
   // 날짜 선택 핸들러 - API 응답 데이터 포맷에 맞게 수정
   const handleDateSelect = (date: Date) => {
     if (!date) return;
@@ -316,24 +335,24 @@ export default function Analysis() {
       }
     } else {
       // 최신 주간 리포트 찾기
-      // if (!weeklyReportsData?.data?.responseTypeWithReportIds?.length) return;
+      if (!weeklyReportsData?.data?.responseTypeWithReportIds?.length) return;
 
-      // const sorted = [...weeklyReportsData.data.responseTypeWithReportIds].sort(
-      //   (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      // );
+      const sorted = [...weeklyReportsData.data.responseTypeWithReportIds].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
 
-      // if (sorted.length > 0) {
-      //   const latest = sorted[0];
-      //   const newScores: ChartType = [
-      //     { bigFive: "개방성", User: Math.round(latest.typeDto.openness * 100) },
-      //     { bigFive: "성실성", User: Math.round(latest.typeDto.conscientiousness * 100) },
-      //     { bigFive: "외향성", User: Math.round(latest.typeDto.extraversion * 100) },
-      //     { bigFive: "우호성", User: Math.round(latest.typeDto.agreeableness * 100) },
-      //     { bigFive: "신경성", User: Math.round(latest.typeDto.neuroticism * 100) },
-      //   ];
-      //   setBigFiveScore(newScores);
-      //   setSelectedReportId(latest.reportId);
-      // }
+      if (sorted.length > 0) {
+        const latest = sorted[0];
+        const newScores: ChartType = [
+          { bigFive: "개방성", User: Math.round(latest.typeDto.openness * 100) },
+          { bigFive: "성실성", User: Math.round(latest.typeDto.conscientiousness * 100) },
+          { bigFive: "외향성", User: Math.round(latest.typeDto.extraversion * 100) },
+          { bigFive: "우호성", User: Math.round(latest.typeDto.agreeableness * 100) },
+          { bigFive: "신경성", User: Math.round(latest.typeDto.neuroticism * 100) },
+        ];
+        setBigFiveScore(newScores);
+        setSelectedReportId(latest.reportId);
+      }
       return;
     }
   };
@@ -383,6 +402,7 @@ export default function Analysis() {
           reportCycle={reportCycle}
           onReportCycleChange={handleReportCycleChange}
           enabledDays={getEnabledDays()}
+          weeklyReports={getWeeklyReports()}
           onReportSelect={(reportId) => setSelectedReportId(reportId)}
           onMonthChange={(date: Date) => setTargetMonth(date)}
         />

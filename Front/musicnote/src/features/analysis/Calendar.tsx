@@ -13,19 +13,19 @@ import "./Calendar.css";
 //   // new Date(2025, 2, 11),
 //   { from: new Date(2025, 1, 1), to: new Date() },
 // ];
-const weeklyReports = [
-  { from: new Date(2025, 1, 23), to: new Date(2025, 2, 1) },
-  { from: new Date(2025, 2, 2), to: new Date(2025, 2, 8) },
-  { from: new Date(2025, 2, 9), to: new Date(2025, 2, 15) },
-  { from: new Date(2025, 2, 16), to: new Date(2025, 2, 22) },
-];
+// const weeklyReports = [
+//   { from: new Date(2025, 1, 23), to: new Date(2025, 2, 1) },
+//   { from: new Date(2025, 2, 2), to: new Date(2025, 2, 8) },
+//   { from: new Date(2025, 2, 9), to: new Date(2025, 2, 15) },
+//   { from: new Date(2025, 2, 16), to: new Date(2025, 2, 22) },
+// ];
 
 interface CalendarProps {
   onDateSelect?: (date: Date) => void;
   reportCycle: "daily" | "weekly";
   onReportCycleChange: (cycle: "daily" | "weekly") => void;
   // dailyReports: { from: Date; to: Date }[];
-  // weeklyReports: { from: Date; to: Date }[];
+  weeklyReports: { from: Date; to: Date }[];
   enabledDays: Date[];
   onMonthChange: (date: Date) => void;
   onReportSelect?: (reportId: string) => void;
@@ -36,7 +36,7 @@ export default function Calendar({
   reportCycle,
   onReportCycleChange,
   // dailyReports,
-  // weeklyReports,
+  weeklyReports,
   enabledDays,
   onMonthChange,
 }: CalendarProps) {
@@ -60,9 +60,7 @@ export default function Calendar({
   const getSelectedRangeDays = () => {
     if (!selected || reportCycle === "daily") return [];
 
-    const ranges = weeklyReports;
-
-    const targetRange = ranges.find((range) =>
+    const targetRange = weeklyReports.find((range) =>
       isWithinInterval(selected, { start: range.from, end: range.to })
     );
 
