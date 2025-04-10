@@ -37,8 +37,8 @@ public class ReportController {
 	}
 
 	@GetMapping("/daily-report/{reportId}")
-	public CommonResponse<List<ManualReportResponse>> getReportById(
+	public CommonResponse<ManualReportResponse> getReportById(
 		@PathVariable String reportId) {
-		return CommonResponse.success(dailyReportService.getReportsByUserId(reportId));
+		return CommonResponse.success(dailyReportService.getReportById(reportId));
 	}
 }
