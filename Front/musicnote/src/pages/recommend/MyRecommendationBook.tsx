@@ -67,7 +67,7 @@ export default function MyRecommendationBook() {
         ...book,
         is_liked: true,
       }));
-      setBooks(booksWithLiked);
+      setBooks(booksWithLiked.reverse());
     }
     if (!isUpdated) {
       setIsUpdated(true);
