@@ -47,7 +47,6 @@ export default function ChoiceMusicAnalysis() {
       artist: track.artist,
       imageUrl: track.imageUrl,
     }));
-    console.log(musicList);
 
     // POST API
     postChoiceMusicData(musicList, {
