@@ -28,19 +28,21 @@ export default function MyRecommendationMusic() {
     error: deleteLikedMusicError,
   } = useDeleteData("recommend/like/music");
 
-  const likeHandler = (id: string) => {
+  const likeHandler = (recommendMusicId: string, id: string) => {
     setIsLikeProcessing(true);
     const foundMusic = musics.find((music: Music) => music.id === id);
 
-    // 영화가 존재하고 is_liked가 true인 경우 좋아요 취소
+    // 음악이 존재하고 is_liked가 true인 경우 좋아요 취소
     if (foundMusic && foundMusic.is_liked === true) {
       deleteLikedMusic({
-        recommendMusicId: id,
+        recommendMusicId: recommendMusicId,
+        spotifyMusicId: id,
       });
     } else {
       // 그렇지 않으면 좋아요 추가
       likeMusic({
-        recommendMusicId: id,
+        recommendMusicId: recommendMusicId,
+        spotifyMusicId: id,
       });
     }
     setMusics(
@@ -83,7 +85,7 @@ export default function MyRecommendationMusic() {
   return (
     <div className="text-white w-full h-full">
       <TopBar title={"음악 추천 보관함"} />
-      <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-2 pb-0 mx-3 xs:mx-5 border border-solid border-border min-h-[calc(100vh-120px)] overflow-y-auto">
+      <div className="mt-[20px] flex flex-col items-center justify-start bg-level2 rounded-3xl p-2 pb-0 mx-3 xs:mx-5 border border-solid border-border min-h-[calc(100vh-120px)] overflow-y-auto">
         {musics.map((music: Music, index: number) => (
           <div
             key={index}
@@ -111,7 +113,7 @@ export default function MyRecommendationMusic() {
                 className="flex w-10 flex-shrink-0 items-center justify-center hover:translate-y-[-5px] transition-all duration-200"
                 onClick={(e) => {
                   e.stopPropagation();
-                  likeHandler(music.id);
+                  likeHandler(music.recommendMusicId, music.id);
                 }}
               >
                 <div className={`${isLikeProcessing ? "opacity-50 pointer-events-none" : ""}`}>

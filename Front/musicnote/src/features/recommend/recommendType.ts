@@ -1,5 +1,6 @@
 export interface Movie {
-  id: string;
+  id: number;
+  recommendMovieId: string;
   title: string;
   poster_path: string;
   backdrop_path: string;
@@ -19,6 +20,7 @@ export interface Movie {
 
 export interface Music {
   id: string;
+  recommendMusicId: string;
   track_name: string;
   artist_name: string;
   albumcover_path: string;

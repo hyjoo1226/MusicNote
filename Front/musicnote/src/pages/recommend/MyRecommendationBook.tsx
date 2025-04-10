@@ -28,7 +28,7 @@ export default function MyRecommendationBook() {
     error: deleteLikedBookError,
   } = useDeleteData("recommend/like/book");
 
-  const likeHandler = (id: string) => {
+  const likeHandler = (id: string, isbn: string) => {
     setIsLikeProcessing(true);
     const foundBook = books.find((book: Book) => book.id === id);
 
@@ -36,11 +36,13 @@ export default function MyRecommendationBook() {
     if (foundBook && foundBook.is_liked === true) {
       deleteLikedBook({
         recommendBookId: id,
+        isbn: isbn,
       });
     } else {
       // 그렇지 않으면 좋아요 추가
       likeBook({
         recommendBookId: id,
+        isbn: isbn,
       });
     }
     setBooks(books.map((book) => (book.id === id ? { ...book, is_liked: !book.is_liked } : book)));
@@ -105,7 +107,7 @@ export default function MyRecommendationBook() {
                 className="flex w-10 flex-shrink-0 items-center justify-center hover:translate-y-[-5px] transition-all duration-200"
                 onClick={(e) => {
                   e.stopPropagation();
-                  likeHandler(book.id);
+                  likeHandler(book.id, book.isbn);
                 }}
               >
                 <div className={`${isLikeProcessing ? "opacity-50 pointer-events-none" : ""}`}>

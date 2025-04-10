@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import TopBar from "@/components/layout/TopBar";
-// import { useGetData } from "@/hooks/useApi";
+import { useGetData } from "@/hooks/useApi";
 
 interface LineDataType {
   id: number;
@@ -39,7 +39,6 @@ export default function LineTrend() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const lineContainerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const updateLineWidth = () => {
       if (lineContainerRef.current) {
@@ -61,18 +60,22 @@ export default function LineTrend() {
   const formatDateToString = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
-    const day = String(date.getDate()).padStart(2, "0");
+    const day = String(date.getDate() - 6).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
   const date = new Date();
   const dateString = formatDateToString(date);
-  console.log(dateString);
 
   // 현재 일주일 중 없는 날짜가 null이 아니라 아예 전송이 안된 상태라 하드코딩으로 대체
-  // const { data: TrendData } = useGetData(
-  //   `TrendData-${dateString}`, // key
-  //   `/recommend/type/trend?date=${dateString}` // url
-  // );
+  const { data: TrendData2 } = useGetData(
+    `TrendData-${dateString}`, // key
+    `/recommend/type/trend?date=${dateString}` // url
+  );
+
+  useEffect(() => {
+    console.log(TrendData2);
+  }, [TrendData2]);
+
   const TrendData = {
     trendTypeDtoList: [
       {

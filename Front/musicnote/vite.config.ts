@@ -130,6 +130,10 @@ export default defineConfig({
       srcDir: "src",
       filename: "custom-sw.js",
       injectRegister: "auto",
+      devOptions: {
+        enabled: true,
+        type: "module",
+      },
     }),
     eslint({
       fix: true,

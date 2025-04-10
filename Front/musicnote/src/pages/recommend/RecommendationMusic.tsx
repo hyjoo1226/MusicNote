@@ -6,22 +6,7 @@ import "@/styles/RecommendationDetail.css";
 import { useGetData, usePostData } from "@/hooks/useApi";
 import { useAuthStore } from "@/stores/authStore";
 import { Music } from "@/features/recommend/recommendType";
-
-declare global {
-  interface Window {
-    onSpotifyWebPlaybackSDKReady: () => void;
-    Spotify: {
-      Player: new (config: {
-        name: string;
-        getOAuthToken: (cb: (token: string) => void) => void;
-        volume: number;
-      }) => {
-        connect: () => Promise<void>;
-        addListener: (event: string, callback: (data: any) => void) => void;
-      };
-    };
-  }
-}
+import SpotifyPlayer from "@/features/recommend/SpotifyPlayer";
 
 export default function RecommendationMusic() {
   const titleText = "음악 추천";
@@ -32,7 +17,6 @@ export default function RecommendationMusic() {
   const [startX, setStartX] = useState(0);
   const [offsetX, setOffsetX] = useState(0);
   const [swiping, setSwiping] = useState(false);
-  const { spotifyAccessToken, product } = useAuthStore();
 
   const cardRef = useRef(null);
   const cardWidth = useRef(0);
@@ -44,6 +28,7 @@ export default function RecommendationMusic() {
 
   const { data, isLoading, isError } = useGetData("/recommend/music", "recommend/music");
   const { mutate: likeMusic, isError: likeMusicError } = usePostData("recommend/like/music");
+  const { product } = useAuthStore();
 
   useEffect(() => {
     if (likeMusicError) {
@@ -64,47 +49,6 @@ export default function RecommendationMusic() {
       cardWidth.current = (cardRef.current as HTMLElement).offsetWidth;
     }
   }, [currentMusic]);
-
-  useEffect(() => {
-    console.log(product);
-    // product가 "free"가 아닐 때만 Spotify SDK 로드
-    if (product !== "free") {
-      const script = document.createElement("script");
-      script.src = "https://sdk.scdn.co/spotify-player.js";
-      script.async = true;
-      document.body.appendChild(script);
-
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        const player = new window.Spotify.Player({
-          name: "Web Playback SDK Player",
-          getOAuthToken: (cb) => {
-            cb(spotifyAccessToken || "");
-          },
-          volume: 0.5,
-        });
-
-        player.addListener("not_ready", ({ device_id }) => {
-          console.log("Device ID has gone offline", device_id);
-        });
-
-        // 에러 처리
-        player.addListener("initialization_error", ({ message }) => {
-          console.error("Failed to initialize", message);
-        });
-
-        player.addListener("authentication_error", ({ message }) => {
-          console.error("Failed to authenticate", message);
-        });
-
-        player.addListener("account_error", ({ message }) => {
-          console.error("Failed to validate Spotify account", message);
-        });
-
-        // 플레이어 연결
-        player.connect();
-      };
-    }
-  }, [spotifyAccessToken, product]);
 
   // 스와이프 상태 초기화
   const resetSwipeState = () => {
@@ -182,7 +126,7 @@ export default function RecommendationMusic() {
     setSwiping(false);
 
     if (direction === "right") {
-      handleLike(musics[currentIndex].id);
+      handleLike(musics[currentIndex].id, musics[currentIndex].recommendMusicId);
     } else if (direction === "left") {
       handleDislike();
     } else {
@@ -222,7 +166,7 @@ export default function RecommendationMusic() {
     setSwiping(false);
 
     if (direction === "right") {
-      handleLike(musics[currentIndex].id);
+      handleLike(musics[currentIndex].id, musics[currentIndex].recommendMusicId);
     } else if (direction === "left") {
       handleDislike();
     } else {
@@ -236,10 +180,10 @@ export default function RecommendationMusic() {
     }
   };
 
-  const handleLike = (id: string) => {
+  const handleLike = (spotifyMusicId: string, recommendMusicId: string) => {
     if (!currentMusic) return;
     setIsLikeProcessing(true);
-    likeMusic({ recommendMusicId: id });
+    likeMusic({ recommendMusicId: recommendMusicId, spotifyMusicId: spotifyMusicId });
     resetSwipeState();
 
     setTimeout(() => {
@@ -376,14 +320,12 @@ export default function RecommendationMusic() {
                 </div>
               </div>
             ) : (
-              <div className="spotify-player-container w-full h-[calc(var(--app-height)-250px) rounded-lg overflow-hidden mb-4">
-                <iframe
-                  src={`https://open.spotify.com/embed/track/${currentMusic.id}`}
-                  width="100%"
-                  height="100%"
-                  allow="encrypted-media"
-                  className="rounded-lg"
-                ></iframe>
+              <div className="player w-full h-full mb-4">
+                {currentMusic && currentMusic.id ? (
+                  <SpotifyPlayer trackId={currentMusic.id} />
+                ) : (
+                  <div className="h-80 flex items-center justify-center">로딩 중...</div>
+                )}
               </div>
             )}
             <div className="swipe-buttons flex justify-evenly w-full">
@@ -396,7 +338,9 @@ export default function RecommendationMusic() {
               </button>
               <button
                 className={`swipe-button like-button ${direction === "right" ? "bg-green-500/10" : ""} ${isLikeProcessing ? "opacity-50" : ""}`}
-                onClick={() => handleLike(musics[currentIndex].id)}
+                onClick={() =>
+                  handleLike(musics[currentIndex].id, musics[currentIndex].recommendMusicId)
+                }
                 disabled={isLikeProcessing}
               >
                 👍 좋아요

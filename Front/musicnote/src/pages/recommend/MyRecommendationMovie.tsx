@@ -30,19 +30,21 @@ export default function MyRecommendationMovie() {
     error: deleteLikedMovieError,
   } = useDeleteData("recommend/like/movie");
 
-  const likeHandler = (id: string) => {
+  const likeHandler = (id: number, recommendMovieId: string) => {
     setIsLikeProcessing(true);
     const foundMovie = movies.find((movie: Movie) => movie.id === id);
 
     // 영화가 존재하고 is_liked가 true인 경우 좋아요 취소
     if (foundMovie && foundMovie.is_liked === true) {
       deleteLikedMovie({
-        recommendMovieId: id,
+        recommendMovieId: recommendMovieId,
+        tmdbMovieId: id,
       });
     } else {
       // 그렇지 않으면 좋아요 추가
       likeMovie({
-        recommendMovieId: id,
+        recommendMovieId: recommendMovieId,
+        tmdbMovieId: id,
       });
     }
     setMovies(
@@ -85,7 +87,7 @@ export default function MyRecommendationMovie() {
   return (
     <div className="text-white w-full h-full">
       <TopBar title={"영화 추천 보관함"} />
-      <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-2 pb-0 mx-3 xs:mx-5 border border-solid border-border min-h-[calc(100vh-120px)] overflow-y-auto">
+      <div className="mt-[20px] flex flex-col items-center justify-start bg-level2 rounded-3xl p-2 pb-0 mx-3 xs:mx-5 border border-solid border-border min-h-[calc(100vh-120px)] overflow-y-auto">
         {movies.map((movie: Movie, index: number) => (
           <div
             key={index}
@@ -111,7 +113,7 @@ export default function MyRecommendationMovie() {
                 className="flex w-10 flex-shrink-0 items-center justify-center hover:translate-y-[-5px] transition-all duration-200"
                 onClick={(e) => {
                   e.stopPropagation();
-                  likeHandler(movie.id);
+                  likeHandler(movie.id, movie.recommendMovieId);
                 }}
               >
                 <div className={`${isLikeProcessing ? "opacity-50 pointer-events-none" : ""}`}>
