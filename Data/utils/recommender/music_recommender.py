@@ -49,7 +49,7 @@ class MusicRecommender:
 if __name__ == "__main__":
     recommender = MusicRecommender()
     before = time.time()
-    url = "http://13.125.215.33:8100/data/api/recommend/music"  # 바꿔줘야 함
+    url = "http://127.0.0.1:8000/data/api/recommend/music"  # 바꿔줘야 함
 
     def generate_random_input():
         random_list = [random.uniform(0, 1) for _ in range(5)]
