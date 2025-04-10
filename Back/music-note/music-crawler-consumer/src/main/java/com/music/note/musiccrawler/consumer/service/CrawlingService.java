@@ -42,18 +42,24 @@ public class CrawlingService {
 	public void handleMissingTrackEvent(MusicListWithMissingEvent event) {
 		//TODO: 크롤링 실패 시 처리하기
 		List<MusicDto> savedMissingTracks = saveMissingTracks(event.getMissingTracks());
-
-		log.info("=================================================================");
+		log.info("============= savedMissingTracks =============");
 		for (MusicDto musicDto : savedMissingTracks) {
-			log.info("크롤링 성공: {}", musicDto.getImageUrl());
+			log.info("imageUrl: {}", musicDto.getImageUrl());
 		}
-		log.info("=================================================================");
+		log.info("----------------------------------------------------------------------");
 		publishRequestEvent(event, savedMissingTracks);
 	}
 
 	private void publishRequestEvent(MusicListWithMissingEvent event, List<MusicDto> savedMissingTracks) {
 		// 기존 musicList와 새로 저장된 트랙 리스트를 합침
 		List<MusicDto> combinedList = new ArrayList<>(event.getExistingTracks());
+
+		log.info("============= combinedList =============");
+		for (MusicDto musicDto : combinedList) {
+			log.info("imageUrl: {}", musicDto.getImageUrl());
+		}
+		log.info("----------------------------------------------------------------------");
+
 		combinedList.addAll(savedMissingTracks);
 
 		// 새 이벤트 생성
