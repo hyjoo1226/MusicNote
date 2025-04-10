@@ -36,7 +36,10 @@ function App() {
     }
 
     // 기존 연결 종료
-    eventSourceRef.current?.close();
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+      eventSourceRef.current = null;
+    }
 
     // EventSource 인스턴스 생성
     eventSourceRef.current = new EventSourcePolyfill(sseUrl, {
@@ -45,10 +48,12 @@ function App() {
         "Spotify-Access-Token": spotifyAccessToken ?? "",
       },
       withCredentials: true,
+      heartbeatTimeout: 60000, // 60초 타임아웃 설정
     });
 
     // 연결 성공 시
     eventSourceRef.current.onopen = () => {
+      console.log("SSE 연결 성공");
       setConnectionStatus("connected");
     };
 
@@ -75,24 +80,40 @@ function App() {
       }
     };
 
-    // 초기 연결 이벤트
-    eventSourceRef.current.addEventListener("connect", function (event) {
-      const e = event as unknown as { data: string };
-      try {
-        const data = e.data;
-        // "SSE 연결 완료" 메시지는 저장하지 않음
-        if (data !== "SSE 연결 완료") {
-          const notification: Notification = {
-            id: Date.now().toString(),
-            message: data,
-            timestamp: new Date().toISOString(),
-          };
-          addNotification(notification);
-        }
-      } catch (err) {
-        console.error("연결 메시지 파싱 오류:", err);
+    // // 초기 연결 이벤트
+    // eventSourceRef.current.addEventListener("connect", function (event) {
+    //   const e = event as unknown as { data: string };
+    //   try {
+    //     const data = e.data;
+    //     // "SSE 연결 완료" 메시지는 저장하지 않음
+    //     if (data !== "SSE 연결 완료") {
+    //       const notification: Notification = {
+    //         id: Date.now().toString(),
+    //         message: data,
+    //         timestamp: new Date().toISOString(),
+    //       };
+    //       addNotification(notification);
+    //     }
+    //   } catch (err) {
+    //     console.error("연결 메시지 파싱 오류:", err);
+    //   }
+    // });
+
+    useEffect(() => {
+      // Service Worker 업데이트 확인 및 적용
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.ready.then((registration) => {
+          registration.update();
+        });
+
+        // 로그인/로그아웃 시 캐시 비우기
+        navigator.serviceWorker.ready.then((reg) => {
+          reg.active?.postMessage({
+            type: "CLEAR_AUTH_CACHE",
+          });
+        });
       }
-    });
+    }, [accessToken]);
 
     eventSourceRef.current.addEventListener("ping", function (event) {
       const e = event as unknown as { data: string };
@@ -131,12 +152,13 @@ function App() {
 
     // 에러 처리
     eventSourceRef.current.onerror = (err) => {
-      console.error("에러 발생:", err);
+      console.error("SSE 에러 발생:", err);
       setConnectionStatus("disconnected");
 
       // 연결 실패 시 일정 시간 후 재시도
       setTimeout(() => {
-        if (navigator.onLine) {
+        if (navigator.onLine && accessToken) {
+          console.log("SSE 재연결 시도");
           setupSSEConnection();
         }
       }, 5000); // 5초 후 재시도
@@ -222,6 +244,21 @@ function App() {
       eventSourceRef.current?.close();
     };
   }, [accessToken, addNotification, setConnectionStatus, setupSSEConnection]);
+
+  // 페이지 이동 시에도 SSE 연결 유지
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && navigator.onLine && accessToken) {
+        setupSSEConnection();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [accessToken, setupSSEConnection]);
 
   // IndexedDB에 알림 저장 (오프라인 상태용)
   const saveNotificationToIndexedDB = async (notification: Notification) => {

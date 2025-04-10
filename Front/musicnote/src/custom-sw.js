@@ -27,19 +27,36 @@ registerRoute(
   })
 );
 
-// SSE 연결은 캐싱하지 않도록 수정
 registerRoute(
-  new RegExp("https://j12a308\\.p\\.ssafy\\.io/api/notifications/sse/subscribe"),
+  ({ url }) => {
+    // 인증 관련 모든 API 캐싱하지 않음
+    if (
+      url.pathname.includes("/api/auth") ||
+      url.pathname.includes("/auth/") ||
+      url.pathname.includes("/login")
+    ) {
+      return false;
+    }
+    return url.origin === "https://j12a308.p.ssafy.io" && url.pathname.startsWith("/api/");
+  },
   new NetworkFirst({
-    cacheName: "sse-connection-cache",
+    cacheName: "api-cache",
     plugins: [
       new ExpirationPlugin({
-        maxEntries: 1,
-        maxAgeSeconds: 0, // 캐시하지 않음
+        maxEntries: 100,
+        maxAgeSeconds: 60 * 60 * 2, // 2시간으로 줄이기
       }),
     ],
+    networkTimeoutSeconds: 5, // 타임아웃 줄이기
   })
 );
+
+// Service worker 업데이트 관리 추가
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
 
 // API 요청 캐싱 전략 수정
 registerRoute(
