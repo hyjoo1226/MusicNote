@@ -110,7 +110,7 @@ class BookItem(BaseModel):
     publisher: str
     description: Optional[str]
     isbn: Optional[str]
-    pubdate: date
+    pubdate: Optional[date]
 
 class BookList(BaseModel):
     books: List[BookItem]

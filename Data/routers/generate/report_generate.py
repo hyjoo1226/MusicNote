@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 from modelschemas.request_response import BigFiveScore, Report, WeeklyReport
-from utils.generator.report_generator_v2 import ReportGenerator
+from utils.generator.report_generator_v3 import ReportGenerator
 from typing import List
 
 router = APIRouter()
