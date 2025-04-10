@@ -77,7 +77,7 @@ public class WeeklyReportService {
 		// Notification 서버로 이벤트 전송
 		NotificationEvent notificationEvent = NotificationEvent.builder()
 			.userId(event.getUserId())
-			.message(WEEKLY_REPORT_READY_MESSAGE)
+			.message(weeklyReport.getId())
 			.type(event.getType())
 			.build();
 		notificationProducer.sendMusicListEvent(notificationEvent);
