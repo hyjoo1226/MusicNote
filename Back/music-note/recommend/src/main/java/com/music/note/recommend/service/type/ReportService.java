@@ -41,16 +41,16 @@ public class ReportService {
 	private final ReportMapper reportMapper;
 	private final RecommendCommonService recommendCommonService;
 	public ResponseReportList getMonthlyDailyReports(String userId, int month, int year){
-		// LocalDate start = LocalDate.of(year, month, 1);
-		// LocalDate end = start.plusMonths(1);
-		LocalDate end = LocalDate.of(year, month, 1);
-		LocalDate start = end.plusMonths(1);
+		LocalDate start = LocalDate.of(year, month, 1);
+		LocalDate end = start.plusMonths(1);
+		// LocalDate end = LocalDate.of(year, month, 1);
+		// LocalDate start = end.plusMonths(1);
 
 		Date startDate = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		Date endDate = Date.from(end.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-			List<PersonalityReport> reportList = reportRepository.findByUserIdAndCreatedAtBetween(userId,
-				startDate, endDate);
+		List<PersonalityReport> reportList = reportRepository.findByUserIdAndCreatedAtBetween(userId,
+			startDate, endDate);
 		List<ResponseReportWithTypeDto> responseReportList = new ArrayList<>();
 		for (PersonalityReport report : reportList){
 			ResponseReportWithTypeDto responseReport = reportMapper.entityToResponseReport(report);
