@@ -1,6 +1,7 @@
 from deep_translator import GoogleTranslator
 import os
 import json
+import re
 from datetime import datetime
 from typing import List
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -28,6 +29,22 @@ class KeywordTool:
         with open(self.mapping_path, "w", encoding="utf-8") as f:
             json.dump(self.translation_dict, f, ensure_ascii=False, indent=2)
 
+    def _clean_translation(self, text: str) -> str:
+        """
+        Google 번역 결과에서 불필요한 조사나 동사를 제거해 명사형으로 정제한다.
+        예: '개발하다' → '개발', '공감하는 것' → '공감'
+        """
+        # 불필요한 조사나 동사형 표현 제거 패턴들
+        patterns = [
+            r"(하다|되다|이다)$",
+            r"(하는 것|하기|되는 것|된 것|되어 있는 것)$",
+            r"(적인 것|스럽다|스러운 것)$",
+        ]
+        for pattern in patterns:
+            text = re.sub(pattern, "", text)
+
+        return text.strip()
+
     def translate_and_save_keywords(self, keywords: List[str]) -> List[str]:
         new_keywords = [kw for kw in keywords if kw not in self.translation_dict]
         translator = GoogleTranslator(source="en", target="ko")
@@ -35,7 +52,8 @@ class KeywordTool:
         for word in new_keywords:
             try:
                 translated = translator.translate(word)
-                self.translation_dict[word] = translated
+                cleaned = self._clean_translation(translated)
+                self.translation_dict[word] = cleaned
             except Exception as e:
                 print(f"⚠️ 번역 실패: {word} → {e}")
                 self.translation_dict[word] = word  # fallback
@@ -53,7 +71,7 @@ class KeywordTool:
         sorted_keywords = sorted(zip(feature_names, scores), key=lambda x: x[1], reverse=True)
         return [word for word, _ in sorted_keywords[:top_k * 2]]
 
-    def deduplicate_keywords(self, keywords: List[str], top_k: int = 10) -> List[str]:
+    def deduplicate_keywords(self, keywords: List[str], top_k: int = 15) -> List[str]:
         ps = PorterStemmer()
         stem_map = {}
         for word in keywords:
@@ -62,9 +80,9 @@ class KeywordTool:
                 stem_map[root] = word
         return list(stem_map.values())[:top_k]
 
-    def extract_clean_keywords(self, descriptions: List[str], top_k: int = 10) -> List[str]:
+    def extract_clean_keywords(self, descriptions: List[str], top_k: int = 15) -> List[str]:
         raw_keywords = self.extract_tfidf_keywords(descriptions, top_k)
-        return self.deduplicate_keywords(raw_keywords, top_k=5)
+        return self.deduplicate_keywords(raw_keywords, top_k=15)
 
 if __name__ == "__main__":
     tool = KeywordTool()
