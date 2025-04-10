@@ -1,6 +1,7 @@
 import sys
 import os
-# import random
+import asyncio
+import aiohttp
 import requests, json
 from dotenv import load_dotenv
 # Jobrecommender import하기 위해 상위 폴더 경로를 sys.path애 추가가
@@ -12,17 +13,9 @@ def keyword_extractor(bf_score):
     keywordmaker = JobRecommender()
     return  keywordmaker.get_keywords_from_bigfive(bf_score)
 
-# 테스트용 랜덤 키워드 생성기
-# def random_keyword():
-#     scores = [[random.uniform(0, 1) for _ in range(5)] for _ in range(5)]
-#     keywords = []
-#     for score in scores:
-#         keyword = keyword_extractor(score)
-#         keywords.append(keyword)    
-#     return keywords
 
 # lastfm api 요청 코드드
-def lastfm_request(tag, api_key, limit=50, page=1):
+async def lastfm_request(session, tag, api_key, limit=50, page=1):
     url = "http://ws.audioscrobbler.com/2.0/"
 
     params = {
@@ -34,8 +27,8 @@ def lastfm_request(tag, api_key, limit=50, page=1):
         'format' : 'json'
     }
 
-    response = requests.get(url, params=params)
-    return response.json()
+    async with session.get(url, params=params) as response:
+        return await response.json()
 
 # 요청 받은 정보에서 곡, 아티스트 이름 추출출
 def extract_track_info(results, response):
@@ -64,22 +57,26 @@ def extract_track_info(results, response):
         track_info = {"tag" : "new"}
     return track_info
 
-# bf -> 곡 전환하는 최종 함수수
-def bf_to_track(api_key, bf_score):
-    # tag_list = random_keyword()
+async def async_bf_to_track(api_key, bf_score):
     bf_tags = keyword_extractor(bf_score)
     print(bf_tags)
+    
     results = []
-    for tag in bf_tags:
-        response = lastfm_request(tag, api_key=api_key)
-        track_info = extract_track_info(results, response)
-        results.append(track_info)
+    
+    async with aiohttp.ClientSession() as session:
+        tasks = [lastfm_request(session, tag, api_key) for tag in bf_tags]
+        responses = await asyncio.gather(*tasks)
 
-    # current_dir = os.path.dirname(__file__)
-    # filename = os.path.join(current_dir, "resulits.json")
-    # with open(filename, "w", encoding='utf-8') as f:
-    #     json.dump(results, f, ensure_ascii=False)
+        for response in responses:
+            track_info = extract_track_info(results , response)
+            results.append(track_info)
+
     return results
+
+
+# bf -> 곡 전환하는 최종 함수수
+def bf_to_track(api_key, bf_score):
+    return asyncio.run(async_bf_to_track(api_key, bf_score))
 
 
 if __name__ == "__main__":
