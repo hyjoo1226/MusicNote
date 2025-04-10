@@ -21,6 +21,7 @@ export default function NavBar() {
   const patternHiddenPaths = [
     "/musiclist",
     "/choice-musiclist",
+    "/analysis/report/choice",
     "/recommendationlist",
     "/recommendations/detail",
     "/recommendations/my",

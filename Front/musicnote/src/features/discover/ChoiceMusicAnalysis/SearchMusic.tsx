@@ -9,11 +9,9 @@ interface SearchMusicProps {
 }
 
 export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMusicProps) {
-  // const [searchResults, setSearchResults] = useState<Track[]>([]);
   const [query, setQuery] = useState("");
   const [isResultsVisible, setIsResultsVisible] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  // const [debouncedQuery] = useDebounce(query, 500);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -42,32 +40,6 @@ export default function SearchMusic({ onTrackSelect, selectedTracks }: SearchMus
       setIsResultsVisible(true);
     }
   }, [debouncedQuery, data]);
-  // useEffect(() => {
-  //   if (!debouncedQuery.trim()) return;
-
-  //   const url = new URL("https://api.spotify.com/v1/search");
-  //   url.searchParams.append("q", debouncedQuery);
-  //   url.searchParams.append("type", "track");
-  //   url.searchParams.append("limit", "20");
-
-  //   const fetchSearchData = async () => {
-  //     try {
-  //       const response = await fetch(url, {
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       });
-  //       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  //       const data = await response.json();
-  //       setSearchResults(data.tracks.items);
-  //       setIsResultsVisible(true); // 새로운 검색 시 결과창 자동 열림
-  //     } catch (error) {
-  //       console.error("Search failed:", error);
-  //     }
-  //   };
-
-  //   fetchSearchData();
-  // }, [debouncedQuery, accessToken]);
 
   // 외부 클릭 시 검색창 닫기
   useEffect(() => {

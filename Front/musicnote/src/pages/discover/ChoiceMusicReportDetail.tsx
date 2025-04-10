@@ -55,6 +55,7 @@ export default function ChoiceMusicReportDetail() {
   };
   // 음악 리스트 아이콘 핸들러
   const handleMusicListClick = () => {
+    // navigate를 통해 reportMusiclistData 전달
     navigate(`/choice-musiclist/${reportId}`, { state: { musicListData: reportMusiclistData } });
   };
   // web share API

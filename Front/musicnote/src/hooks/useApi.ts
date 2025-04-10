@@ -1,4 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  UseQueryResult,
+  useQueries,
+} from "@tanstack/react-query";
 import { apiClient, spotifyApiClient } from "@/api/apiClient";
 
 // GET 요청을 위한 커스텀 훅
@@ -10,6 +16,23 @@ export const useGetData = (key: string, url: string, client: string = "default",
         ? spotifyApiClient.get(url).then((res: any) => res.data)
         : apiClient.get(url).then((res: any) => res.data),
     ...options,
+  });
+};
+
+// 여러 데이터를 병렬로 GET 요청하는 훅
+export const useGetMultipleData = (
+  keys: string[],
+  urls: string[],
+  client: string = "default"
+): UseQueryResult<any, Error>[] => {
+  return useQueries({
+    queries: urls.map((url, index) => ({
+      queryKey: [keys[index]],
+      queryFn: () =>
+        client === "spotify"
+          ? spotifyApiClient.get(url).then((res: any) => res.data)
+          : apiClient.get(url).then((res: any) => res.data),
+    })),
   });
 };
 
