@@ -27,23 +27,29 @@ registerRoute(
   })
 );
 
-// SSE 연결 캐싱 전략
+// SSE 연결은 캐싱하지 않도록 수정
 registerRoute(
   new RegExp("https://j12a308\\.p\\.ssafy\\.io/api/notifications/sse/subscribe"),
-  new StaleWhileRevalidate({
+  new NetworkFirst({
     cacheName: "sse-connection-cache",
     plugins: [
       new ExpirationPlugin({
-        maxEntries: 10,
-        maxAgeSeconds: 60 * 60 * 2, // 2시간
+        maxEntries: 1,
+        maxAgeSeconds: 0, // 캐시하지 않음
       }),
     ],
   })
 );
 
-// 일반 API 요청 캐싱 전략
+// API 요청 캐싱 전략 수정
 registerRoute(
-  new RegExp("https://j12a308\\.p\\.ssafy\\.io/api/"),
+  ({ url }) => {
+    // 로그인 관련 API는 캐싱하지 않음
+    if (url.pathname.includes("/api/auth")) {
+      return false;
+    }
+    return url.origin === "https://j12a308.p.ssafy.io" && url.pathname.startsWith("/api/");
+  },
   new NetworkFirst({
     cacheName: "api-cache",
     plugins: [
