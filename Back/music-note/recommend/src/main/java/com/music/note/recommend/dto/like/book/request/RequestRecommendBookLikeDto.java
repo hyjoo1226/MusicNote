@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestRecommendBookLikeDto {
 	private String recommendBookId;
+	private String isbn;
 }

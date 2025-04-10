@@ -26,16 +26,9 @@ public class RecommendMovieController {
 	private String secretKey;
 	@GetMapping("/test")
 	public String test() {
+		log.info("로그 테스트!");
 		return "테스트 호출 - 추천 서버";
 	}
-
-	@GetMapping("/test2")
-	public Long test2(@RequestParam Long memberId){
-		log.info("memberId: {}, Type: {}", memberId, memberId.getClass().getSimpleName());
-		return memberId;
-	}
-
-
 	@PostMapping("/movie")
 	public CommonResponse<ResponseRecommendMovieList> recommendMovies(HttpServletRequest request) {
 		String userId = JwtUtil.getUserIdByJwtToken(request, secretKey);

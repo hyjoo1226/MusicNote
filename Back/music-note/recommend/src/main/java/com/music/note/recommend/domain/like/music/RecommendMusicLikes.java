@@ -23,7 +23,16 @@ public class RecommendMusicLikes {
 	private String id;
 	@Field("liked_music_ids") // 필드명 지정
 	private List<String> likeMusicIds = new ArrayList<>();
+
+	@Field("liked_music_spotify_music_id") // 필드명 지정
+	private List<String> likeMusicSpotifyMusicIds = new ArrayList<>();
 	private String userId;
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
+	public boolean isLiked(String musicId) {
+		return likeMusicIds.contains(musicId);
+	}
+	public boolean isLikedBySpotifyMusicId(String spotifyMusicId) {
+		return likeMusicSpotifyMusicIds.contains(spotifyMusicId);
+	}
 }

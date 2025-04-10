@@ -1,8 +1,12 @@
 package com.music.note.musictype.consumer.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import com.music.note.common.exception.exception.common.ErrorCode;
+import com.music.note.common.exception.exception.domain.BusinessBaseException;
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.NotificationEvent;
 import com.music.note.kafkaeventmodel.type.RequestType;
@@ -10,6 +14,7 @@ import com.music.note.musictype.consumer.converter.AudioFeatureConverter;
 import com.music.note.musictype.consumer.converter.ManualReportConverter;
 import com.music.note.musictype.consumer.converter.PersonalityReportConverter;
 import com.music.note.musictype.consumer.dto.daily.AudioFeaturesRequest;
+import com.music.note.musictype.consumer.dto.daily.ManualReportResponse;
 import com.music.note.musictype.consumer.dto.daily.PersonalityReportDto;
 import com.music.note.musictype.consumer.kafka.proiducer.NotificationProducer;
 import com.music.note.musictype.consumer.repository.ManualReportRepository;
@@ -33,6 +38,24 @@ public class DailyReportService {
 	private final ReportRepository reportRepository;
 	private final ManualReportRepository manualReportRepository;
 	private final NotificationProducer notificationProducer;
+
+	public List<ManualReportResponse> getReportsByUserId(String userId) {
+		List<ManualReport> reports = manualReportRepository.findAllByUserId(userId);
+
+		if (reports.isEmpty()) {
+			throw new BusinessBaseException(ErrorCode.NOT_FOUND_PERSONALITY_REPORT);
+		}
+
+		return reports.stream()
+			.map(ManualReportResponse::from)
+			.toList();
+	}
+
+	public ManualReportResponse getReportById(String id) {
+		ManualReport report = manualReportRepository.findById(id)
+			.orElseThrow(() -> new BusinessBaseException(ErrorCode.NOT_FOUND_PERSONALITY_REPORT));
+		return ManualReportResponse.from(report);
+	}
 
 	public void processDailyTypeEvent(MusicListEvent event) {
 
