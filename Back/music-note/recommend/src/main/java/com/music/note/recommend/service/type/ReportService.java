@@ -21,7 +21,6 @@ import com.music.note.recommend.dto.report.ResponseReportWithTypeDto;
 import com.music.note.recommend.dto.report.ResponseReportList;
 import com.music.note.recommend.dto.report.music.MusicDto;
 import com.music.note.recommend.dto.report.music.ResponseMusicDtoList;
-import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
 import com.music.note.recommend.dto.type.ResponseWeeklyTypeDto;
 import com.music.note.recommend.dto.type.TrendTypeDto;
 import com.music.note.recommend.dto.type.TypeDto;
@@ -42,14 +41,16 @@ public class ReportService {
 	private final ReportMapper reportMapper;
 	private final RecommendCommonService recommendCommonService;
 	public ResponseReportList getMonthlyDailyReports(String userId, int month, int year){
-		LocalDate start = LocalDate.of(year, month, 1);
-		LocalDate end = start.plusMonths(1);
+		// LocalDate start = LocalDate.of(year, month, 1);
+		// LocalDate end = start.plusMonths(1);
+		LocalDate end = LocalDate.of(year, month, 1);
+		LocalDate start = end.plusMonths(1);
 
 		Date startDate = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		Date endDate = Date.from(end.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-		List<PersonalityReport> reportList = reportRepository.findByUserIdAndCreatedAtBetween(userId,
-			startDate, endDate);
+			List<PersonalityReport> reportList = reportRepository.findByUserIdAndCreatedAtBetween(userId,
+				startDate, endDate);
 		List<ResponseReportWithTypeDto> responseReportList = new ArrayList<>();
 		for (PersonalityReport report : reportList){
 			ResponseReportWithTypeDto responseReport = reportMapper.entityToResponseReport(report);
@@ -69,20 +70,35 @@ public class ReportService {
 	}
 
 	public ResponseWeeklyTypeDto getTypeTrend(String userId, LocalDate date) {
-		// 시작 날짜 00:00:00
-		LocalDateTime startOfDay = date.atStartOfDay();
-		// 끝 날짜 = 시작 + 7일
-		LocalDateTime endOfDay = date.plusDays(7).atStartOfDay();
 
-		// LocalDateTime → Date 변환
+		LocalDateTime startOfDay = date.minusDays(6).atStartOfDay();
+		LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
+
 		Date start = Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
 		Date end = Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+
+
 		List<PersonalityReport> reportList = reportRepository.findByUserIdAndCreatedAtBetween(userId,
 			start, end);
 		List<TrendTypeDto> trendTypeDtoList = new ArrayList<>();
+		Map<LocalDate, TrendTypeDto> dateToTrendMap = new HashMap<>();
 		for (PersonalityReport report : reportList){
 			TrendTypeDto trendTypeDto = reportMapper.entityToTrendTypeDto(report);
-			trendTypeDtoList.add(trendTypeDto);
+			LocalDate reportDate = trendTypeDto.getCreatedAt().toLocalDate();
+			dateToTrendMap.put(reportDate, trendTypeDto);
+		}
+		for (int i = 0; i < 7; i++) {
+			LocalDate currentDate = date.minusDays(6 - i);
+
+			if (dateToTrendMap.containsKey(currentDate)) {
+				trendTypeDtoList.add(dateToTrendMap.get(currentDate));
+			}
+			else {
+				TrendTypeDto emptyDto = TrendTypeDto.builder()
+					.createdAt(currentDate.atStartOfDay())
+					.build();
+				trendTypeDtoList.add(emptyDto);
+			}
 		}
 		return ResponseWeeklyTypeDto.builder()
 			.trendTypeDtoList(trendTypeDtoList)
