@@ -1,4 +1,4 @@
-import { RadarChart, PolarGrid, PolarAngleAxis, Radar } from "recharts";
+import { RadarChart, PolarGrid, PolarAngleAxis, Radar, PolarRadiusAxis } from "recharts";
 import { ChartProps, CustomTickProps } from "./AnalysisType";
 
 // big5 알파벳 매핑
@@ -19,6 +19,12 @@ const traitColors: Record<string, string> = {
 };
 
 export default function Chart({ bigFiveScore }: ChartProps) {
+  // 데이터 정규화 (100 초과 값 방지)
+  const normalizedData = bigFiveScore.map((item) => ({
+    ...item,
+    UserNormalized: Math.min(item.User / 100, 1),
+  }));
+
   // 상위 3요인
   const topFactorLetters = [...bigFiveScore]
     .sort((a, b) => b.User - a.User)
@@ -65,7 +71,7 @@ export default function Chart({ bigFiveScore }: ChartProps) {
         outerRadius={90}
         width={300}
         height={300}
-        data={bigFiveScore}
+        data={normalizedData}
         margin={{ top: 30, right: 30, left: 30, bottom: 30 }}
       >
         <PolarGrid
@@ -78,10 +84,10 @@ export default function Chart({ bigFiveScore }: ChartProps) {
 
         {/* 커스텀 라벨 적용 */}
         <PolarAngleAxis dataKey="bigFive" tick={(props) => renderCustomAxisLabel(props)} />
-
+        <PolarRadiusAxis domain={[0, 1]} tick={false} axisLine={false} />
         <Radar
           name="성향점수"
-          dataKey="User"
+          dataKey="UserNormalized"
           fill="#F78888"
           stroke="#F78888"
           strokeWidth={4}
