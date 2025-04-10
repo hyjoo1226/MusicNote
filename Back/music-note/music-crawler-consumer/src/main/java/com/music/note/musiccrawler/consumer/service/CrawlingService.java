@@ -42,6 +42,12 @@ public class CrawlingService {
 	public void handleMissingTrackEvent(MusicListWithMissingEvent event) {
 		//TODO: 크롤링 실패 시 처리하기
 		List<MusicDto> savedMissingTracks = saveMissingTracks(event.getMissingTracks());
+
+		log.info("=================================================================");
+		for (MusicDto musicDto : savedMissingTracks) {
+			log.info("크롤링 성공: {}", musicDto.getImageUrl());
+		}
+		log.info("=================================================================");
 		publishRequestEvent(event, savedMissingTracks);
 	}
 
