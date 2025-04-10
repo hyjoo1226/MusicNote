@@ -13,10 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.music.note.kafkaeventmodel.dto.MusicDto;
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.MusicListWithMissingEvent;
+import com.music.note.kafkaeventmodel.dto.NotificationEvent;
+import com.music.note.kafkaeventmodel.type.RequestType;
 import com.music.note.musiccrawler.consumer.converter.MusicDtoConverter;
 import com.music.note.musiccrawler.consumer.converter.TrackConverter;
 import com.music.note.musiccrawler.consumer.dto.RawTrackDataResponse;
 import com.music.note.musiccrawler.consumer.dto.TrackDataResponse;
+import com.music.note.musiccrawler.consumer.kafka.producer.NotificationProducer;
 import com.music.note.musiccrawler.consumer.kafka.producer.TypeEventProducer;
 import com.music.note.musiccrawler.consumer.repository.TrackRepository;
 import com.music.note.trackdomain.domain.Track;
@@ -36,13 +39,23 @@ public class CrawlingService {
 
 	private final TrackRepository trackRepository;
 	private final TypeEventProducer typeEventProducer;
+	private final NotificationProducer notificationProducer;
 	private final RestClient restClient;
 	private final ObjectMapper objectMapper;
 
 	public void handleMissingTrackEvent(MusicListWithMissingEvent event) {
 		//TODO: 크롤링 실패 시 처리하기
-		List<MusicDto> savedMissingTracks = saveMissingTracks(event.getMissingTracks());
-		publishRequestEvent(event, savedMissingTracks);
+		try {
+			List<MusicDto> savedMissingTracks = saveMissingTracks(event.getMissingTracks());
+			publishRequestEvent(event, savedMissingTracks);
+		} catch (Exception e) {
+			NotificationEvent notificationEvent = NotificationEvent.builder()
+				.userId(event.getUserId())
+				.message("크롤링 실패")
+				.type(RequestType.CRAWLING_ERROR)
+				.build();
+			notificationProducer.sendMusicListEvent(notificationEvent);
+		}
 	}
 
 	private void publishRequestEvent(MusicListWithMissingEvent event, List<MusicDto> savedMissingTracks) {
@@ -61,7 +74,7 @@ public class CrawlingService {
 		typeEventProducer.sendMusicListEvent(requestEvent);
 	}
 
-	public List<MusicDto> saveMissingTracks(List<MusicDto> missingTracks) {
+	public List<MusicDto> saveMissingTracks(List<MusicDto> missingTracks) throws Exception {
 		List<MusicDto> updatedMusicList = new ArrayList<>();
 		for (MusicDto musicDto : missingTracks) {
 			TrackDataResponse trackDataResponse = fetchTrackData(musicDto.getSpotifyId());
@@ -80,7 +93,7 @@ public class CrawlingService {
 		return updatedMusicList;
 	}
 
-	private TrackDataResponse fetchTrackData(String trackId) {
+	private TrackDataResponse fetchTrackData(String trackId) throws Exception {
 		URI uri = buildApiUri(trackId);
 
 		String responseBody = restClient.get()
