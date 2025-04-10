@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.music.note.common.exception.exception.domain.recommend.domain.movie.RecommendMovieNotFoundException;
+import com.music.note.recommend.common.logging.dto.LogEvent;
+import com.music.note.recommend.common.logging.service.LoggingService;
 import com.music.note.recommend.domain.recommned.movie.RecommendMovie;
 import com.music.note.recommend.dto.movie.RecommendMovieDto;
 import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
@@ -27,16 +29,19 @@ public class RecommendMovieService {
 	private final RecommendMovieMapper recommendMovieMapper;
 	private final RecommendMovieRepository recommendMovieRepository;
 	private final RecommendCommonService recommendCommonService;
+	private final LoggingService loggingService;
 
 	public ResponseRecommendMovieList recommendMovies(String memberId) {
 		try {
 			RequestLatestPersonalityReportDto personalityReportDto = recommendCommonService.getRequestLatestPersonalityReportDto(memberId);
 			ResponseRecommendMovieList recommendMoviesByDataServer = getRecommendMoviesByDataServer(personalityReportDto);
+
 			recommendMoviesByDataServer.allocateListSize();
 			saveRecommendMovie(recommendMoviesByDataServer.getMovies(), memberId);
 			return recommendMoviesByDataServer;
 		}
 		catch (Exception e){
+			loggingService.log(LogEvent.errorEvent(memberId, "추천 영화 생성시 오류 발생"));
 			log.error("에러입니다: {}", e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
@@ -52,6 +57,7 @@ public class RecommendMovieService {
 	}
 
 	private ResponseRecommendMovieList getRecommendMoviesByDataServer(RequestLatestPersonalityReportDto personalityReportDto){
+
 		String dataUrl = "http://13.125.215.33:8100/data/api/recommend/movie";
 		return recommendCommonService.getRecommendations(dataUrl,
 			personalityReportDto, ResponseRecommendMovieList.class);
