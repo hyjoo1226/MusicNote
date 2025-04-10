@@ -1,38 +1,17 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useNotificationStore } from "@/stores/notificationStore";
 import TopBar from "@/components/layout/TopBar";
-import { useGetMultipleData, useGetData } from "@/hooks/useApi";
+import { useGetData } from "@/hooks/useApi";
 
 export default function ChoiceMusicReports() {
   const navigate = useNavigate();
-  const notificationStore = useNotificationStore();
-  // console.log(notificationStore);
-
-  // 수동 요청 & 최신 날짜 순 정렬
-  const filteredNotifications = notificationStore.notifications
-    .filter((notification) => {
-      try {
-        // JSON 형식인지 확인
-        if (notification.message.startsWith("{") && notification.message.endsWith("}")) {
-          const messageObject = JSON.parse(notification.message);
-          return messageObject.type === "수동 요청";
-        } else {
-          // 문자열 메시지는 내용으로 확인
-          return notification.message.includes("수동 요청");
-        }
-      } catch (error) {
-        // console.error("Error parsing message:", error);
-        return false;
-      }
-    })
-    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-
-  // API 호출을 위한 키와 URL 생성
-  const { data: reportResults } = useGetData("ChoiceReportIds", "/type/daily-report");
+  const { data: choiceMusicData } = useGetData("ChoiceMusicData", "type/daily-report");
+  const [choiceMusicReports, setChoiceMusicReports] = useState<any[]>([]);
   useEffect(() => {
-    console.log(reportResults);
-  }, [reportResults]);
+    if (choiceMusicData) {
+      setChoiceMusicReports(choiceMusicData.data.reverse());
+    }
+  }, [choiceMusicData]);
 
   // const queryKeys = reportIds.map((id) => `report-${id}`);
   // const queryUrls = reportIds.map((id) => `/type/daily-report/${id}`);
@@ -51,27 +30,17 @@ export default function ChoiceMusicReports() {
     <div className="text-white w-full h-full">
       <TopBar title={"리포트 보관함"} />
       <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-4 mx-[10px] xs:mx-5">
-        {filteredNotifications.map((notification, index) => {
-          const messageObject = JSON.parse(notification.message);
-          const reportData = reportResults[index];
-
+        {choiceMusicReports.map((report) => {
           // 음악 리스트와 첫 번째 곡 정보 가져오기
-          const musicList = reportData?.musicList || [];
+          const musicList = report?.musicList || [];
           const firstTrack = musicList[0] || {}; // 첫 번째 트랙 또는 빈 객체
           const totalTracks = musicList.length;
 
           return (
             <div
-              key={notification.id}
+              key={report.id}
               className="mb-4 cursor-pointer w-full border-b border-solid border-border"
-              onClick={() =>
-                navigate(`/analysis/report/choice/${reportId}`, {
-                  state: {
-                    reportData: reportData,
-                    musicList: reportData?.data.musicList || [],
-                  },
-                })
-              }
+              onClick={() => navigate(`/analysis/report/choice/${report.id}`)}
             >
               <div className="flex items-center space-x-4 p-3 hover:bg-level3 rounded-lg transition-colors">
                 {/* 곡 이미지 */}
@@ -100,7 +69,7 @@ export default function ChoiceMusicReports() {
 
                     {/* 시간 표시 */}
                     <p>
-                      {new Date(notification.timestamp)
+                      {new Date(report.createdAt)
                         .toLocaleDateString("ko-KR", {
                           year: "numeric",
                           month: "2-digit",
