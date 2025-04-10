@@ -11,8 +11,14 @@ export default function ChoiceMusicReports() {
   const filteredNotifications = notificationStore.notifications
     .filter((notification) => {
       try {
-        const messageObject = JSON.parse(notification.message);
-        return messageObject.type === "수동 요청";
+        // JSON 형식인지 확인
+        if (notification.message.startsWith("{") && notification.message.endsWith("}")) {
+          const messageObject = JSON.parse(notification.message);
+          return messageObject.type === "수동 요청";
+        } else {
+          // 문자열 메시지는 내용으로 확인
+          return notification.message.includes("수동 요청");
+        }
       } catch (error) {
         console.error("Error parsing message:", error);
         return false;
@@ -21,10 +27,24 @@ export default function ChoiceMusicReports() {
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
   // API 호출을 위한 키와 URL 생성
-  const reportIds = filteredNotifications.map((notification) => {
-    const messageObject = JSON.parse(notification.message);
-    return messageObject.message;
-  });
+  const reportIds = filteredNotifications
+    .map((notification) => {
+      try {
+        // JSON 형식인지 확인
+        if (notification.message.startsWith("{") && notification.message.endsWith("}")) {
+          const messageObject = JSON.parse(notification.message);
+          return messageObject.message;
+        } else {
+          // 문자열에서 ID 추출 (ID가 있는 형식이라고 가정)
+          const match = notification.message.match(/(\d+)/);
+          return match ? match[0] : null;
+        }
+      } catch (error) {
+        console.error("Error extracting report ID:", error);
+        return null;
+      }
+    })
+    .filter((id) => id !== null);
 
   const queryKeys = reportIds.map((id) => `report-${id}`);
   const queryUrls = reportIds.map((id) => `/type/daily-report/${id}`);
@@ -44,7 +64,23 @@ export default function ChoiceMusicReports() {
       <TopBar title={"리포트 보관함"} />
       <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-4 mx-[10px] xs:mx-5">
         {filteredNotifications.map((notification, index) => {
-          const messageObject = JSON.parse(notification.message);
+          let messageObject;
+          let reportId;
+
+          try {
+            if (notification.message.startsWith("{") && notification.message.endsWith("}")) {
+              messageObject = JSON.parse(notification.message);
+              reportId = messageObject.message;
+            } else {
+              messageObject = { type: "수동 요청", message: notification.message };
+              const match = notification.message.match(/(\d+)/);
+              reportId = match ? match[0] : null;
+            }
+          } catch (error) {
+            console.error("Error processing message:", error);
+            return null;
+          }
+
           const reportData = reportResults[index]?.data;
 
           // 음악 리스트와 첫 번째 곡 정보 가져오기
@@ -57,7 +93,7 @@ export default function ChoiceMusicReports() {
               key={notification.id}
               className="mb-4 cursor-pointer w-full border-b border-solid border-border"
               onClick={() =>
-                navigate(`/analysis/report/choice/${messageObject.message}`, {
+                navigate(`/analysis/report/choice/${reportId}`, {
                   state: {
                     reportData: reportData,
                     musicList: reportData?.data.musicList || [],

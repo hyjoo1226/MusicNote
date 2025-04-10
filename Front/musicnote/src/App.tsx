@@ -145,7 +145,10 @@ function App() {
             displayMessage = "주간 리포트가 도착했어요!";
           } else {
             // 타입이 없거나 알 수 없는 경우 원본 메시지 사용
-            displayMessage = e.data;
+            displayMessage =
+              typeof notificationData === "object" && notificationData?.type
+                ? notificationData.type
+                : e.data;
           }
 
           // 이미 같은 내용의 알림이 존재하는지 확인하기 위한 고유 ID 생성
