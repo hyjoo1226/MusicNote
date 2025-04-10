@@ -2,8 +2,10 @@
 
 import os
 import time
-import requests
+import random
 import html
+import requests
+from datetime import datetime
 from dotenv import load_dotenv
 
 from modelschemas.request_response import BigFiveScore, BookItem
@@ -31,7 +33,6 @@ class BookRecommender:
         publisher = item.get("publisher", "")
         pubdate = item.get("pubdate", "0000")
 
-        # ❶ 제목 제외 키워드 필터
         exclude_title_keywords = [
             "주소록", "CD", "DVD", "지도", "자료집", "정보집", "연감", "실적",
             "보고서", "수록", "전화번호부", "명부", "매뉴얼", "데이터북"
@@ -39,17 +40,18 @@ class BookRecommender:
         if any(word in title for word in exclude_title_keywords):
             return False
 
-        # ❷ 기존 제외 키워드 (자격증, 기출 등)
         exclude_keywords = ["자격증", "기출", "요약", "매거진", "정리", "시험대비", "시험 대비"]
         if any(word in title for word in exclude_keywords) or any(word in description for word in exclude_keywords):
             return False
 
-        # ❸ 출판사 제외
-        exclude_publishers = ["에듀윌", "공단기", "시대고시기획", "월간", "한국콘텐츠미디어"]
+        blocked_words = ["개새끼", "자살", "자해", "폭력", "혐오", "증오", "계엄령"]
+        if any(bad_word in description for bad_word in blocked_words):
+            return False
+
+        exclude_publishers = ["에듀윌", "공단기", "시대고시기획", "월간", "한국콘텐츠미디어", "법학사"]
         if publisher in exclude_publishers:
             return False
 
-        # ❹ 출판연도 필터
         try:
             year = int(pubdate[:4])
             if year < 2008 or year > 2025:
@@ -59,37 +61,46 @@ class BookRecommender:
 
         return True
 
-    def recommend_books_from_bigfive(self, bigfive: BigFiveScore, top_n_jobs: int = 5, top_k_keywords: int = 5, total_per_keyword: int = 2) -> list[BookItem]:
+    def recommend_books_from_bigfive(
+        self,
+        bigfive: BigFiveScore,
+        top_n_jobs: int = 15,
+        top_k_keywords: int = 15,
+        total_per_keyword: int = 1
+    ) -> list[BookItem]:
         """
-        Big Five 성격 점수를 기반으로 키워드를 추출하고, 해당 키워드로 책을 추천합니다.
-        :param bigfive: 사용자 Big Five 점수
-        :param top_n_jobs: 상위 N개 직업 선택
-        :param top_k_keywords: 최종 추출할 키워드 개수 (예: 5개면 5개 키워드 사용)
-        :param total_per_keyword: 각 키워드당 책 수집 수 (예: 2권씩)
+        Big Five 성격 점수를 기반으로 키워드를 추출하고,
+        그 키워드로 책을 추천합니다.
+        결과는 동일한 점수라도 날짜에 따라 다양하게 바뀝니다.
         """
         user_scores = [
             bigfive.openness,
             bigfive.conscientiousness,
             bigfive.extraversion,
             bigfive.agreeableness,
-            1 - bigfive.neuroticism  # stability로 변환
+            1 - bigfive.neuroticism  # Emotional Stability
         ]
-        keywords = self.job_recommender.get_keywords_from_bigfive(user_scores, top_n_jobs, top_k_keywords)
-        kr_keywords = self.keyword_tool.translate_and_save_keywords(keywords)
+
+        # 🎲 seed 고정: 매일 다르게 섞이게
+        seed_key = str(user_scores) + datetime.now().strftime('%Y%m%d')
+        random.seed(seed_key)
+
+        raw_keywords = self.job_recommender.get_keywords_from_bigfive(user_scores, top_n_jobs, top_k_keywords * 2)
+        random.shuffle(raw_keywords)
+        sampled_keywords = raw_keywords[:top_k_keywords]
+
+        kr_keywords = self.keyword_tool.translate_and_save_keywords(sampled_keywords)
+
         return self.collect_from_keywords(kr_keywords, total_per_keyword=total_per_keyword)
 
     def fetch_books(self, query: str, display: int = 100, start: int = 1) -> dict:
-        """
-        단일 키워드에 대해 NAVER BOOK API 호출
-        """
         params = {
             "query": query,
             "display": display,
             "start": start,
-            "sort": "date"
+            "sort": "sim"
         }
         response = requests.get(self.base_url, headers=self.headers, params=params)
-        # ✅ 추가 로그
         print(f"📡 요청: {query} | 상태코드: {response.status_code}")
         if response.status_code != 200:
             print("❌ 응답 실패:", response.text)
@@ -105,7 +116,6 @@ class BookRecommender:
         for start in range(1, total + 1, 20):
             data = self.fetch_books(query, display=10, start=start)
             for item in data.get("items", []):
-
                 if not self._is_valid_book(item):
                     continue
 
@@ -123,16 +133,12 @@ class BookRecommender:
                     pubdate=convert_pubdate(item.get("pubdate"))
                 ))
 
-                # ✅ 수집 개수 도달 시 중단
                 if len(results) >= total:
                     return results
             time.sleep(delay)
         return results
 
-    def collect_from_keywords(self, keywords: list[str], total_per_keyword: int = 2, delay: float = 0.5) -> list[BookItem]:
-        """
-        여러 키워드를 기반으로 책 정보 수집
-        """
+    def collect_from_keywords(self, keywords: list[str], total_per_keyword: int = 1, delay: float = 0.5) -> list[BookItem]:
         all_results = []
         for keyword in keywords:
             print(f"🔍 '{keyword}' 키워드로 책 검색 중...")
