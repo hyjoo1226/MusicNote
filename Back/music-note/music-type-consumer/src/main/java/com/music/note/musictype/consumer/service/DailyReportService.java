@@ -58,40 +58,50 @@ public class DailyReportService {
 	}
 
 	public void processDailyTypeEvent(MusicListEvent event) {
+		try {
+			// event 에서 AudioFeature 추출 및 request 객체 생성
+			AudioFeaturesRequest request = AudioFeaturesRequest.builder()
+				.tracks(AudioFeatureConverter.toList(event))
+				.build();
 
-		// event 에서 AudioFeature 추출 및 request 객체 생성
-		AudioFeaturesRequest request = AudioFeaturesRequest.builder()
-			.tracks(AudioFeatureConverter.toList(event))
-			.build();
+			// python 서버에서 BigFive 및 리포트 받기
+			PersonalityReportDto result = restClient.post()
+				.uri(DAILY_REPORT_URL)
+				.body(request)
+				.retrieve()
+				.body(PersonalityReportDto.class);
 
-		// python 서버에서 BigFive 및 리포트 받기
-		PersonalityReportDto result = restClient.post()
-			.uri(DAILY_REPORT_URL)
-			.body(request)
-			.retrieve()
-			.body(PersonalityReportDto.class);
+			// DB에 저장
+			if (result == null) {
+				throw new RuntimeException(FAILED_TO_GET_REPORT);
+			}
+			if (event.getType().equals(RequestType.AUTOMATIC)) {
+				PersonalityReport entity = PersonalityReportConverter.toEntity(event, result);
+				reportRepository.save(entity);
+				log.info("AUTOMATIC Daily Report saved: {}", entity.getReport().toString());
+			} else if (event.getType().equals(RequestType.MANUAL)) {
+				ManualReport entity = ManualReportConverter.toEntity(event, result);
+				manualReportRepository.save(entity);
+				log.info("MANUAL Daily Report saved: {}", entity.getReport().toString());
+			}
 
-		// DB에 저장
-		if (result == null) {
-			throw new RuntimeException(FAILED_TO_GET_REPORT);
+			// Notification 서버로 이벤트 전송
+			NotificationEvent notificationEvent = NotificationEvent.builder()
+				.userId(event.getUserId())
+				.message(DAILY_REPORT_READY_MESSAGE)
+				.type(event.getType())
+				.build();
+			notificationProducer.sendMusicListEvent(notificationEvent);
+		} catch (Exception e) {
+			log.error("Error processing daily type event: {}", e.getMessage());
+			NotificationEvent error = NotificationEvent.builder()
+				.userId(event.getUserId())
+				.message("일일 리포트 생성에 실패했어요.")
+				.type(RequestType.DAILY_ERROR)
+				.build();
+			notificationProducer.sendMusicListEvent(error);
 		}
-		if (event.getType().equals(RequestType.AUTOMATIC)) {
-			PersonalityReport entity = PersonalityReportConverter.toEntity(event, result);
-			reportRepository.save(entity);
-			log.info("AUTOMATIC Daily Report saved: {}", entity.getReport().toString());
-		} else if (event.getType().equals(RequestType.MANUAL)) {
-			ManualReport entity = ManualReportConverter.toEntity(event, result);
-			manualReportRepository.save(entity);
-			log.info("MANUAL Daily Report saved: {}", entity.getReport().toString());
-		}
 
-		// Notification 서버로 이벤트 전송
-		NotificationEvent notificationEvent = NotificationEvent.builder()
-			.userId(event.getUserId())
-			.message(DAILY_REPORT_READY_MESSAGE)
-			.type(event.getType())
-			.build();
-		notificationProducer.sendMusicListEvent(notificationEvent);
 	}
 
 }
