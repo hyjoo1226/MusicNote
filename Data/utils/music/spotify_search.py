@@ -4,7 +4,7 @@ import base64
 import random
 import asyncio
 import aiohttp
-
+from aiohttp.client_exceptions import ContentTypeError
 '''
 1. lastfm 곡 제목으로 api요청해서 -> 키워드로 노래 검색
 2. response[0]의 "name"과 "artist".get("name")을 spotify request
@@ -43,6 +43,29 @@ class Spotify:
                 self._access_token = response_data["access_token"]
                 return self._access_token
     
+    ## 에러처리
+    async def request_with_retry(self, method, url, headers=None, params=None):
+        async with aiohttp.ClientSession() as session:
+            while True:
+                async with session.request(method, url, headers=headers, params=params) as response:
+                    if response.status == 429:
+                        retry_after = int(response.headers.get("Retry-After", 1))
+                        print(f"[Rate Limit] Sleeping for {retry_after} seconds")
+                        await asyncio.sleep(retry_after)
+                        continue  # 재시도
+
+                    if response.status != 200:
+                        text = await response.text()
+                        print(f"[Error {response.status}] {text}")
+                        return None
+
+                    try:
+                        return await response.json()
+                    except ContentTypeError:
+                        text = await response.text()
+                        print(f"[ContentTypeError] Non-JSON response: {text}")
+                        return None
+
 
     # 곡 제목과 아티스트트 이름으로 search
     async def search(self, name, artist):
@@ -57,9 +80,7 @@ class Spotify:
         }
 
         # API 요청 보내기
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers, params=params) as response:
-                return await response.json()
+        return await self.request_with_retry("GET", url, headers=headers, params=params)
 
         # 응답 데이터 처리
         # if response.status_code == 200:
@@ -84,9 +105,7 @@ class Spotify:
         }
 
         # API 요청 보내기
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers, params=params) as response:
-                return await response.json()
+        return await self.request_with_retry("GET", url, headers=headers, params=params)
 
         # if response.status_code == 200:
         #     # 이쁘게 출력하기
@@ -105,8 +124,6 @@ class Spotify:
         params = {"market" : "KR"}
 
         # API 요청 보내기
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers, params=params) as response:
-                return await response.json()
+        return await self.request_with_retry("GET", url, headers=headers, params=params)
 
     
