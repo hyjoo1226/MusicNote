@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 
 
 import com.music.note.common.exception.exception.domain.personalityreport.PersonalityNotFoundByUserIdException;
+import com.music.note.recommend.common.logging.dto.LogEvent;
+import com.music.note.recommend.common.logging.service.LoggingService;
 import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
 import com.music.note.recommend.mapper.report.ReportMapper;
 import com.music.note.recommend.repository.personality.ReportRepository;
@@ -28,35 +30,33 @@ public class RecommendCommonService {
 
 	private final ReportRepository personalityRepository;
 	private final ReportMapper personalityMapper;
-
+	private final LoggingService loggingService;
 	private final RestTemplate restTemplate;
 	private PersonalityReport getPersonalityReportByMemberId(String userId){
 		PersonalityReport report = getLatestReportByUserId(userId);
-		log.info("PersonalityReport: {}", report);
 		return report;
 
 	}
 	public RequestLatestPersonalityReportDto getRequestLatestPersonalityReportDto(String userId){
 		PersonalityReport report = getPersonalityReportByMemberId(userId);
-		RequestLatestPersonalityReportDto personalityReportDto = personalityMapper.entityToDto(report);
-		log.info("personalityReportDto: {}", personalityReportDto);
-		return personalityReportDto;
+		return personalityMapper.entityToDto(report);
 	}
 
 	public PersonalityReport getLatestReportByUserId(String userId) {
-		log.info("user id={}", userId);
 		return personalityRepository.findTopByUserIdOrderByCreatedAtDesc(userId)
 			.orElseThrow(() -> new PersonalityNotFoundByUserIdException(NOT_FOUND_PERSONALITY_REPORT));
 	}
 	public <T> T getRecommendations(String url, Object request, Class<T> responseType) {
+		long start = System.currentTimeMillis();
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
 		HttpEntity<Object> requestEntity = new HttpEntity<>(request, headers);
-
 		ResponseEntity<T> responseEntity = restTemplate.exchange(
 			url, HttpMethod.POST, requestEntity, responseType);
-		log.info("data server response{}=", responseEntity.getBody());
+
+		long duration = System.currentTimeMillis() - start;
+		loggingService.log(LogEvent.performanceEvent(url, "measure recommend time", duration));
 		return responseEntity.getBody();
 
 	}
