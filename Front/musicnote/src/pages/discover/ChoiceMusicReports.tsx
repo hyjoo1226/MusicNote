@@ -1,11 +1,13 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNotificationStore } from "@/stores/notificationStore";
 import TopBar from "@/components/layout/TopBar";
-import { useGetMultipleData } from "@/hooks/useApi";
+import { useGetMultipleData, useGetData } from "@/hooks/useApi";
 
 export default function ChoiceMusicReports() {
   const navigate = useNavigate();
   const notificationStore = useNotificationStore();
+  // console.log(notificationStore);
 
   // 수동 요청 & 최신 날짜 순 정렬
   const filteredNotifications = notificationStore.notifications
@@ -14,30 +16,30 @@ export default function ChoiceMusicReports() {
         const messageObject = JSON.parse(notification.message);
         return messageObject.type === "수동 요청";
       } catch (error) {
-        console.error("Error parsing message:", error);
+        // console.error("Error parsing message:", error);
         return false;
       }
     })
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
   // API 호출을 위한 키와 URL 생성
-  const reportIds = filteredNotifications.map((notification) => {
-    const messageObject = JSON.parse(notification.message);
-    return messageObject.message;
-  });
+  const { data: reportResults } = useGetData("ChoiceReportIds", "/type/daily-report");
+  useEffect(() => {
+    console.log(reportResults);
+  }, [reportResults]);
 
-  const queryKeys = reportIds.map((id) => `report-${id}`);
-  const queryUrls = reportIds.map((id) => `/type/daily-report/${id}`);
+  // const queryKeys = reportIds.map((id) => `report-${id}`);
+  // const queryUrls = reportIds.map((id) => `/type/daily-report/${id}`);
 
-  // 병렬 API 호출
-  const reportResults = useGetMultipleData(queryKeys, queryUrls);
+  // // 병렬 API 호출
+  // const reportResults = useGetMultipleData(queryKeys, queryUrls);
 
-  // 로딩 상태 확인
-  const isLoading = reportResults.some((result) => result.isLoading);
-  const error = reportResults.find((result) => result.error)?.error;
+  // // 로딩 상태 확인
+  // const isLoading = reportResults.some((result) => result.isLoading);
+  // const error = reportResults.find((result) => result.error)?.error;
 
-  if (isLoading) return <div className="text-white">로딩 중...</div>;
-  if (error) return <div className="text-red-500">오류 발생: {error.message}</div>;
+  // if (isLoading) return <div className="text-white">로딩 중...</div>;
+  // if (error) return <div className="text-red-500">오류 발생: {error.message}</div>;
 
   return (
     <div className="text-white w-full h-full">
@@ -45,10 +47,10 @@ export default function ChoiceMusicReports() {
       <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-4 mx-[10px] xs:mx-5">
         {filteredNotifications.map((notification, index) => {
           const messageObject = JSON.parse(notification.message);
-          const reportData = reportResults[index]?.data;
+          const reportData = reportResults[index];
 
           // 음악 리스트와 첫 번째 곡 정보 가져오기
-          const musicList = reportData?.data.musicList || [];
+          const musicList = reportData?.musicList || [];
           const firstTrack = musicList[0] || {}; // 첫 번째 트랙 또는 빈 객체
           const totalTracks = musicList.length;
 

@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useEffect, useRef } from "react";
-// import TopBar from "../../components/layout/TopBar";
 import SearchMusic from "../../features/discover/ChoiceMusicAnalysis/SearchMusic";
 import SelectMusicList from "../../features/discover/ChoiceMusicAnalysis/SelectMusicList";
 import { usePostData } from "../../hooks/useApi";
@@ -52,7 +50,6 @@ export default function ChoiceMusicAnalysis() {
     console.log(musicList);
 
     // POST API
-    // 아직 백엔드 구현 안됨
     postChoiceMusicData(musicList, {
       onSuccess: (response) => {
         console.log("성공적으로 전송되었습니다:", response);
@@ -61,6 +58,7 @@ export default function ChoiceMusicAnalysis() {
         console.error("데이터 전송 실패:", error);
       },
     });
+    navigate("/discover/choice-music-analysis/reports");
   };
 
   return (
@@ -110,7 +108,6 @@ export default function ChoiceMusicAnalysis() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                {/* <span className="text-white text-xs pt-[2px] rounded-full">보관함</span> */}
               </div>
             </div>
           </div>
