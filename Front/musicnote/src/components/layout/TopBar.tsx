@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-
+import NotificationIcon from "@/assets/icon/notification.svg?react";
 export default function TopBar({ title }: { title: string }) {
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-row mx-[10px] xs:mx-5 my-5 rounded-2xl px-3 py-1 items-center justify-center w-[calc(100%-20px)] xs:w-[calc(100%-40px)] h-[60px] bg-level2">
-      <div className="relative flex items-center justify-center w-full h-[60px]">
+      <div className="flex items-center justify-between w-full h-[60px] px-3">
         <div
-          className="absolute left-0 cursor-pointer xs:w-12 xs:h-12 w-10 h-10 flex items-center justify-center"
+          className="flex items-center justify-center cursor-pointer w-10 h-10"
           onClick={() => navigate(-1)}
         >
           <svg
@@ -27,6 +27,12 @@ export default function TopBar({ title }: { title: string }) {
           </svg>
         </div>
         <span className="text-white text-xl xs:text-2xl font-bold mt-1">{title}</span>
+        <div
+          className="flex flex-row items-center justify-center gap-x-2 cursor-pointer"
+          onClick={() => navigate(`/notification`)}
+        >
+          <NotificationIcon />
+        </div>
       </div>
     </div>
   );

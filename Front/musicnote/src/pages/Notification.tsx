@@ -1,30 +1,10 @@
 import { useNotificationStore } from "../stores/notificationStore";
 import { useGetData } from "@/hooks/useApi";
+import { useNavigate } from "react-router-dom";
 
 export default function Notification() {
-  const { notifications, connectionStatus, addNotification } = useNotificationStore();
-
-  const getStatusColor = () => {
-    switch (connectionStatus) {
-      case "connected":
-        return "text-green-500";
-      case "disconnected":
-        return "text-red-500";
-      default:
-        return "text-orange-500";
-    }
-  };
-
-  const getStatusText = () => {
-    switch (connectionStatus) {
-      case "connected":
-        return "연결됨";
-      case "disconnected":
-        return "끊어짐";
-      default:
-        return "연결 중...";
-    }
-  };
+  const { notifications, addNotification } = useNotificationStore();
+  const navigate = useNavigate();
 
   const { refetch: refetchDailyReport } = useGetData("dailyReport", "main/preferences", "default", {
     enabled: false,
@@ -40,18 +20,20 @@ export default function Notification() {
       .then((result) => {
         if (result.data) {
           // Get 요청 결과를 알림에 추가
-          addNotification({
-            id: Date.now().toString(),
-            message: `일일 리포트 요청 결과: ${JSON.stringify(result.data)}`,
-            timestamp: new Date().toISOString(),
-          });
+          if (result.data.status === 200) {
+            addNotification({
+              id: Date.now().toString(),
+              message: "일일 리포트 요청 성공!",
+              timestamp: new Date().toISOString(),
+            });
+          }
         }
       })
-      .catch((error) => {
+      .catch(() => {
         // 오류가 발생하면 오류 메시지를 알림에 추가
         addNotification({
           id: Date.now().toString(),
-          message: `Get 요청 오류: ${error.message}`,
+          message: `일일 리포트 요청 실패`,
           timestamp: new Date().toISOString(),
         });
       });
@@ -61,55 +43,96 @@ export default function Notification() {
     // 버튼 클릭 시 데이터 가져오기
     refetchWeeklyReport()
       .then((result) => {
-        if (result.data) {
+        if (result.data.status === 200) {
           // Get 요청 결과를 알림에 추가
           addNotification({
             id: Date.now().toString(),
-            message: `주간 리포트 요청 결과: ${JSON.stringify(result.data)}`,
+            message: "주간 리포트 요청 성공!",
             timestamp: new Date().toISOString(),
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         // 오류가 발생하면 오류 메시지를 알림에 추가
         addNotification({
           id: Date.now().toString(),
-          message: `Get 요청 오류: ${error.message}`,
+          message: `주간 리포트 요청 실패`,
           timestamp: new Date().toISOString(),
         });
       });
   };
 
+  // 시간 형식 변환 함수 추가
+  const formatTimeAgo = (timestamp: string) => {
+    const now = new Date();
+    const pastDate = new Date(timestamp);
+    const diffMs = now.getTime() - pastDate.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+
+    if (diffMin < 1) {
+      return "방금 전";
+    } else if (diffHour < 1) {
+      return `${diffMin}분 전`;
+    } else if (diffDay < 1) {
+      return `${diffHour}시간 전`;
+    } else if (diffDay < 7) {
+      return `${diffDay}일 전`;
+    } else {
+      const year = pastDate.getFullYear();
+      const month = pastDate.getMonth() + 1;
+      const day = pastDate.getDate();
+      return `${year}. ${month}. ${day}`;
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-start h-[calc(100vh-80px)] w-full overflow-y-auto bg-level1 xs:p-6">
-      {/* 로고 + 이름 */}
-      <div className="flex flex-row self-start justify-start my-3 gap-x-1">
-        <h1 className="text-white text-2xl font-medium self-center ml-2">알림</h1>
+    <div className="flex flex-col items-center justify-start h-[var(--app-height)] w-full overflow-y-auto bg-level1 xs:p-6">
+      <div className="flex flex-row xs:mx-5 my-5 rounded-2xl px-3 py-1 items-center justify-center w-[calc(100%-30px)] h-[60px] bg-level2">
+        <div className="relative flex items-center justify-center w-full h-[60px]">
+          <div
+            className="absolute left-0 cursor-pointer xs:w-12 xs:h-12 w-10 h-10 flex items-center justify-center"
+            onClick={() => navigate(-1)}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.6667 19L4 12M4 12L10.6667 5M4 12L20 12"
+                stroke="white"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <span className="text-white text-xl xs:text-2xl font-bold mt-1">알림 센터</span>
+        </div>
       </div>
 
       {/* 메인 페이지 */}
       <div className="flex flex-col min-h-[calc(100vh-210px)] h-auto px-4 gap-y-5 justify-start pb-[80px] w-full">
         <div className="flex flex-col items-center justify-evenly w-full bg-level2 rounded-lg p-4 px-6 gap-y-2">
-          <div className="flex flex-row items-center justify-between w-full">
-            <span className="text-white text-xl font-medium">알림 센터</span>
-            <div id="status" className="flex items-center">
-              <span className="text-light-gray mr-2">🔌 연결 상태:</span>
-              <span className={getStatusColor()}>{getStatusText()}</span>
-            </div>
+          <div className="flex flex-row items-center justify-evenly w-full">
+            <button
+              onClick={handleDailyButtonClick}
+              className="flex w-5/12 items-center justify-center bg-main text-white text-sm sm:text-base py-2 rounded-md"
+            >
+              일일 리포트
+            </button>
+            <button
+              onClick={handleWeeklyButtonClick}
+              className="flex w-5/12 items-center justify-center bg-main text-white text-sm sm:text-base py-2 rounded-md"
+            >
+              주간 리포트
+            </button>
           </div>
-          <button
-            onClick={handleDailyButtonClick}
-            className="bg-main text-white px-4 py-2 rounded-md"
-          >
-            일일 리포트 요청 보내기
-          </button>
-          <button
-            onClick={handleWeeklyButtonClick}
-            className="bg-main text-white px-4 py-2 rounded-md"
-          >
-            주간 리포트 요청 보내기
-          </button>
-
           <div className="w-full mt-4">
             {notifications.length === 0 ? (
               <div className="text-light-gray text-center py-8">새 알림이 없습니다</div>
@@ -120,7 +143,12 @@ export default function Notification() {
                   .map((notification, index) => (
                     <li
                       key={notification.id || index}
-                      className="bg-level1 rounded-lg p-3 flex flex-col"
+                      className={`bg-level1 rounded-lg p-3 flex flex-col ${notification.url ? "cursor-pointer hover:bg-level3" : ""}`}
+                      onClick={() => {
+                        if (notification.url) {
+                          navigate(notification.url);
+                        }
+                      }}
                     >
                       <div className="flex flex-row items-start">
                         <div className="flex-shrink-0 w-[30px] h-[30px] mr-2">
@@ -143,7 +171,7 @@ export default function Notification() {
                             {notification.message}
                           </p>
                           <small className="text-light-gray text-xs">
-                            {new Date(notification.timestamp).toLocaleString()}
+                            {formatTimeAgo(notification.timestamp)}
                           </small>
                         </div>
                       </div>

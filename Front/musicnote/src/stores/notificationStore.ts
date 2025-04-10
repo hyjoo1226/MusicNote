@@ -4,6 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 export interface Notification {
   id: string;
   message: string;
+  url?: string;
   timestamp: string;
 }
 

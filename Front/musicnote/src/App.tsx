@@ -26,6 +26,7 @@ function App() {
   const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
   const { accessToken, spotifyAccessToken } = useAuthStore();
   const { setConnectionStatus, addNotification } = useNotificationStore();
+  const lastPingRef = useRef<number | null>(null);
 
   const sseUrl = "https://j12a308.p.ssafy.io/api/notifications/sse/subscribe";
 
@@ -50,7 +51,7 @@ function App() {
         "Spotify-Access-Token": spotifyAccessToken ?? "",
       },
       withCredentials: true,
-      heartbeatTimeout: 60000, // 60초 타임아웃 설정
+      heartbeatTimeout: 120000, // 120초로 타임아웃 설정 증가
     });
 
     // 연결 성공 시
@@ -101,13 +102,12 @@ function App() {
       }
     });
 
-    eventSourceRef.current.addEventListener("ping", function (event) {
-      const e = event as unknown as { data: string };
-      if (e.data !== "keep-alive") {
+    eventSourceRef.current.addEventListener("ping", function (event: any) {
+      if (event.data !== "keep-alive") {
         try {
           const notification: Notification = {
             id: Date.now().toString(),
-            message: e.data,
+            message: event.data,
             timestamp: new Date().toISOString(),
           };
           addNotification(notification);
@@ -115,25 +115,55 @@ function App() {
           console.error("ping 메시지 파싱 오류:", err);
         }
       }
+
+      // ping 메시지가 오면 마지막 ping 시간 업데이트
+      lastPingRef.current = Date.now();
     });
 
     // 알림 이벤트
     eventSourceRef.current.addEventListener("notification", function (event) {
       const e = event as unknown as { data: string };
-      console.log("알림 메시지:", e.data);
       try {
         // "SSE 연결 완료" 메시지는 저장하지 않음
         if (e.data !== "SSE 연결 완료") {
-          // 메시지를 JSON으로 파싱하지 않고 직접 문자열로 사용
+          // JSON 메시지 파싱
+          const notificationData = JSON.parse(e.data);
+          let url = "";
+          let displayMessage = "";
+          const reportId = notificationData.message;
+
+          // 알림 타입에 따라 다른 URL과 메시지 설정
+          if (notificationData.type === "자동 요청") {
+            url = `/analysis/report/daily/${reportId}`;
+            displayMessage = "일일 리포트가 도착했어요!";
+          } else if (notificationData.type === "수동 요청") {
+            url = `/analysis/report/choice/${reportId}`;
+            displayMessage = "수동 분석 리포트가 도착했어요!";
+          } else if (notificationData.type === "주간 요청") {
+            url = `/analysis/report/weekly/${reportId}`;
+            displayMessage = "주간 리포트가 도착했어요!";
+          } else {
+            // 타입이 없거나 알 수 없는 경우 원본 메시지 사용
+            displayMessage = e.data;
+          }
+
           const notification: Notification = {
             id: Date.now().toString(),
-            message: e.data,
+            message: displayMessage,
+            url: url,
             timestamp: new Date().toISOString(),
           };
           addNotification(notification);
         }
       } catch (err) {
         console.error("알림 메시지 파싱 오류:", err);
+        // 파싱 오류 시 원본 메시지 그대로 표시
+        const notification: Notification = {
+          id: Date.now().toString(),
+          message: e.data,
+          timestamp: new Date().toISOString(),
+        };
+        addNotification(notification);
       }
     });
 
@@ -141,13 +171,19 @@ function App() {
     eventSourceRef.current.onerror = (err) => {
       console.error("SSE 에러 발생:", err);
       setConnectionStatus("disconnected");
-      // 연결 실패 시 일정 시간 후 재시도
-      setTimeout(() => {
+
+      // 연결이 닫혔는지 확인
+      if (eventSourceRef.current && eventSourceRef.current.readyState === 2) {
+        // 연결 종료된 경우에만 재연결 시도
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+
+        // 재연결 시도 (즉시 시도 + 백오프 전략)
         if (navigator.onLine && accessToken) {
-          console.log("SSE 재연결 시도");
-          setupSSEConnection();
+          console.log("SSE 즉시 재연결 시도");
+          setTimeout(() => setupSSEConnection(), 1000);
         }
-      }, 5000); // 5초 후 재시도
+      }
     };
   }, [accessToken, spotifyAccessToken, sseUrl, addNotification, setConnectionStatus]);
 
@@ -279,8 +315,27 @@ function App() {
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
+    // ping 타임아웃 확인을 위한 간격 설정 (30초마다)
+    const pingCheckInterval = setInterval(() => {
+      // 마지막 ping 이후 2분 이상 경과했고 연결 상태가 connected인 경우
+      const now = Date.now();
+      if (lastPingRef.current && now - lastPingRef.current > 120000) {
+        console.log("Ping 타임아웃, 재연결 시도...");
+        // 연결이 끊긴 것으로 판단하고 재연결
+        if (eventSourceRef.current) {
+          eventSourceRef.current.close();
+          eventSourceRef.current = null;
+        }
+
+        if (navigator.onLine && accessToken) {
+          setupSSEConnection();
+        }
+      }
+    }, 30000);
+
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      clearInterval(pingCheckInterval);
     };
   }, [accessToken, setupSSEConnection]);
 
