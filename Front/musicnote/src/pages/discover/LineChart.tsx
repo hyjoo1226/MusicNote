@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import TopBar from "@/components/layout/TopBar";
-// import { useGetData } from "@/hooks/useApi";
+import { useGetData } from "@/hooks/useApi";
 
 interface LineDataType {
   id: number;
@@ -66,73 +66,74 @@ export default function LineTrend() {
   };
   const date = new Date();
   const dateString = formatDateToString(date);
-  console.log(dateString);
+  // console.log(dateString);
 
   // 현재 일주일 중 없는 날짜가 null이 아니라 아예 전송이 안된 상태라 하드코딩으로 대체
-  // const { data: TrendData } = useGetData(
-  //   `TrendData-${dateString}`, // key
-  //   `/recommend/type/trend?date=${dateString}` // url
-  // );
-  const TrendData = {
-    trendTypeDtoList: [
-      {
-        openness: 0.329532,
-        conscientiousness: 0.491833,
-        extraversion: 0.620478,
-        agreeableness: 0.311398,
-        neuroticism: 0.772896,
-        createdAt: "2025-04-07T10:00:29.628",
-      },
-      {
-        openness: 0.6,
-        conscientiousness: 0.2,
-        extraversion: 0.6,
-        agreeableness: 0.8,
-        neuroticism: 0.1,
-        createdAt: "2025-04-06T10:00:29.628",
-      },
-      {
-        openness: 0.3,
-        conscientiousness: 0.6,
-        extraversion: 0.2,
-        agreeableness: 0.1,
-        neuroticism: 0.2,
-        createdAt: "2025-04-05T10:00:29.628",
-      },
-      {
-        openness: null,
-        conscientiousness: null,
-        extraversion: null,
-        agreeableness: null,
-        neuroticism: null,
-        createdAt: "2025-04-04T10:00:29.628",
-      },
-      {
-        openness: 0.35,
-        conscientiousness: 0.46,
-        extraversion: 0.6,
-        agreeableness: 0.3,
-        neuroticism: 0.75,
-        createdAt: "2025-04-03T10:00:29.628",
-      },
-      {
-        openness: 0.2,
-        conscientiousness: 0.16,
-        extraversion: 0.2,
-        agreeableness: 0.1,
-        neuroticism: 0.1,
-        createdAt: "2025-04-02T10:00:29.628",
-      },
-      {
-        openness: null,
-        conscientiousness: null,
-        extraversion: null,
-        agreeableness: null,
-        neuroticism: null,
-        createdAt: "2025-04-01T10:00:29.628",
-      },
-    ],
-  };
+  const { data: TrendData } = useGetData(
+    `TrendData-${dateString}`, // key
+    `/recommend/type/trend?date=${dateString}` // url
+  );
+  console.log(TrendData);
+  // const TrendData = {
+  //   trendTypeDtoList: [
+  //     {
+  //       openness: 0.329532,
+  //       conscientiousness: 0.491833,
+  //       extraversion: 0.620478,
+  //       agreeableness: 0.311398,
+  //       neuroticism: 0.772896,
+  //       createdAt: "2025-04-07T10:00:29.628",
+  //     },
+  //     {
+  //       openness: 0.6,
+  //       conscientiousness: 0.2,
+  //       extraversion: 0.6,
+  //       agreeableness: 0.8,
+  //       neuroticism: 0.1,
+  //       createdAt: "2025-04-06T10:00:29.628",
+  //     },
+  //     {
+  //       openness: 0.3,
+  //       conscientiousness: 0.6,
+  //       extraversion: 0.2,
+  //       agreeableness: 0.1,
+  //       neuroticism: 0.2,
+  //       createdAt: "2025-04-05T10:00:29.628",
+  //     },
+  //     {
+  //       openness: null,
+  //       conscientiousness: null,
+  //       extraversion: null,
+  //       agreeableness: null,
+  //       neuroticism: null,
+  //       createdAt: "2025-04-04T10:00:29.628",
+  //     },
+  //     {
+  //       openness: 0.35,
+  //       conscientiousness: 0.46,
+  //       extraversion: 0.6,
+  //       agreeableness: 0.3,
+  //       neuroticism: 0.75,
+  //       createdAt: "2025-04-03T10:00:29.628",
+  //     },
+  //     {
+  //       openness: 0.2,
+  //       conscientiousness: 0.16,
+  //       extraversion: 0.2,
+  //       agreeableness: 0.1,
+  //       neuroticism: 0.1,
+  //       createdAt: "2025-04-02T10:00:29.628",
+  //     },
+  //     {
+  //       openness: null,
+  //       conscientiousness: null,
+  //       extraversion: null,
+  //       agreeableness: null,
+  //       neuroticism: null,
+  //       createdAt: "2025-04-01T10:00:29.628",
+  //     },
+  //   ],
+  // };
 
   const sortedData = TrendData?.trendTypeDtoList
     ? [...TrendData.trendTypeDtoList].sort(

@@ -1,19 +1,73 @@
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { domToJpeg } from "modern-screenshot";
 import UserTemperGraph from "../../components/UserTemperGraph";
-import WeeklyReport from "@/features/analysis/WeeklyReport";
+import DailyReport from "../../features/analysis/DailyReport";
+import NoteIcon from "../../assets/icon/note-icon.svg?react";
 import ShareIcon from "../../assets/icon/share-icon.svg?react";
+import { useGetData } from "@/hooks/useApi";
 
-export default function ReportWeekly() {
+interface ReportData {
+  lowScore: string;
+  lowText: string;
+  summary: string;
+  topScore: string;
+  topText: string;
+  typeDto: {
+    openness: number;
+    conscientiousness: number;
+    extraversion: number;
+    agreeableness: number;
+    neuroticism: number;
+  };
+}
+
+export default function ChoiceMusicReportDetail() {
   const navigate = useNavigate();
+  const { reportId } = useParams<{ reportId: string }>();
   const reportRef = useRef<HTMLDivElement>(null);
-  const [weeklyScores, setWeeklyScores] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [report, setReport] = useState<ReportData | null>(null);
+  const { data: reportData } = useGetData(`report-${reportId}`, `/type/daily-report/${reportId}`);
+  // 리포트에 쓰인 음악 - 백엔드랑 url 대화 필요
+  // 현재는 status200이나 레포트id 요구 안해서 음악리스트 없음
+  const { data: reportMusiclistData } = useGetData(
+    `reportMusiclistData-${reportId}`,
+    "/recommend/music"
+  );
+
+  console.log("데이터", reportData);
+
+  useEffect(() => {
+    if (reportMusiclistData) {
+      console.log(reportMusiclistData);
+    }
+  });
+
+  useEffect(() => {
+    if (reportData) {
+      console.log(reportData);
+      const modifiedReport = {
+        ...reportData.data,
+        typeDto: {
+          openness: reportData.data.typeDto.openness * 100,
+          conscientiousness: reportData.data.typeDto.conscientiousness * 100,
+          extraversion: reportData.data.typeDto.extraversion * 100,
+          agreeableness: reportData.data.typeDto.agreeableness * 100,
+          neuroticism: reportData.data.typeDto.neuroticism * 100,
+        },
+      };
+      setReport(modifiedReport);
+    }
+  }, [reportData]);
+
   // top bar
   const handleBack = () => {
     navigate(-1);
   };
-
+  // 음악 리스트 아이콘 핸들러
+  const handleMusicListClick = () => {
+    navigate(`/musiclist/${reportId}`);
+  };
   // web share API
   // 지원 안하는 브라우저의 경우 클립보드 복사
   const [isCopied, setIsCopied] = useState(false);
@@ -72,7 +126,7 @@ export default function ReportWeekly() {
       const file = new File([blob], "my-report.jpeg", { type: "image/jpeg" });
 
       const shareData = {
-        title: "주간 리포트",
+        title: "분석 리포트",
         text: "나의 성향 리포트를 확인해보세요!",
         files: [file],
       };
@@ -89,6 +143,8 @@ export default function ReportWeekly() {
       copyToClipboard(window.location.href);
     }
   };
+
+  // const [title, setTitle] = useState("일일");
 
   return (
     <div className="text-white w-full h-[calc(100vh-80px)]">
@@ -114,19 +170,57 @@ export default function ReportWeekly() {
               />
             </svg>
           </div>
-          <span className="text-white text-xl xs:text-2xl font-bold mt-1">주간 리포트</span>
+          <span className="text-white text-xl xs:text-2xl font-bold mt-1">일일 리포트</span>
           <div className="absolute right-0 flex cursor-pointer">
+            <NoteIcon onClick={handleMusicListClick} className="mr-3" />
             <ShareIcon onClick={handleShare} />
           </div>
         </div>
       </div>
       <div className="flex flex-col px-[10px] xs:px-5 gap-y-5 justify-between pb-[82px]">
         <div ref={reportRef} className="flex flex-col gap-y-5">
-          <UserTemperGraph scores={weeklyScores} />
-          <WeeklyReport onCalculate={setWeeklyScores} />
+          <UserTemperGraph
+            scores={[
+              report?.typeDto.openness ?? 0,
+              report?.typeDto.conscientiousness ?? 0,
+              report?.typeDto.extraversion ?? 0,
+              report?.typeDto.agreeableness ?? 0,
+              report?.typeDto.neuroticism ?? 0,
+            ]}
+          />
+          <DailyReport
+            lowScore={report?.lowScore ?? ""}
+            lowText={report?.lowText ?? ""}
+            summary={report?.summary ?? ""}
+            topScore={report?.topScore ?? ""}
+            topText={report?.topText ?? ""}
+          />
         </div>
       </div>
       {isCopied && <span className="text-sm text-green-500">복사 완료!</span>}
     </div>
   );
 }
+
+// import { useParams } from "react-router-dom";
+// import { useGetData } from "@/hooks/useApi";
+
+// export default function ChoiceMusicReportDetail() {
+//   const { reportId } = useParams<{ reportId: string }>();
+
+//   // reportId가 있을 때만 API 호출
+//   const { data: ChoiceMusicReportData } = useGetData(
+//     reportId ? `report-${reportId}` : "",
+//     reportId ? `/type/daily-report/${reportId}` : ""
+//   );
+
+//   console.log("reportId:", reportId);
+//   console.log("ChoiceMusicReportData:", ChoiceMusicReportData);
+
+//   // reportId가 없는 경우 처리
+//   if (!reportId) {
+//     return <div>Report ID가 필요합니다</div>;
+//   }
+
+//   return <div>{/* 데이터 표시 로직 */}</div>;
+// }

@@ -5,6 +5,8 @@ import ReportDaily from "../pages/analysis/ReportDaily";
 import ReportWeekly from "../pages/analysis/ReportWeekly";
 import Discover from "../pages/discover/Discover";
 import ChoiceMusicAnalysis from "../pages/discover/ChoiceMusicAnalysis";
+import ChoiceMusicReports from "../pages/discover/ChoiceMusicReports";
+import ChoiceMusicReportDetail from "../pages/discover/ChoiceMusicReportDetail";
 import LineChart from "../pages/discover/LineChart";
 import Recommendations from "../pages/recommend/Recommendations";
 import Login from "../pages/Login";
@@ -34,8 +36,10 @@ export default function AppRoutes(): React.ReactElement {
         <Route path="/analysis" element={<Analysis />} />
         <Route path="/analysis/report/daily/:reportId" element={<ReportDaily />} />
         <Route path="/analysis/report/weekly/:reportId" element={<ReportWeekly />} />
+        <Route path="/analysis/report/choice/:reportId" element={<ChoiceMusicReportDetail />} />
         <Route path="/discover" element={<Discover />} />
         <Route path="/discover/choice-music-analysis" element={<ChoiceMusicAnalysis />} />
+        <Route path="/discover/choice-music-analysis/reports" element={<ChoiceMusicReports />} />
         <Route path="/discover/line-chart" element={<LineChart />} />
         <Route path="/recommendations" element={<Recommendations />} />
         <Route path="/recommendations/detail/movie" element={<RecommendationMovie />} />

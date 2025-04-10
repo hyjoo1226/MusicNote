@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Chart from "../../features/analysis/Chart";
 import Calendar from "../../features/analysis/Calendar";
 import { ChartType } from "../../features/analysis/AnalysisType";
-import { eachDayOfInterval } from "date-fns";
+import { eachDayOfInterval, max } from "date-fns";
 import { useGetData } from "@/hooks/useApi";
 
 // 주간리포트 데이터 예시 하드코딩
@@ -90,6 +90,7 @@ export default function Analysis() {
   const [targetMonth, setTargetMonth] = useState(new Date());
   const [year, setYear] = useState(targetMonth.getFullYear());
   const [month, setMonth] = useState(targetMonth.getMonth() + 1);
+  const [selected, setSelected] = useState<Date | null>(null);
 
   useEffect(() => {
     setYear(targetMonth.getFullYear());
@@ -124,7 +125,7 @@ export default function Analysis() {
         });
       });
 
-      console.log("정렬된 주간 리포트:", sortedReports);
+      // console.log("정렬된 주간 리포트:", sortedReports);
     }
   }, [weeklyReportsData]);
 
@@ -190,7 +191,7 @@ export default function Analysis() {
 
         // 가장 빠른 날짜와 가장 늦은 날짜 찾기
         const startDate = new Date(Math.min(...dates.map((d: any) => d.getTime())));
-        const endDate = new Date(Math.max(...dates.map((d: any) => d.getTime())));
+        // const endDate = new Date(Math.max(...dates.map((d: any) => d.getTime())));
 
         // 일요일부터 토요일까지의 전체 주 계산
         const dayOfWeek = startDate.getDay();
@@ -204,6 +205,17 @@ export default function Analysis() {
       });
     }
   };
+
+  useEffect(() => {
+    // enabledDays를 기반으로 가장 최신 날짜를 기본 선택
+    const enabledDays = getEnabledDays();
+    // console.log(enabledDays);
+    if (enabledDays.length > 0) {
+      const latestDate = max(enabledDays); // 가장 최근 날짜 찾기
+      setSelected(latestDate);
+    }
+  }, [dailyReportsData, weeklyReportsData, reportCycle]);
+
   // 주간 리포트 구간 생성
   const getWeeklyReports = () => {
     if (!weeklyReportsData?.data) return [];
@@ -458,6 +470,7 @@ export default function Analysis() {
           weeklyReports={getWeeklyReports()}
           onReportSelect={(reportId) => setSelectedReportId(reportId)}
           onMonthChange={(date: Date) => setTargetMonth(date)}
+          defaultSelected={selected || undefined}
         />
       </div>
       <div className="mt-4"></div>

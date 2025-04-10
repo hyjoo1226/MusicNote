@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DayPicker } from "react-day-picker";
 import { isWithinInterval, eachDayOfInterval, isSameDay } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -29,6 +29,7 @@ interface CalendarProps {
   enabledDays: Date[];
   onMonthChange: (date: Date) => void;
   onReportSelect?: (reportId: string) => void;
+  defaultSelected?: Date | undefined;
 }
 
 export default function Calendar({
@@ -39,12 +40,19 @@ export default function Calendar({
   weeklyReports,
   enabledDays,
   onMonthChange,
+  defaultSelected,
 }: CalendarProps) {
   // 선택 날짜
-  const [selected, setSelected] = useState<Date>();
+  const [selected, setSelected] = useState<Date | undefined>(defaultSelected);
   // console.log(enabledDays);
   // 리포트 주기
   // const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
+  useEffect(() => {
+    if (defaultSelected) {
+      setSelected(defaultSelected);
+      onDateSelect?.(defaultSelected); // 부모로 선택 이벤트 전달
+    }
+  }, [defaultSelected]);
 
   const handleDateSelect = (date: Date | undefined) => {
     // 이미 선택된 날짜를 다시 클릭한 경우, 취소하지 않고 유지

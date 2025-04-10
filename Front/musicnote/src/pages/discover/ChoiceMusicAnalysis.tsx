@@ -92,7 +92,7 @@ export default function ChoiceMusicAnalysis() {
             <div className="flex justify-end my-3 mr-3 gap-x-5 items-center">
               <div
                 className="flex flex-col justify-center items-center text-center"
-                // onClick={() => navigate("/recommendations/my")}
+                onClick={() => navigate("/discover/choice-music-analysis/reports")}
               >
                 <svg
                   width="30"
