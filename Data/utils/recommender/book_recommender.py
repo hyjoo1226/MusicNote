@@ -140,9 +140,9 @@ class BookRecommender:
 
     def collect_from_keywords(self, keywords: list[str], total_per_keyword: int = 1, delay: float = 0.5) -> list[BookItem]:
         all_results = []
-        print("version : 1.0.0")
         for keyword in keywords:
             print(f"🔍 '{keyword}' 키워드로 책 검색 중...")
+            print("version : 1.0.0")
             books = self.collect_books(keyword, total=total_per_keyword, delay=delay)
             all_results.extend(books)
             print(f"✅ {len(books)}권 수집 완료 for keyword: {keyword}")
