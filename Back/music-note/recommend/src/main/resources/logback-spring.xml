@@ -5,7 +5,26 @@
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>elk-logstash:5000</destination>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <loggerName/>
+                <threadName/>
+                <logLevel/>
+                <message/>
+
+                <pattern>
+                    <pattern>
+                        {
+                        "event":"%X{event}",
+                        "userId":"%X{userId}",
+                        "action":"%X{action}",
+                        "duration":%X{duration:-0}
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
         </encoder>
     </appender>
 
