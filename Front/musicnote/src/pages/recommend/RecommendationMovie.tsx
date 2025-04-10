@@ -33,13 +33,17 @@ export default function RecommendationMovie() {
   const currentMovie = movies?.[currentIndex];
 
   const { data, isLoading, isError } = useGetData("/recommend/movie", "recommend/movie");
-  const { mutate: likeMovie, isError: likeMovieError } = usePostData("recommend/like/movie");
+  const {
+    mutate: likeMovie,
+    isError: isLikeMovieError,
+    error: likeMovieError,
+  } = usePostData("recommend/like/movie");
 
   useEffect(() => {
-    if (likeMovieError) {
+    if (isLikeMovieError) {
       console.log(likeMovieError);
     }
-  }, [likeMovieError]);
+  }, [isLikeMovieError, likeMovieError]);
 
   const goToNextMovie = useCallback(() => {
     if (currentIndex < movies.length - 1) {
@@ -162,7 +166,7 @@ export default function RecommendationMovie() {
 
     if (!isVerticalScrolling) {
       if (direction === "right") {
-        handleLike(movies[currentIndex].id);
+        handleLike(movies[currentIndex].recommendMovieId, movies[currentIndex].id);
       } else if (direction === "left") {
         handleDislike();
       } else {
@@ -228,7 +232,7 @@ export default function RecommendationMovie() {
 
     if (!isVerticalScrolling) {
       if (direction === "right") {
-        handleLike(movies[currentIndex].id);
+        handleLike(movies[currentIndex].recommendMovieId, movies[currentIndex].id);
       } else if (direction === "left") {
         handleDislike();
       } else {
@@ -245,11 +249,11 @@ export default function RecommendationMovie() {
     }
   };
 
-  const handleLike = (id: string) => {
+  const handleLike = (id: string, tmdbMovieId: number) => {
     if (!currentMovie) return;
     setIsLikeProcessing(true);
     resetSwipeState();
-    likeMovie({ recommendMovieId: id });
+    likeMovie({ recommendMovieId: id, tmdbMovieId: tmdbMovieId });
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
     if (isFlipped) {
       setIsFlipped(false);
@@ -457,7 +461,9 @@ export default function RecommendationMovie() {
               </button>
               <button
                 className={`swipe-button like-button ${direction === "right" ? "bg-green-500/10" : ""} ${isLikeProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
-                onClick={() => handleLike(movies[currentIndex].id)}
+                onClick={() =>
+                  handleLike(movies[currentIndex].recommendMovieId, movies[currentIndex].id)
+                }
                 disabled={isLikeProcessing}
               >
                 👍 좋아요

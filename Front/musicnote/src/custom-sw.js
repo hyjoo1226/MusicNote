@@ -27,23 +27,46 @@ registerRoute(
   })
 );
 
-// SSE 연결 캐싱 전략
 registerRoute(
-  new RegExp("https://j12a308\\.p\\.ssafy\\.io/api/notifications/sse/subscribe"),
-  new StaleWhileRevalidate({
-    cacheName: "sse-connection-cache",
+  ({ url }) => {
+    // 인증 관련 모든 API 캐싱하지 않음
+    if (
+      url.pathname.includes("/api/auth") ||
+      url.pathname.includes("/auth/") ||
+      url.pathname.includes("/login")
+    ) {
+      return false;
+    }
+    return url.origin === "https://j12a308.p.ssafy.io" && url.pathname.startsWith("/api/");
+  },
+  new NetworkFirst({
+    cacheName: "api-cache",
     plugins: [
       new ExpirationPlugin({
-        maxEntries: 10,
-        maxAgeSeconds: 60 * 60 * 2, // 2시간
+        maxEntries: 100,
+        maxAgeSeconds: 60 * 60 * 2, // 2시간으로 줄이기
       }),
     ],
+    networkTimeoutSeconds: 5, // 타임아웃 줄이기
   })
 );
 
-// 일반 API 요청 캐싱 전략
+// Service worker 업데이트 관리 추가
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+
+// API 요청 캐싱 전략 수정
 registerRoute(
-  new RegExp("https://j12a308\\.p\\.ssafy\\.io/api/"),
+  ({ url }) => {
+    // 로그인 관련 API는 캐싱하지 않음
+    if (url.pathname.includes("/api/auth")) {
+      return false;
+    }
+    return url.origin === "https://j12a308.p.ssafy.io" && url.pathname.startsWith("/api/");
+  },
   new NetworkFirst({
     cacheName: "api-cache",
     plugins: [

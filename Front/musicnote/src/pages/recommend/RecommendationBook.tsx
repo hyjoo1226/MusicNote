@@ -153,7 +153,7 @@ export default function RecommendationBook() {
 
     if (!isVerticalScrolling) {
       if (direction === "right") {
-        handleLike(books[currentIndex].id);
+        handleLike(books[currentIndex].id, books[currentIndex].isbn);
       } else if (direction === "left") {
         handleDislike();
       } else {
@@ -219,7 +219,7 @@ export default function RecommendationBook() {
 
     if (!isVerticalScrolling) {
       if (direction === "right") {
-        handleLike(books[currentIndex].id);
+        handleLike(books[currentIndex].id, books[currentIndex].isbn);
       } else if (direction === "left") {
         handleDislike();
       } else {
@@ -236,10 +236,10 @@ export default function RecommendationBook() {
     }
   };
 
-  const handleLike = (id: string) => {
+  const handleLike = (id: string, isbn: string) => {
     if (!currentBook) return;
     setIsLikeProcessing(true);
-    likeBook({ recommendBookId: id });
+    likeBook({ recommendBookId: id, isbn: isbn });
     resetSwipeState();
 
     // 카드가 뒤집혀 있다면 다시 앞면으로 전환
@@ -450,7 +450,7 @@ export default function RecommendationBook() {
               </button>
               <button
                 className={`swipe-button like-button ${direction === "right" ? "bg-green-500/10" : ""} ${isLikeProcessing ? "opacity-50" : ""}`}
-                onClick={() => handleLike(books[currentIndex].id)}
+                onClick={() => handleLike(books[currentIndex].id, books[currentIndex].isbn)}
                 disabled={isLikeProcessing}
               >
                 👍 좋아요

@@ -39,7 +39,6 @@ export default function LineTrend() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const lineContainerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const updateLineWidth = () => {
       if (lineContainerRef.current) {
@@ -61,7 +60,7 @@ export default function LineTrend() {
   const formatDateToString = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
-    const day = String(date.getDate()).padStart(2, "0");
+    const day = String(date.getDate() - 6).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
   const date = new Date();

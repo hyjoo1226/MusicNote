@@ -51,7 +51,10 @@ export default function DiscoverCarousel() {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="w-full max-w-md px-5 overflow-hidden">
-        <Slider {...settings} className="p-5 bg-gradient-to-b from-black to-gray rounded-lg">
+        <Slider
+          {...settings}
+          className="p-5 bg-gradient-to-b from-black to-gray rounded-lg cursor-pointer"
+        >
           {/* 첫 번째 슬라이드 */}
           <div
             onClick={(e) => handleSlideClick(e, "/discover/choice-music-analysis")}

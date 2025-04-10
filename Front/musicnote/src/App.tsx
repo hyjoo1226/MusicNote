@@ -7,7 +7,8 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 import { useAuthStore } from "./stores/authStore";
 import { useNotificationStore, Notification } from "./stores/notificationStore";
 
-// ServiceWorker sync API 타입 확장
+// ServiceWorker sync API 타입 확장 - PWA 관련 코드 주석 처리
+/*
 declare global {
   interface ServiceWorkerRegistration {
     sync: {
@@ -19,6 +20,7 @@ declare global {
     SyncManager: any;
   }
 }
+*/
 
 function App() {
   const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
@@ -29,14 +31,17 @@ function App() {
 
   // SSE 연결 설정 함수
   const setupSSEConnection = useCallback(() => {
+    // 기존 연결이 있으면 먼저 닫기
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+      eventSourceRef.current = null;
+    }
+
     // 토큰이 없으면 연결하지 않음
     if (!accessToken || !navigator.onLine) {
       setConnectionStatus("disconnected");
       return;
     }
-
-    // 기존 연결 종료
-    eventSourceRef.current?.close();
 
     // EventSource 인스턴스 생성
     eventSourceRef.current = new EventSourcePolyfill(sseUrl, {
@@ -45,6 +50,7 @@ function App() {
         "Spotify-Access-Token": spotifyAccessToken ?? "",
       },
       withCredentials: true,
+      heartbeatTimeout: 60000, // 60초 타임아웃 설정
     });
 
     // 연결 성공 시
@@ -54,7 +60,6 @@ function App() {
 
     // 기본 메시지 처리
     eventSourceRef.current.onmessage = (event) => {
-      console.log("기본 메시지:", event.data);
       try {
         const data = event.data;
         const notification: Notification = {
@@ -64,18 +69,20 @@ function App() {
         };
         addNotification(notification);
 
-        // 오프라인 상태일 경우 IndexedDB에 저장
+        // 오프라인 상태일 경우 IndexedDB에 저장 - PWA 관련 코드 주석 처리
+        /*
         if (!navigator.onLine && "serviceWorker" in navigator) {
           navigator.serviceWorker.ready.then(() => {
             saveNotificationToIndexedDB(notification);
           });
         }
+        */
       } catch (err) {
         console.error("알림 파싱 오류:", err);
       }
     };
 
-    // 초기 연결 이벤트
+    // // 초기 연결 이벤트
     eventSourceRef.current.addEventListener("connect", function (event) {
       const e = event as unknown as { data: string };
       try {
@@ -91,6 +98,22 @@ function App() {
         }
       } catch (err) {
         console.error("연결 메시지 파싱 오류:", err);
+      }
+    });
+
+    eventSourceRef.current.addEventListener("ping", function (event) {
+      const e = event as unknown as { data: string };
+      if (e.data !== "keep-alive") {
+        try {
+          const notification: Notification = {
+            id: Date.now().toString(),
+            message: e.data,
+            timestamp: new Date().toISOString(),
+          };
+          addNotification(notification);
+        } catch (err) {
+          console.error("ping 메시지 파싱 오류:", err);
+        }
       }
     });
 
@@ -116,18 +139,20 @@ function App() {
 
     // 에러 처리
     eventSourceRef.current.onerror = (err) => {
-      console.error("에러 발생:", err);
+      console.error("SSE 에러 발생:", err);
       setConnectionStatus("disconnected");
-
       // 연결 실패 시 일정 시간 후 재시도
       setTimeout(() => {
-        if (navigator.onLine) {
+        if (navigator.onLine && accessToken) {
+          console.log("SSE 재연결 시도");
           setupSSEConnection();
         }
       }, 5000); // 5초 후 재시도
     };
   }, [accessToken, spotifyAccessToken, sseUrl, addNotification, setConnectionStatus]);
 
+  // PWA standalone 모드 감지 - 주석 처리
+  /*
   useEffect(() => {
     // PWA standalone 모드 감지
     const isInStandaloneMode = window.matchMedia("(display-mode: standalone)").matches;
@@ -151,12 +176,33 @@ function App() {
       mql.removeEventListener("change", handleChange);
     };
   }, []);
+  */
 
-  // 오프라인 상태 감지 및 처리
+  // Service Worker 업데이트 - PWA 관련 코드 주석 처리
+  /*
+  useEffect(() => {
+    // Service Worker 업데이트 확인 및 적용
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.update();
+      });
+
+      // 로그인/로그아웃 시 캐시 비우기
+      navigator.serviceWorker.ready.then((reg) => {
+        reg.active?.postMessage({
+          type: "CLEAR_AUTH_CACHE",
+        });
+      });
+    }
+  }, [accessToken]);
+  */
+
+  // 오프라인 상태 감지 및 처리 - PWA 관련 코드 주석 처리하고 필수 코드만 유지
   useEffect(() => {
     const handleOnlineStatusChange = () => {
       if (navigator.onLine) {
-        // 온라인 상태가 되면 서비스 워커에게 동기화 요청
+        // 온라인 상태가 되면 서비스 워커에게 동기화 요청 - PWA 관련 코드 주석 처리
+        /*
         if ("serviceWorker" in navigator && "SyncManager" in window) {
           navigator.serviceWorker.ready.then((registration) => {
             registration.sync.register("notification-sync").catch((err: Error) => {
@@ -164,13 +210,17 @@ function App() {
             });
           });
         }
+        */
 
         // SSE 연결 시도
         setupSSEConnection();
         setConnectionStatus("connecting");
       } else {
         // 오프라인 상태가 되면 SSE 연결 종료
-        eventSourceRef.current?.close();
+        if (eventSourceRef.current) {
+          eventSourceRef.current.close();
+          eventSourceRef.current = null;
+        }
         setConnectionStatus("disconnected");
       }
     };
@@ -179,7 +229,8 @@ function App() {
     window.addEventListener("online", handleOnlineStatusChange);
     window.addEventListener("offline", handleOnlineStatusChange);
 
-    // 서비스 워커에서 메시지 수신 처리
+    // 서비스 워커에서 메시지 수신 처리 - PWA 관련 코드 주석 처리
+    /*
     const handleServiceWorkerMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === "OFFLINE_NOTIFICATION") {
         // 서비스 워커에서 수신한 오프라인 알림 처리
@@ -191,6 +242,7 @@ function App() {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.addEventListener("message", handleServiceWorkerMessage);
     }
+    */
 
     // 초기 상태 확인
     handleOnlineStatusChange();
@@ -199,16 +251,41 @@ function App() {
       window.removeEventListener("online", handleOnlineStatusChange);
       window.removeEventListener("offline", handleOnlineStatusChange);
 
+      // 서비스 워커 메시지 리스너 제거 - PWA 관련 코드 주석 처리
+      /*
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.removeEventListener("message", handleServiceWorkerMessage);
       }
+      */
 
       // 컴포넌트 언마운트 시 연결 종료
       eventSourceRef.current?.close();
     };
   }, [accessToken, addNotification, setConnectionStatus, setupSSEConnection]);
 
-  // IndexedDB에 알림 저장 (오프라인 상태용)
+  // 페이지 이동 시에도 SSE 연결 유지
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && navigator.onLine && accessToken) {
+        // 페이지가 보이면 SSE 연결 상태 확인 후 필요시 재연결
+        if (!eventSourceRef.current || eventSourceRef.current.readyState === 2) {
+          setupSSEConnection();
+        }
+      } else if (document.visibilityState === "hidden") {
+        // 선택적: 페이지가 숨겨질 때 연결 종료 (배터리/자원 절약)
+        // eventSourceRef.current?.close();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [accessToken, setupSSEConnection]);
+
+  // IndexedDB에 알림 저장 (오프라인 상태용) - PWA 관련 코드 주석 처리
+  /*
   const saveNotificationToIndexedDB = async (notification: Notification) => {
     if (!("indexedDB" in window)) return;
 
@@ -232,6 +309,7 @@ function App() {
       console.error("알림 저장 중 오류 발생:", error);
     }
   };
+  */
 
   return (
     <Router>
