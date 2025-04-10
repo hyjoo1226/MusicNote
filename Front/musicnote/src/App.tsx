@@ -1,6 +1,7 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes.tsx";
 import NavBar from "./components/layout/NavBar.tsx";
+import NotificationPopup from "./components/NotificationPopup.tsx";
 import { useEffect, useRef, useCallback } from "react";
 import "./styles/Global.css";
 import { EventSourcePolyfill } from "event-source-polyfill";
@@ -147,8 +148,14 @@ function App() {
             displayMessage = e.data;
           }
 
+          // 이미 같은 내용의 알림이 존재하는지 확인하기 위한 고유 ID 생성
+          // reportId가 있는 경우 이를 ID로 활용, 없으면 메시지 내용 기반 ID 생성
+          const notificationId = reportId
+            ? `${notificationData.type}-${reportId}`
+            : Date.now().toString();
+
           const notification: Notification = {
-            id: Date.now().toString(),
+            id: notificationId,
             message: displayMessage,
             url: url,
             timestamp: new Date().toISOString(),
@@ -369,6 +376,7 @@ function App() {
   return (
     <Router>
       <NavBar />
+      <NotificationPopup />
       <AppRoutes />
     </Router>
   );

@@ -80,11 +80,11 @@ export default function WeeklyReport({ onCalculate }: WeeklyReportProps) {
           <div className="text-[16px]">
             <p className="ml-1">1. 주목할 성향</p>
             <p className="text-light-gray ml-3 mt-1">
-              가장 많이 상승 -{" "}
+              가장 많이 상승한 성향{" - "}
               {report?.topGrowth ? traitMapping[report.topGrowth] || report.topGrowth : ""}
             </p>
             <p className="text-light-gray ml-3 mt-1">
-              가장 많이 하락 -{" "}
+              가장 많이 하락한 성향{" - "}
               {report?.topDecline ? traitMapping[report.topDecline] || report.topDecline : ""}
             </p>
             <p className="ml-1 mt-1">2. 요약</p>
