@@ -49,8 +49,8 @@ public class ReportService {
 		Date startDate = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		Date endDate = Date.from(end.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-		List<PersonalityReport> reportList = reportRepository.findByUserIdAndCreatedAtBetween(userId,
-			startDate, endDate);
+			List<PersonalityReport> reportList = reportRepository.findByUserIdAndCreatedAtBetween(userId,
+				startDate, endDate);
 		List<ResponseReportWithTypeDto> responseReportList = new ArrayList<>();
 		for (PersonalityReport report : reportList){
 			ResponseReportWithTypeDto responseReport = reportMapper.entityToResponseReport(report);
