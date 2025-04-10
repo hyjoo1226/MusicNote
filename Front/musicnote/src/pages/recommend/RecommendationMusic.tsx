@@ -4,9 +4,7 @@ import mascot from "@/assets/logo/mascot.webp";
 import { useState, useEffect, useRef } from "react";
 import "@/styles/RecommendationDetail.css";
 import { useGetData, usePostData } from "@/hooks/useApi";
-import { useAuthStore } from "@/stores/authStore";
 import { Music } from "@/features/recommend/recommendType";
-import SpotifyPlayer from "@/features/recommend/SpotifyPlayer";
 
 export default function RecommendationMusic() {
   const titleText = "음악 추천";
@@ -28,7 +26,6 @@ export default function RecommendationMusic() {
 
   const { data, isLoading, isError } = useGetData("/recommend/music", "recommend/music");
   const { mutate: likeMusic, isError: likeMusicError } = usePostData("recommend/like/music");
-  const { product } = useAuthStore();
 
   useEffect(() => {
     if (likeMusicError) {
@@ -263,71 +260,59 @@ export default function RecommendationMusic() {
           </div>
         ) : currentMusic ? (
           <>
-            {product === "free" ? (
-              <div
-                ref={cardRef}
-                className={`movie-card ${direction} relative cursor-pointer flex-shrink-0 w-full aspect-square`}
-                style={{
-                  transition: swiping ? "none" : "transform 0.3s ease",
-                  cursor: swiping ? "grabbing" : "grab",
-                  perspective: "1000px",
-                  transform: `translateX(${offsetX}px)`,
-                  userSelect: "none",
-                }}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseLeave}
-                onDragStart={(e) => e.preventDefault()}
-              >
-                {direction && (
-                  <div
-                    className={`direction-indicator ${direction}`}
-                    style={{ pointerEvents: "none" }}
-                  >
-                    {direction === "right" ? "좋아요" : "싫어요"}
-                  </div>
-                )}
-                <div>
-                  <div className={"absolute w-full h-full backface-hidden"}>
-                    <img
-                      src={currentMusic.albumcover_path}
-                      alt={currentMusic.track_name}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                    <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
-                      <div className="flex flex-col gap-0">
-                        <span className="text-light-gray text-sm font-light">
-                          {currentMusic.artist_name}
+            <div
+              ref={cardRef}
+              className={`movie-card ${direction} relative cursor-pointer flex-shrink-0 w-full aspect-square`}
+              style={{
+                transition: swiping ? "none" : "transform 0.3s ease",
+                cursor: swiping ? "grabbing" : "grab",
+                perspective: "1000px",
+                transform: `translateX(${offsetX}px)`,
+                userSelect: "none",
+              }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
+              onDragStart={(e) => e.preventDefault()}
+            >
+              {direction && (
+                <div
+                  className={`direction-indicator ${direction}`}
+                  style={{ pointerEvents: "none" }}
+                >
+                  {direction === "right" ? "좋아요" : "싫어요"}
+                </div>
+              )}
+              <div>
+                <div className={"absolute w-full h-full backface-hidden"}>
+                  <img
+                    src={currentMusic.albumcover_path}
+                    alt={currentMusic.track_name}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                  <div className="absolute flex flex-col justify-end bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black via-black/80 via-black/60 via-black/40 to-transparent h-[30%] rounded-b-lg">
+                    <div className="flex flex-col gap-0">
+                      <span className="text-light-gray text-sm font-light">
+                        {currentMusic.artist_name}
+                      </span>
+                      <h3 className="text-white text-xl font-medium">{currentMusic.track_name}</h3>
+                      <div className="flex items-center gap-2 text-light-gray text-sm">
+                        <span className="text-base text-light-gray">
+                          {currentMusic.release_date.split("-")[0]}년 발매
                         </span>
-                        <h3 className="text-white text-xl font-medium">
-                          {currentMusic.track_name}
-                        </h3>
-                        <div className="flex items-center gap-2 text-light-gray text-sm">
-                          <span className="text-base text-light-gray">
-                            {currentMusic.release_date.split("-")[0]}년 발매
-                          </span>
-                          <span className="flex items-center gap-1 text-light-gray">
-                            {formatDuration(currentMusic.duration_ms)}
-                          </span>
-                        </div>
+                        <span className="flex items-center gap-1 text-light-gray">
+                          {formatDuration(currentMusic.duration_ms)}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className="player w-full h-full mb-4">
-                {currentMusic && currentMusic.id ? (
-                  <SpotifyPlayer trackId={currentMusic.id} />
-                ) : (
-                  <div className="h-80 flex items-center justify-center">로딩 중...</div>
-                )}
-              </div>
-            )}
+            </div>
             <div className="swipe-buttons flex justify-evenly w-full">
               <button
                 className={`swipe-button dislike-button ${direction === "left" ? "bg-red-500/10" : ""} ${isLikeProcessing ? "opacity-50" : ""}`}

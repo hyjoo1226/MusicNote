@@ -96,27 +96,19 @@ export default function Login() {
       if (queryParams.code) {
         try {
           const tokenData = await exchangeCodeForToken(queryParams.code);
-          const response = await fetch("https://api.spotify.com/v1/me", {
-            headers: {
-              Authorization: `Bearer ${tokenData.data.spotify_accessToken}`,
-            },
-          });
-          const userData = await response.json();
 
           const newTokenData = {
             access_token: tokenData.data.accessToken,
             refresh_token: tokenData.data.spotify_refreshToken,
             spotify_access_token: tokenData.data.spotify_accessToken,
             expires_at: Date.now() + 3600 * 1000,
-            product: userData.product,
           };
           removeSpotifyAuthState();
           setAccessToken(
             newTokenData.access_token,
             newTokenData.refresh_token,
             newTokenData.expires_at,
-            newTokenData.spotify_access_token,
-            newTokenData.product
+            newTokenData.spotify_access_token
           );
           window.history.replaceState(null, "", window.location.pathname);
           navigate("/home");

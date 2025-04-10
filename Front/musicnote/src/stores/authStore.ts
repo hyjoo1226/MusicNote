@@ -7,13 +7,11 @@ interface AuthState {
   expiresAt: number | null;
   spotifyAuthState: string | null;
   refresh_token: string | null;
-  product: string | null;
   setAccessToken: (
     accessToken: string,
     refresh_token: string,
     expiresAt: number,
-    spotifyAccessToken: string,
-    product: string
+    spotifyAccessToken: string
   ) => void;
   removeAccessToken: () => void;
   setSpotifyAuthState: (state: string) => void;
@@ -35,8 +33,7 @@ export const useAuthStore = create<AuthState>()(
         accessToken: string,
         refresh_token: string,
         expiresAt: number,
-        spotifyAccessToken: string,
-        product: string
+        spotifyAccessToken: string
       ) =>
         set((state) => ({
           ...state,
@@ -44,7 +41,6 @@ export const useAuthStore = create<AuthState>()(
           refresh_token,
           expiresAt,
           spotifyAccessToken,
-          product,
         })),
       removeAccessToken: () =>
         set((state) => ({
@@ -53,7 +49,6 @@ export const useAuthStore = create<AuthState>()(
           refresh_token: null,
           spotifyAccessToken: null,
           expiresAt: null,
-          product: null,
         })),
       setSpotifyAuthState: (state: string) => set({ spotifyAuthState: state }),
       removeSpotifyAuthState: () => set({ spotifyAuthState: null }),
