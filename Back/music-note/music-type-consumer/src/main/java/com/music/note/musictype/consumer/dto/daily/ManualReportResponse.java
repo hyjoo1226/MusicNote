@@ -16,6 +16,13 @@ public class ManualReportResponse {
 	private String id;
 	private String userId;
 	private LocalDateTime createdAt;
+
+	private double openness;
+	private double conscientiousness;
+	private double extraversion;
+	private double agreeableness;
+	private double neuroticism;
+
 	private ReportDto report;
 	private List<MusicDto> musicList;
 
@@ -24,6 +31,11 @@ public class ManualReportResponse {
 			.id(report.getId())
 			.userId(report.getUserId())
 			.createdAt(report.getCreatedAt())
+			.openness(report.getOpenness())
+			.conscientiousness(report.getConscientiousness())
+			.extraversion(report.getExtraversion())
+			.agreeableness(report.getAgreeableness())
+			.neuroticism(report.getNeuroticism())
 			.report(ReportDto.builder()
 				.topScore(report.getReport().getTopScore())
 				.topText(report.getReport().getTopText())
