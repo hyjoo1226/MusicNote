@@ -13,8 +13,14 @@ export default function ChoiceMusicReports() {
   const filteredNotifications = notificationStore.notifications
     .filter((notification) => {
       try {
-        const messageObject = JSON.parse(notification.message);
-        return messageObject.type === "수동 요청";
+        // JSON 형식인지 확인
+        if (notification.message.startsWith("{") && notification.message.endsWith("}")) {
+          const messageObject = JSON.parse(notification.message);
+          return messageObject.type === "수동 요청";
+        } else {
+          // 문자열 메시지는 내용으로 확인
+          return notification.message.includes("수동 요청");
+        }
       } catch (error) {
         // console.error("Error parsing message:", error);
         return false;
@@ -59,7 +65,7 @@ export default function ChoiceMusicReports() {
               key={notification.id}
               className="mb-4 cursor-pointer w-full border-b border-solid border-border"
               onClick={() =>
-                navigate(`/analysis/report/choice/${messageObject.message}`, {
+                navigate(`/analysis/report/choice/${reportId}`, {
                   state: {
                     reportData: reportData,
                     musicList: reportData?.data.musicList || [],

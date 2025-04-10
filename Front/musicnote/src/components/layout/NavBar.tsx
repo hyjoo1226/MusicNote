@@ -15,6 +15,7 @@ export default function NavBar() {
     "/discover/choice-music-analysis",
     "/discover/choice-music-analysis/reports",
     "/callback",
+    "/notification",
   ];
 
   // 특정 경로로 시작하는 모든 페이지를 숨길 경로들

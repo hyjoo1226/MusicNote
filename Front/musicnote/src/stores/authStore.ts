@@ -68,18 +68,43 @@ export const useAuthStore = create<AuthState>()(
               }
             );
 
-            const data = await response.json();
+            if (!response.ok) {
+              console.error("토큰 갱신 요청 실패:", response.status, response.statusText);
+              return false;
+            }
 
-            if (data.status === 200 && data.data) {
-              set({
-                spotifyAccessToken: data.data.spotify_access_token,
-                // 토큰 갱신 시 만료 시간도 갱신 (1시간)
-                expiresAt: Date.now() + 3600 * 1000,
-              });
-              return true;
+            const responseText = await response.text();
+            if (!responseText || responseText.trim() === "") {
+              console.error("토큰 갱신 응답이 비어있습니다");
+              return false;
+            }
+
+            try {
+              const data = JSON.parse(responseText);
+
+              if (data.status === 200 && data.data) {
+                set({
+                  spotifyAccessToken: data.data.spotify_access_token,
+                  // 토큰 갱신 시 만료 시간도 갱신 (1시간)
+                  expiresAt: Date.now() + 3600 * 1000,
+                });
+                return true;
+              } else {
+                console.error("토큰 갱신 응답 형식 오류:", data);
+                return false;
+              }
+            } catch (jsonError) {
+              console.error(
+                "토큰 갱신 응답 JSON 파싱 오류:",
+                jsonError,
+                "응답 텍스트:",
+                responseText
+              );
+              return false;
             }
           } catch (error) {
             console.error("토큰 갱신 중 오류 발생:", error);
+            return false;
           }
         }
         return false;

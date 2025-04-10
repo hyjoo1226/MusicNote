@@ -5,7 +5,7 @@ import DetailButton from "../components/buttons/DetailButton";
 import { useGetData } from "../hooks/useApi";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import NotificationIcon from "@/assets/icon/notification.svg?react";
 export default function Home() {
   const { data: today, isLoading } = useGetData("today", "recommend/home");
   const [wordOfToday, setWordOfToday] = useState("");
@@ -29,16 +29,24 @@ export default function Home() {
   }, [today]);
 
   return (
-    <div className="flex flex-col items-center justify-start h-[calc(100vh-80px)] w-full overflow-y-auto bg-level1 xs:p-6">
+    <div className="flex flex-col items-center justify-start h-[calc(var(--app-height)-80px)] w-full overflow-y-auto bg-level1 xs:p-6">
       {/* 로고 + 이름 */}
-      <div className="flex flex-row self-start justify-start my-3 gap-x-1">
-        <img src={logo} alt="logo" className="w-[54px] h-[54px] mb-3" />
-        <img src={shortLogo} alt="short-logo" className="h-[54px] mb-3" />
+      <div className="flex flex-row w-full self-start justify-between items-center my-3 pr-6">
+        <div className="flex flex-row items-center justify-center gap-x-2">
+          <img src={logo} alt="logo" className="w-[54px] h-[54px] mb-3" />
+          <img src={shortLogo} alt="short-logo" className="h-[54px] mb-3" />
+        </div>
+        <div
+          className="flex flex-row items-center justify-center gap-x-2 cursor-pointer bg-level2 rounded-full w-10 h-10"
+          onClick={() => navigate(`/notification`)}
+        >
+          <NotificationIcon />
+        </div>
       </div>
       {/* 메인 페이지 */}
-      <div className="flex flex-col min-h-[calc(100vh-210px)] h-auto px-4 gap-y-5 justify-evenly pb-[80px]">
+      <div className="flex flex-col min-h-[calc(var(--app-height)-210px)] h-auto px-4 gap-y-5 justify-evenly pb-[80px]">
         <div
-          className="flex flex-col items-center justify-evenly w-full bg-level2 rounded-lg p-4 px-6 gap-y-2"
+          className="flex flex-col items-center justify-evenly w-full bg-level2 rounded-lg p-4 px-6 gap-y-2 cursor-pointer"
           onClick={() => navigate(`/analysis/report/daily/${reportId}`)}
         >
           <span className="text-white text-xl font-medium self-start">오늘의 한 마디</span>
@@ -63,7 +71,10 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <div onClick={() => navigate(`/analysis/report/daily/${reportId}`)}>
+        <div
+          onClick={() => navigate(`/analysis/report/daily/${reportId}`)}
+          className="cursor-pointer"
+        >
           <UserTemperGraph scores={todayScores} />
         </div>
         <div className="flex flex-col items-center justify-center w-full bg-level2 rounded-lg p-4 gap-y-2">
