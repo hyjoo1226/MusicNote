@@ -8,11 +8,13 @@ import ShareIcon from "../../assets/icon/share-icon.svg?react";
 import { useGetData } from "@/hooks/useApi";
 
 interface ReportData {
-  lowScore: string;
-  lowText: string;
-  summary: string;
-  topScore: string;
-  topText: string;
+  report: {
+    lowScore: string;
+    lowText: string;
+    summary: string;
+    topScore: string;
+    topText: string;
+  };
   typeDto: {
     openness: number;
     conscientiousness: number;
@@ -28,35 +30,22 @@ export default function ChoiceMusicReportDetail() {
   const reportRef = useRef<HTMLDivElement>(null);
   const [report, setReport] = useState<ReportData | null>(null);
   const { data: reportData } = useGetData(`report-${reportId}`, `/type/daily-report/${reportId}`);
-  // 리포트에 쓰인 음악 - 백엔드랑 url 대화 필요
-  // 현재는 status200이나 레포트id 요구 안해서 음악리스트 없음
-  const { data: reportMusiclistData } = useGetData(
-    `reportMusiclistData-${reportId}`,
-    "/recommend/music"
-  );
-
-  console.log("데이터", reportData);
-
-  useEffect(() => {
-    if (reportMusiclistData) {
-      console.log(reportMusiclistData);
-    }
-  });
+  const [reportMusiclistData, setReportMusiclistData] = useState<any>(null);
 
   useEffect(() => {
     if (reportData) {
-      console.log(reportData);
       const modifiedReport = {
         ...reportData.data,
         typeDto: {
-          openness: reportData.data.typeDto.openness * 100,
-          conscientiousness: reportData.data.typeDto.conscientiousness * 100,
-          extraversion: reportData.data.typeDto.extraversion * 100,
-          agreeableness: reportData.data.typeDto.agreeableness * 100,
-          neuroticism: reportData.data.typeDto.neuroticism * 100,
+          openness: reportData.data.openness * 100,
+          conscientiousness: reportData.data.conscientiousness * 100,
+          extraversion: reportData.data.extraversion * 100,
+          agreeableness: reportData.data.agreeableness * 100,
+          neuroticism: reportData.data.neuroticism * 100,
         },
       };
       setReport(modifiedReport);
+      setReportMusiclistData(reportData.data.musicList);
     }
   }, [reportData]);
 
@@ -66,7 +55,7 @@ export default function ChoiceMusicReportDetail() {
   };
   // 음악 리스트 아이콘 핸들러
   const handleMusicListClick = () => {
-    navigate(`/musiclist/${reportId}`);
+    navigate(`/choice-musiclist/${reportId}`, { state: { musicListData: reportMusiclistData } });
   };
   // web share API
   // 지원 안하는 브라우저의 경우 클립보드 복사
@@ -144,8 +133,6 @@ export default function ChoiceMusicReportDetail() {
     }
   };
 
-  // const [title, setTitle] = useState("일일");
-
   return (
     <div className="text-white w-full h-[calc(100vh-80px)]">
       <div className="flex flex-row mx-[10px] xs:mx-5 my-5 rounded-2xl px-3 py-1 items-center justify-center w-[calc(100%-20px)] xs:w-[calc(100%-40px)] h-[60px] bg-level2">
@@ -170,7 +157,7 @@ export default function ChoiceMusicReportDetail() {
               />
             </svg>
           </div>
-          <span className="text-white text-xl xs:text-2xl font-bold mt-1">일일 리포트</span>
+          <span className="text-white text-xl xs:text-2xl font-bold mt-1">분석 리포트</span>
           <div className="absolute right-0 flex cursor-pointer">
             <NoteIcon onClick={handleMusicListClick} className="mr-3" />
             <ShareIcon onClick={handleShare} />
@@ -181,19 +168,19 @@ export default function ChoiceMusicReportDetail() {
         <div ref={reportRef} className="flex flex-col gap-y-5">
           <UserTemperGraph
             scores={[
-              report?.typeDto.openness ?? 0,
-              report?.typeDto.conscientiousness ?? 0,
-              report?.typeDto.extraversion ?? 0,
-              report?.typeDto.agreeableness ?? 0,
-              report?.typeDto.neuroticism ?? 0,
+              report?.typeDto?.openness ?? 0,
+              report?.typeDto?.conscientiousness ?? 0,
+              report?.typeDto?.extraversion ?? 0,
+              report?.typeDto?.agreeableness ?? 0,
+              report?.typeDto?.neuroticism ?? 0,
             ]}
           />
           <DailyReport
-            lowScore={report?.lowScore ?? ""}
-            lowText={report?.lowText ?? ""}
-            summary={report?.summary ?? ""}
-            topScore={report?.topScore ?? ""}
-            topText={report?.topText ?? ""}
+            lowScore={report?.report.lowScore ?? ""}
+            lowText={report?.report.lowText ?? ""}
+            summary={report?.report.summary ?? ""}
+            topScore={report?.report.topScore ?? ""}
+            topText={report?.report.topText ?? ""}
           />
         </div>
       </div>
@@ -201,26 +188,3 @@ export default function ChoiceMusicReportDetail() {
     </div>
   );
 }
-
-// import { useParams } from "react-router-dom";
-// import { useGetData } from "@/hooks/useApi";
-
-// export default function ChoiceMusicReportDetail() {
-//   const { reportId } = useParams<{ reportId: string }>();
-
-//   // reportId가 있을 때만 API 호출
-//   const { data: ChoiceMusicReportData } = useGetData(
-//     reportId ? `report-${reportId}` : "",
-//     reportId ? `/type/daily-report/${reportId}` : ""
-//   );
-
-//   console.log("reportId:", reportId);
-//   console.log("ChoiceMusicReportData:", ChoiceMusicReportData);
-
-//   // reportId가 없는 경우 처리
-//   if (!reportId) {
-//     return <div>Report ID가 필요합니다</div>;
-//   }
-
-//   return <div>{/* 데이터 표시 로직 */}</div>;
-// }

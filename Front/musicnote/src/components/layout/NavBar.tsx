@@ -10,11 +10,17 @@ export default function NavBar() {
   const location = useLocation();
 
   // 정확히 일치해야 하는 경로들
-  const exactHiddenPaths = ["/", "/discover/choice-music-analysis", "/callback"];
+  const exactHiddenPaths = [
+    "/",
+    "/discover/choice-music-analysis",
+    "/discover/choice-music-analysis/reports",
+    "/callback",
+  ];
 
   // 특정 경로로 시작하는 모든 페이지를 숨길 경로들
   const patternHiddenPaths = [
     "/musiclist",
+    "/choice-musiclist",
     "/recommendationlist",
     "/recommendations/detail",
     "/recommendations/my",

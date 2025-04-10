@@ -22,7 +22,7 @@ export default function ChoiceMusicReports() {
   return (
     <div className="text-white w-full h-full">
       <TopBar title={"리포트 보관함"} />
-      <div className="h-[calc(100vh-100px)] mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-4 mx-[10px] xs:mx-5 border border-solid border-border">
+      <div className="mt-[20px] flex flex-col items-center justify-center bg-level2 rounded-3xl p-4 mx-[10px] xs:mx-5 border border-solid border-border">
         {filteredNotifications.map((notification) => {
           try {
             // `message`를 JSON으로 파싱
