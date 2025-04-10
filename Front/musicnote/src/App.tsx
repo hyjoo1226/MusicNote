@@ -94,6 +94,21 @@ function App() {
       }
     });
 
+    eventSourceRef.current.addEventListener("ping", function (event) {
+      const e = event as unknown as { data: string };
+      console.log("ping 메시지:", e.data);
+      try {
+        const notification: Notification = {
+          id: Date.now().toString(),
+          message: e.data,
+          timestamp: new Date().toISOString(),
+        };
+        addNotification(notification);
+      } catch (err) {
+        console.error("ping 메시지 파싱 오류:", err);
+      }
+    });
+
     // 알림 이벤트
     eventSourceRef.current.addEventListener("notification", function (event) {
       const e = event as unknown as { data: string };

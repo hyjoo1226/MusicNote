@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/authStore";
 
+// Spotify 타입 정의
+declare global {
+  interface Window {
+    onSpotifyWebPlaybackSDKReady: () => void;
+    Spotify: typeof Spotify;
+  }
+}
+
 export default function SpotifyCustomPlayer({ trackId }: { trackId: string }) {
   const [player, setPlayer] = useState<Spotify.Player | undefined>(undefined);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -10,8 +18,7 @@ export default function SpotifyCustomPlayer({ trackId }: { trackId: string }) {
   const { spotifyAccessToken } = useAuthStore();
 
   useEffect(() => {
-    // 토큰 가져오기 (실제 구현 필요)
-    // 예: API 호출로 토큰 가져오기
+    if (!spotifyAccessToken) return;
 
     const script = document.createElement("script");
     script.src = "https://sdk.scdn.co/spotify-player.js";
@@ -23,7 +30,9 @@ export default function SpotifyCustomPlayer({ trackId }: { trackId: string }) {
       const player = new window.Spotify.Player({
         name: "MusicNote Player",
         getOAuthToken: (cb: (token: string) => void) => {
-          cb(spotifyAccessToken);
+          if (spotifyAccessToken) {
+            cb(spotifyAccessToken);
+          }
         },
         volume: 0.5,
       });
