@@ -176,35 +176,76 @@ export default function Analysis() {
       });
     } else {
       if (!weeklyReportsData?.data) return [];
-      return weeklyReportsData.data.map((report: any) => {
-        const date = new Date(report.createdAt);
-        // 주간 기간을 일요일부터 토요일까지로 고정
-        const endDate = new Date(date);
-        const startDate = new Date(endDate);
 
-        // 선택한 날짜가 속한 주의 일요일과 토요일 찾기
-        const dayOfWeek = endDate.getDay(); // 0: 일요일, 6: 토요일
-        startDate.setDate(endDate.getDate() - dayOfWeek); // 일요일로 설정
-        endDate.setDate(startDate.getDate() + 6); // 토요일로 설정
+      // flatMap을 사용하여 모든 주간의 날짜를 하나의 배열로 합침
+      return weeklyReportsData.data.flatMap((report: any) => {
+        // report.details에서 가장 빠른 날짜와 가장 늦은 날짜 찾기
+        if (!report.details || !report.details.length) return [];
 
-        return eachDayOfInterval({ start: startDate, end: endDate });
+        const dates = report.details
+          .filter((detail: any) => detail.createdAt) // null 값 제외
+          .map((detail: any) => new Date(detail.createdAt));
+
+        if (dates.length === 0) return [];
+
+        // 가장 빠른 날짜와 가장 늦은 날짜 찾기
+        const startDate = new Date(Math.min(...dates.map((d: any) => d.getTime())));
+        const endDate = new Date(Math.max(...dates.map((d: any) => d.getTime())));
+
+        // 일요일부터 토요일까지의 전체 주 계산
+        const dayOfWeek = startDate.getDay();
+        const weekStartDate = new Date(startDate);
+        weekStartDate.setDate(startDate.getDate() - dayOfWeek); // 해당 주의 일요일
+
+        const weekEndDate = new Date(weekStartDate);
+        weekEndDate.setDate(weekStartDate.getDate() + 6); // 해당 주의 토요일
+
+        return eachDayOfInterval({ start: weekStartDate, end: weekEndDate });
       });
     }
   };
-
   // 주간 리포트 구간 생성
   const getWeeklyReports = () => {
     if (!weeklyReportsData?.data) return [];
 
     return weeklyReportsData.data.map((report: any) => {
-      const date = new Date(report.createdAt);
-      // 주간 기간을 일요일부터 토요일까지로 고정
-      const endDate = new Date(date);
-      const startDate = new Date(endDate);
+      // report.details에서 가장 빠른 날짜와 가장 늦은 날짜 찾기
+      if (!report.details || !report.details.length) {
+        const date = new Date(report.createdAt); // 폴백으로 createdAt 사용
+        const startDate = new Date(date);
+        const endDate = new Date(date);
 
-      // 해당 날짜가 속한 주의 일요일과 토요일 찾기
-      const dayOfWeek = endDate.getDay(); // 0: 일요일, 6: 토요일
-      startDate.setDate(endDate.getDate() - dayOfWeek); // 일요일로 설정
+        const dayOfWeek = date.getDay();
+        startDate.setDate(date.getDate() - dayOfWeek); // 일요일로 설정
+        endDate.setDate(startDate.getDate() + 6); // 토요일로 설정
+
+        return { from: startDate, to: endDate };
+      }
+
+      const dates = report.details
+        .filter((detail: any) => detail.createdAt)
+        .map((detail: any) => new Date(detail.createdAt));
+
+      if (dates.length === 0) {
+        const date = new Date(report.createdAt);
+        const startDate = new Date(date);
+        const endDate = new Date(date);
+
+        const dayOfWeek = date.getDay();
+        startDate.setDate(date.getDate() - dayOfWeek);
+        endDate.setDate(startDate.getDate() + 6);
+
+        return { from: startDate, to: endDate };
+      }
+
+      // 가장 빠른 날짜의 주 시작일(일요일)과 종료일(토요일) 계산
+      const earliestDate = new Date(Math.min(...dates.map((d: any) => d.getTime())));
+
+      const dayOfWeek = earliestDate.getDay();
+      const startDate = new Date(earliestDate);
+      startDate.setDate(earliestDate.getDate() - dayOfWeek); // 일요일로 설정
+
+      const endDate = new Date(startDate);
       endDate.setDate(startDate.getDate() + 6); // 토요일로 설정
 
       return { from: startDate, to: endDate };
