@@ -10,8 +10,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import com.music.note.common.exception.exception.common.ErrorCode;
+import com.music.note.common.exception.exception.domain.BusinessBaseException;
 import com.music.note.kafkaeventmodel.dto.NotificationEvent;
 import com.music.note.kafkaeventmodel.dto.WeeklyReportEvent;
+import com.music.note.kafkaeventmodel.type.RequestType;
 import com.music.note.musictype.consumer.converter.WeeklyReportConverter;
 import com.music.note.musictype.consumer.dto.weekly.BigFiveDto;
 import com.music.note.musictype.consumer.dto.weekly.WeeklyReportDto;
@@ -38,6 +41,12 @@ public class WeeklyReportService {
 	private final NotificationProducer notificationProducer;
 	private final WeeklyReportRepository weeklyReportRepository;
 
+	public WeeklyReportResponse getReportById(String reportId) {
+		WeeklyReport weeklyReport = weeklyReportRepository.findById(reportId)
+			.orElseThrow(() -> new BusinessBaseException(ErrorCode.NOT_FOUND_PERSONALITY_REPORT));
+		return WeeklyReportResponse.fromEntity(weeklyReport);
+	}
+
 	public List<WeeklyReportResponse> getMonthlyWeeklyReports(String userId, int year, int month) {
 		LocalDateTime start = LocalDate.of(year, month, 1).atStartOfDay();
 		LocalDateTime end = start.withDayOfMonth(start.toLocalDate().lengthOfMonth())
@@ -55,32 +64,51 @@ public class WeeklyReportService {
 		List<PersonalityReport> dailyReports = getDailyReports(event);
 
 		//TODO: List 가 3보다 작으면 예외 처리
+		if (dailyReports.size() <= 3) {
+			NotificationEvent error = NotificationEvent.builder()
+				.userId(event.getUserId())
+				.message("주간 리포트 생성을 위한 일간 리포트가 부족해요.")
+				.type(RequestType.DAILY_REPORTS_NOT_ENOUGH_FOR_WEEKLY)
+				.build();
+			notificationProducer.sendMusicListEvent(error);
+			return;
+		}
 
 		// 2. python 서버에서 주간 리포트 받기
 		List<BigFiveDto> bigFiveList = WeeklyReportConverter.toBigFiveDtoList(dailyReports);
-		WeeklyReportDto result = restClient.post()
-			.uri(WEEKLY_REPORT_URL)
-			.body(bigFiveList)
-			.retrieve()
-			.body(WeeklyReportDto.class);
+		try {
+			WeeklyReportDto result = restClient.post()
+				.uri(WEEKLY_REPORT_URL)
+				.body(bigFiveList)
+				.retrieve()
+				.body(WeeklyReportDto.class);
 
-		if (result == null) {
-			throw new RuntimeException(FAILED_TO_GET_WEEKLY_REPORT);
+			if (result == null) {
+				throw new RuntimeException(FAILED_TO_GET_WEEKLY_REPORT);
+			}
+
+			WeeklyReport weeklyReport = WeeklyReportConverter.toWeeklyReport(event.getUserId().toString(), result,
+				dailyReports);
+
+			weeklyReportRepository.save(weeklyReport);
+			log.info("Weekly Report saved: {}", weeklyReport.getSummary());
+
+			// Notification 서버로 이벤트 전송
+			NotificationEvent notificationEvent = NotificationEvent.builder()
+				.userId(event.getUserId())
+				.message(weeklyReport.getId())
+				.type(event.getType())
+				.build();
+			notificationProducer.sendMusicListEvent(notificationEvent);
+		} catch (Exception e) {
+			log.error("Failed to get weekly report: {}", e.getMessage());
+			NotificationEvent error = NotificationEvent.builder()
+				.userId(event.getUserId())
+				.message("주간 리포트 생성에 실패했어요.")
+				.type(RequestType.WEEKLY_ERROR)
+				.build();
+			notificationProducer.sendMusicListEvent(error);
 		}
-
-		WeeklyReport weeklyReport = WeeklyReportConverter.toWeeklyReport(event.getUserId().toString(), result,
-			dailyReports);
-
-		weeklyReportRepository.save(weeklyReport);
-		log.info("Weekly Report saved: {}", weeklyReport.getSummary());
-
-		// Notification 서버로 이벤트 전송
-		NotificationEvent notificationEvent = NotificationEvent.builder()
-			.userId(event.getUserId())
-			.message(WEEKLY_REPORT_READY_MESSAGE)
-			.type(event.getType())
-			.build();
-		notificationProducer.sendMusicListEvent(notificationEvent);
 
 	}
 

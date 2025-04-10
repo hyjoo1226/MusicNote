@@ -71,4 +71,9 @@ public class RecommendBookService {
 		return recommendBookRepository.findById(recommendBookId)
 			.orElseThrow(() -> new RecommendBookNotFoundException(NOT_FOUND_RECOMMEND_BOOK));
 	}
+
+	public RecommendBook findRecommendBookByIsbn(String isbn) {
+		return recommendBookRepository.findFirstByIsbn(isbn)
+			.orElseThrow(() -> new RecommendBookNotFoundException(NOT_FOUND_RECOMMEND_BOOK));
+	}
 }

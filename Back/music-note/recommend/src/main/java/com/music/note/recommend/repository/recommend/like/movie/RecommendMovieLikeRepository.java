@@ -15,7 +15,14 @@ public interface RecommendMovieLikeRepository extends MongoRepository<RecommendM
 	@Query("{ '_id': ?0 }")
 	@Update("{ '$addToSet': { 'liked_movie_ids': ?1 } }")
 	void addMovieLike(String recommendMovieLikesId, String movieId);
+
+	@Query("{ '_id': ?0 }")
+	@Update("{ '$addToSet': { 'liked_tmdb_movie_ids': ?1 } }")
+	void addTmdbMovieLike(String recommendMovieLikesId, int tmdbMovieId);
 	@Query("{ '_id': ?0 }")
 	@Update("{ '$pull': { 'liked_movie_ids': ?1 } }")
 	void removeMovieLike(String recommendMovieLikesId, String MovieId);
+	@Query("{ '_id': ?0 }")
+	@Update("{ '$pull': { 'liked_tmdb_movie_ids': ?1 } }")
+	void removeTmdbMovieLike(String recommendMovieLikesId, int tmdbMovieId);
 }

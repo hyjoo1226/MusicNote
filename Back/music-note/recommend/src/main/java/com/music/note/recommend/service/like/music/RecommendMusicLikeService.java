@@ -39,22 +39,30 @@ public class RecommendMusicLikeService {
 		Optional<RecommendMusicLikes> optionalRecommendMusicLikes = recommendMusicLikeRepository.findByUserId(userId);
 		if (optionalRecommendMusicLikes.isPresent()){
 			RecommendMusicLikes recommendMusicLikes = optionalRecommendMusicLikes.get();
-			if (!recommendMusicLikes.isLiked(requestRecommendMusicLikeDto.getRecommendMusicId())){
-				recommendMusicLikeRepository.addMovieLike(recommendMusicLikes.getId(), requestRecommendMusicLikeDto.getRecommendMusicId());
+			if (!recommendMusicLikes.isLikedBySpotifyMusicId(recommendMusic.getSpotifyMusicId())){
+				recommendMusicLikeRepository.addMusicLikeBySpotifyMusicId(recommendMusicLikes.getId(), recommendMusic.getSpotifyMusicId());
 			}
 		}
 		else {
-			RecommendMusicLikes recommendMusicLikes = recommendMusicLikeMapper.createRecommendMusicLikes(requestRecommendMusicLikeDto.getRecommendMusicId(), userId);
+			RecommendMusicLikes recommendMusicLikes = recommendMusicLikeMapper.createRecommendMusicLikes(recommendMusic.getSpotifyMusicId(), userId);
 			recommendMusicLikeRepository.save(recommendMusicLikes);
 		}
 	}
 
 	public ResponseRecommendMusicList readLikeRecommendMusic(String userId) {
-		RecommendMusicLikes recommendMusicLikes = findRecommendMusicLikesByUserId(userId);
-		List<String> likeMusicIds = recommendMusicLikes.getLikeMusicIds();
+		Optional<RecommendMusicLikes> optionalRecommendMusicLikes = findOptionalRecommendMusicLikesByUserId(userId);
+		if (optionalRecommendMusicLikes.isEmpty()){
+			return ResponseRecommendMusicList.builder()
+				.musics(new ArrayList<>())
+				.listSize(0)
+				.build();
+		}
+		RecommendMusicLikes recommendMusicLikes = optionalRecommendMusicLikes.get();
+		List<String> likeMusicSpotifyMusicIds = recommendMusicLikes.getLikeMusicSpotifyMusicIds();
 		List<RecommendMusicDto> recommendMusicDtoList = new ArrayList<>();
-		for (String id : likeMusicIds){
-			RecommendMusic recommendMusicById = recommendMusicService.findRecommendMusicById(id);
+		for (String spotifyMusicId : likeMusicSpotifyMusicIds){
+			// RecommendMusic recommendMusicById = recommendMusicService.findRecommendMusicById(id);
+			RecommendMusic recommendMusicById = recommendMusicService.findRecommendMusicBySpotifyId(spotifyMusicId);
 			RecommendMusicDto recommendMusicDto = recommendMusicMapper.entityToRecommendMusicDto(recommendMusicById);
 			recommendMusicDtoList.add(recommendMusicDto);
 		}
@@ -67,9 +75,13 @@ public class RecommendMusicLikeService {
 		return recommendMusicLikeRepository.findByUserId(userId)
 			.orElseThrow(() -> new RecommendBookLikesNotFoundException(NOT_FOUND_RECOMMEND_MUSIC_LIKES));
 	}
+	private Optional<RecommendMusicLikes> findOptionalRecommendMusicLikesByUserId(String userId){
+		return recommendMusicLikeRepository.findByUserId(userId);
+	}
+
 
 	public void cancelRecommendMusicLike(String userId, RequestRecommendMusicLikeDto requestRecommendMusicLikeDto) {
 		RecommendMusicLikes recommendMusicLikes = findRecommendMusicLikesByUserId(userId);
-		recommendMusicLikeRepository.removeMusicLike(recommendMusicLikes.getId(), requestRecommendMusicLikeDto.getRecommendMusicId());
+		recommendMusicLikeRepository.removeMusicLike(recommendMusicLikes.getId(), requestRecommendMusicLikeDto.getSpotifyMusicId());
 	}
 }

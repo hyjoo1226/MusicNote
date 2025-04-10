@@ -3,12 +3,13 @@ package com.music.note.recommend.service.like.book;
 import static com.music.note.common.exception.exception.common.ErrorCode.*;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.stereotype.Service;
 
-import com.music.note.common.exception.exception.common.ErrorCode;
 import com.music.note.common.exception.exception.domain.recommend.like.book.RecommendBookLikesNotFoundException;
 import com.music.note.recommend.domain.like.book.RecommendBookLikes;
 import com.music.note.recommend.domain.recommned.book.RecommendBook;
@@ -39,26 +40,38 @@ public class RecommendBookLikeService {
 
 		if (optionalRecommendBookLikes.isPresent()){
 			RecommendBookLikes recommendBookLikes = optionalRecommendBookLikes.get();
-			if (!recommendBookLikes.isLiked(recommendBookLikeDto.getRecommendBookId())){
-				recommendBookLikeRepository.addMovieLike(recommendBookLikes.getId(), recommendBook.getId());
+			if (!recommendBookLikes.isLiked(recommendBook.getIsbn())){
+				recommendBookLikeRepository.addBookLike(recommendBookLikes.getId(), recommendBook.getIsbn());
 			}
 
 		}
 		else {
-			RecommendBookLikes recommendMovieLikes = recommendBookLikeMapper.createRecommendBookLikes(recommendBook.getId(), userId);
+			RecommendBookLikes recommendMovieLikes = recommendBookLikeMapper.createRecommendBookLikes(recommendBook.getIsbn(), userId);
 			recommendBookLikeRepository.save(recommendMovieLikes);
 		}
 	}
 
 	public ResponseRecommendBookList readLikeRecommendBook(String userId) {
-		RecommendBookLikes recommendBookLikes = findRecommendBookLikesByUserId(userId);
-		List<String> likedBookIds = recommendBookLikes.getLikedBookIds();
+		Optional<RecommendBookLikes> optionalRecommendBookLikesByUserId = findOptionalRecommendBookLikesByUserId(
+			userId);
+		if (optionalRecommendBookLikesByUserId.isEmpty()){
+			return ResponseRecommendBookList
+				.builder()
+				.books(new ArrayList<>())
+				.listSize(0)
+				.build();
+		}
+		RecommendBookLikes recommendBookLikes = optionalRecommendBookLikesByUserId.get();
+		List<String> likedIsbns = recommendBookLikes.getLikedIsbns();
 		List<RecommendBookDto> recommendBookDtoList = new ArrayList<>();
-		for (String id: likedBookIds){
-			RecommendBook recommendBook = recommendBookService.findRecommendBookById(id);
+
+		for (String isbn: likedIsbns){
+			// RecommendBook recommendBook = recommendBookService.findRecommendBookById(id);
+			RecommendBook recommendBook = recommendBookService.findRecommendBookByIsbn(isbn);
 			RecommendBookDto recommendBookDto = recommendBookMapper.entityToDto(userId, recommendBook);
 			recommendBookDtoList.add(recommendBookDto);
 		}
+
 		return ResponseRecommendBookList
 			.builder()
 			.books(recommendBookDtoList)
@@ -69,9 +82,12 @@ public class RecommendBookLikeService {
 		return recommendBookLikeRepository.findByUserId(userId)
 			.orElseThrow(()-> new RecommendBookLikesNotFoundException(NOT_FOUND_RECOMMEND_BOOK_LIKES));
 	}
+	private Optional<RecommendBookLikes> findOptionalRecommendBookLikesByUserId(String userId){
+		return recommendBookLikeRepository.findByUserId(userId);
+	}
 
 	public void deleteRecommendBookLike(RequestRecommendBookLikeDto recommendBookLikeDto, String userid) {
 		RecommendBookLikes recommendBookLike = findRecommendBookLikesByUserId(userid);
-		recommendBookLikeRepository.removeBookLike(recommendBookLike.getId(), recommendBookLikeDto.getRecommendBookId());
+		recommendBookLikeRepository.removeBookLike(recommendBookLike.getId(), recommendBookLikeDto.getIsbn());
 	}
 }
