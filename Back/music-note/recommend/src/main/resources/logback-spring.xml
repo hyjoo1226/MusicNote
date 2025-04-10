@@ -9,6 +9,10 @@
         </encoder>
     </appender>
 
+    <logger name="ELK_LOGGER" level="INFO" additivity="false">
+        <appender-ref ref="LOGSTASH"/>
+    </logger>
+
     <root level="INFO">
         <appender-ref ref="LOGSTASH"/>
     </root>
