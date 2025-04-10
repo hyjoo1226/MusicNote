@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CrawlingService {
 
-	private static final String API_KEY = "11ce7f874fc9814791404199a5ae2fc100414bce";
+	private static final String API_KEY = "c2f560e2314764eec61d027bc202ab61b3080737";
 	private static final String BASE_API_URL = "https://api.zenrows.com/v1/";
 	private static final String TARGET_URL_TEMPLATE = "https://songdata.io/track/%s/";
 	private static final String CSS_EXTRACTOR = "{\"scores\":\"dd\"}";
@@ -61,6 +61,13 @@ public class CrawlingService {
 	private void publishRequestEvent(MusicListWithMissingEvent event, List<MusicDto> savedMissingTracks) {
 		// 기존 musicList와 새로 저장된 트랙 리스트를 합침
 		List<MusicDto> combinedList = new ArrayList<>(event.getExistingTracks());
+
+		log.info("============= combinedList =============");
+		for (MusicDto musicDto : combinedList) {
+			log.info("imageUrl: {}", musicDto.getImageUrl());
+		}
+		log.info("----------------------------------------------------------------------");
+
 		combinedList.addAll(savedMissingTracks);
 
 		// 새 이벤트 생성
