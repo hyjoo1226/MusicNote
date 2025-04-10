@@ -12,13 +12,13 @@ interface LineDataType {
 type TraitType =
   | "openness"
   | "conscientiousness"
-  | "extraversion"
+  | "extraVersion"
   | "agreeableness"
   | "neuroticism";
 interface TrendItem {
   openness: number;
   conscientiousness: number;
-  extraversion: number;
+  extraVersion: number;
   agreeableness: number;
   neuroticism: number;
   createdAt: string;
@@ -81,7 +81,7 @@ export default function LineTrend() {
     return (
       item.openness === 0.0 &&
       item.conscientiousness === 0.0 &&
-      item.extraversion === 0.0 &&
+      item.extraVersion === 0.0 &&
       item.agreeableness === 0.0 &&
       item.neuroticism === 0.0
     );
@@ -134,7 +134,7 @@ export default function LineTrend() {
           id: 3,
           name: "외향성",
           values: sortedData.map((_, index) =>
-            Math.round(getNearestValue(sortedData, index, "extraversion") * 100)
+            Math.round(getNearestValue(sortedData, index, "extraVersion") * 100)
           ),
           color: traitColors["외향성"],
         },
