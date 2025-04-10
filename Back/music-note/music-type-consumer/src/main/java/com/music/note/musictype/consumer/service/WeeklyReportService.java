@@ -10,6 +10,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import com.music.note.common.exception.exception.common.ErrorCode;
+import com.music.note.common.exception.exception.domain.BusinessBaseException;
 import com.music.note.kafkaeventmodel.dto.NotificationEvent;
 import com.music.note.kafkaeventmodel.dto.WeeklyReportEvent;
 import com.music.note.musictype.consumer.converter.WeeklyReportConverter;
@@ -37,6 +39,12 @@ public class WeeklyReportService {
 	private final ReportRepository reportRepository;
 	private final NotificationProducer notificationProducer;
 	private final WeeklyReportRepository weeklyReportRepository;
+
+	public WeeklyReportResponse getReportById(String reportId) {
+		WeeklyReport weeklyReport = weeklyReportRepository.findById(reportId)
+			.orElseThrow(() -> new BusinessBaseException(ErrorCode.NOT_FOUND_PERSONALITY_REPORT));
+		return WeeklyReportResponse.fromEntity(weeklyReport);
+	}
 
 	public List<WeeklyReportResponse> getMonthlyWeeklyReports(String userId, int year, int month) {
 		LocalDateTime start = LocalDate.of(year, month, 1).atStartOfDay();

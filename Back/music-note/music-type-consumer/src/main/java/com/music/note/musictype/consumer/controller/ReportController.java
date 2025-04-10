@@ -30,6 +30,12 @@ public class ReportController {
 		return CommonResponse.success(reports);
 	}
 
+	@GetMapping("/weekly-report/{reportId}")
+	public CommonResponse<WeeklyReportResponse> getWeeklyReportById(
+		@PathVariable String reportId) {
+		return CommonResponse.success(weeklyReportService.getReportById(reportId));
+	}
+
 	@GetMapping("/daily-report")
 	public CommonResponse<List<ManualReportResponse>> getReportsByUserId(
 		@RequestHeader("X-User-Id") String userId) {
