@@ -16,11 +16,11 @@ type TraitType =
   | "agreeableness"
   | "neuroticism";
 interface TrendItem {
-  openness: number | null;
-  conscientiousness: number | null;
-  extraversion: number | null;
-  agreeableness: number | null;
-  neuroticism: number | null;
+  openness: number;
+  conscientiousness: number;
+  extraversion: number;
+  agreeableness: number;
+  neuroticism: number;
   createdAt: string;
 }
 
@@ -66,116 +66,53 @@ export default function LineTrend() {
   };
   const date = new Date();
   const dateString = formatDateToString(date);
-  // console.log(dateString);
 
-  // 현재 일주일 중 없는 날짜가 null이 아니라 아예 전송이 안된 상태라 하드코딩으로 대체
   const { data: TrendData } = useGetData(
-    `TrendData-${dateString}`, // key
-    `/recommend/type/trend?date=${dateString}` // url
+    `TrendData-${dateString}`,
+    `/recommend/type/trend?date=${dateString}`
   );
-  console.log(TrendData);
-  // const TrendData = {
-  //   trendTypeDtoList: [
-  //     {
-  //       openness: 0.329532,
-  //       conscientiousness: 0.491833,
-  //       extraversion: 0.620478,
-  //       agreeableness: 0.311398,
-  //       neuroticism: 0.772896,
-  //       createdAt: "2025-04-07T10:00:29.628",
-  //     },
-  //     {
-  //       openness: 0.6,
-  //       conscientiousness: 0.2,
-  //       extraversion: 0.6,
-  //       agreeableness: 0.8,
-  //       neuroticism: 0.1,
-  //       createdAt: "2025-04-06T10:00:29.628",
-  //     },
-  //     {
-  //       openness: 0.3,
-  //       conscientiousness: 0.6,
-  //       extraversion: 0.2,
-  //       agreeableness: 0.1,
-  //       neuroticism: 0.2,
-  //       createdAt: "2025-04-05T10:00:29.628",
-  //     },
-  //     {
-  //       openness: null,
-  //       conscientiousness: null,
-  //       extraversion: null,
-  //       agreeableness: null,
-  //       neuroticism: null,
-  //       createdAt: "2025-04-04T10:00:29.628",
-  //     },
-  //     {
-  //       openness: 0.35,
-  //       conscientiousness: 0.46,
-  //       extraversion: 0.6,
-  //       agreeableness: 0.3,
-  //       neuroticism: 0.75,
-  //       createdAt: "2025-04-03T10:00:29.628",
-  //     },
-  //     {
-  //       openness: 0.2,
-  //       conscientiousness: 0.16,
-  //       extraversion: 0.2,
-  //       agreeableness: 0.1,
-  //       neuroticism: 0.1,
-  //       createdAt: "2025-04-02T10:00:29.628",
-  //     },
-  //     {
-  //       openness: null,
-  //       conscientiousness: null,
-  //       extraversion: null,
-  //       agreeableness: null,
-  //       neuroticism: null,
-  //       createdAt: "2025-04-01T10:00:29.628",
-  //     },
-  //   ],
-  // };
 
-  const sortedData = TrendData?.trendTypeDtoList
-    ? [...TrendData.trendTypeDtoList].sort(
+  const sortedData = TrendData?.data.trendTypeDtoList
+    ? [...TrendData.data.trendTypeDtoList].sort(
         (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       )
     : [];
 
-  // const lineData: LineDataType[] = [
-  //   { id: 1, name: "개방성", values: [65, 59, 80, 81, 56, 55, 40], color: traitColors["개방성"] },
-  //   { id: 2, name: "성실성", values: [28, 48, 40, 19, 86, 27, 90], color: traitColors["성실성"] },
-  //   { id: 3, name: "외향성", values: [80, 40, 32, 45, 78, 52, 63], color: traitColors["외향성"] },
-  //   { id: 4, name: "우호성", values: [45, 70, 75, 38, 25, 60, 85], color: traitColors["우호성"] },
-  //   { id: 5, name: "신경성", values: [20, 35, 60, 90, 50, 75, 30], color: traitColors["신경성"] },
-  // ];
-
-  // null값의 경우 가장 가까운 이전/ 이후 날짜의 값 찾기
-  // 연속된 null 개수에 따라 중간값 넣도록 로직 수정 필요
-  const getNearestValue = (data: TrendItem[], currentIndex: number, trait: TraitType) => {
-    let value = data[currentIndex][trait];
-    if (value !== null) return value;
-
-    // 이전 날짜에서 값 탐색
-    for (let i = currentIndex - 1; i >= 0; i--) {
-      if (data[i][trait] !== null) {
-        value = data[i][trait];
-        break;
-      }
-    }
-
-    // 다음 날짜에서 값 탐색 (이전에 찾지 못한 경우)
-    if (value === null) {
-      for (let i = currentIndex + 1; i < data.length; i++) {
-        if (data[i][trait] !== null) {
-          value = data[i][trait];
-          break;
-        }
-      }
-    }
-
-    return value ?? 0; // 모든 값이 null일 경우 0 반환
+  const isAllZero = (item: TrendItem) => {
+    return (
+      item.openness === 0.0 &&
+      item.conscientiousness === 0.0 &&
+      item.extraversion === 0.0 &&
+      item.agreeableness === 0.0 &&
+      item.neuroticism === 0.0
+    );
   };
 
+  // 가장 가까운 이전 또는 이후 값을 가져오는 함수
+  const getNearestValue = (data: TrendItem[], currentIndex: number, trait: TraitType) => {
+    const currentItem = data[currentIndex];
+    if (!isAllZero(currentItem)) {
+      return currentItem[trait];
+    }
+
+    // 이전 값 탐색
+    for (let i = currentIndex - 1; i >= 0; i--) {
+      if (!isAllZero(data[i])) {
+        return data[i][trait];
+      }
+    }
+
+    // 이후 값 탐색 (이전에 찾지 못한 경우)
+    for (let i = currentIndex + 1; i < data.length; i++) {
+      if (!isAllZero(data[i])) {
+        return data[i][trait];
+      }
+    }
+
+    return 0; // 모든 데이터가 0인 경우 최종적으로 0 반환
+  };
+
+  // 그래프 데이터 생성
   const lineData: LineDataType[] = sortedData.length
     ? [
         {
