@@ -42,7 +42,7 @@ export default function Calendar({
 }: CalendarProps) {
   // 선택 날짜
   const [selected, setSelected] = useState<Date>();
-  console.log(enabledDays);
+  // console.log(enabledDays);
   // 리포트 주기
   // const [reportCycle, setReportCycle] = useState<"daily" | "weekly">("daily");
 

@@ -308,16 +308,30 @@ export default function Analysis() {
 
       // 해당 일요일에 해당하는 주간 리포트 찾기
       const selectedReport = weeklyReportsData.data.find((report: any) => {
-        const reportDate = new Date(report.createdAt);
-        const reportSunday = new Date(reportDate);
-        reportSunday.setDate(reportDate.getDate() - reportDate.getDay());
+        // report.details 배열에 포함된 날짜들 중 가장 빠른 날짜 기준으로 비교
+        if (!report.details || report.details.length === 0) return false; // details가 없으면 false 반환
+
+        // details 배열에서 가장 빠른 날짜를 찾음
+        const earliestDetailDate = new Date(
+          Math.min(...report.details.map((detail: any) => new Date(detail.createdAt).getTime()))
+        );
+
+        // 가장 빠른 날짜의 주 일요일 계산
+        const reportSunday = new Date(earliestDetailDate);
+        reportSunday.setDate(earliestDetailDate.getDate() - earliestDetailDate.getDay());
+
+        // Sunday 비교
         return formatDateToString(reportSunday) === sundayString;
       });
 
       if (selectedReport) {
         setSelectedReportId(selectedReport.id);
+        const validDetails = selectedReport.details.filter(
+          (detail: any) => detail.openness !== null && detail.conscientiousness !== null
+        );
+        const count = validDetails.length;
         // 주간 리포트의 평균값 계산
-        const avgScores = selectedReport.details.reduce(
+        const avgScores = validDetails.reduce(
           (acc: any, detail: any) => {
             acc.openness += detail.openness;
             acc.conscientiousness += detail.conscientiousness;
@@ -334,8 +348,6 @@ export default function Analysis() {
             neuroticism: 0,
           }
         );
-
-        const count = selectedReport.details.length;
         const newScores: ChartType = [
           { bigFive: "개방성", User: Math.round((avgScores.openness / count) * 100) },
           { bigFive: "성실성", User: Math.round((avgScores.conscientiousness / count) * 100) },
