@@ -3,16 +3,16 @@
 from fastapi import APIRouter
 from modelschemas.request_response import MusicList, BigFiveScore, Music
 from utils.recommender.music_recommender import MusicRecommender
+import time
 
 router = APIRouter()
 music_recommender = MusicRecommender()
 
 @router.post("/music", response_model=MusicList)
 async def recommend_music(data: BigFiveScore):
-    
     if not isinstance(data, BigFiveScore):
         data = BigFiveScore(**data)  # dict → BigFiveScore
     musics = await music_recommender.recommend_musics_from_bigfive(bigfive=data)
     music_objs = [Music(**m) if isinstance(m, dict) else m for m in musics]
-    
+    print(music_objs)
     return MusicList(musics=music_objs)
