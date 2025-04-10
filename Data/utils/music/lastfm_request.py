@@ -4,6 +4,7 @@ import asyncio
 import aiohttp
 import requests, json
 from dotenv import load_dotenv
+import time
 # Jobrecommender import하기 위해 상위 폴더 경로를 sys.path애 추가가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from utils.recommender.job_recommender import JobRecommender
@@ -62,7 +63,7 @@ async def async_bf_to_track(api_key, bf_score):
     print(bf_tags)
     
     results = []
-    
+    print()
     async with aiohttp.ClientSession() as session:
         tasks = [lastfm_request(session, tag, api_key) for tag in bf_tags]
         responses = await asyncio.gather(*tasks)
@@ -70,19 +71,20 @@ async def async_bf_to_track(api_key, bf_score):
         for response in responses:
             track_info = extract_track_info(results , response)
             results.append(track_info)
-
     return results
 
 
 # bf -> 곡 전환하는 최종 함수수
-def bf_to_track(api_key, bf_score):
-    return asyncio.run(async_bf_to_track(api_key, bf_score))
-
+async def bf_to_track(api_key, bf_score):
+    return await async_bf_to_track(api_key, bf_score)
 
 if __name__ == "__main__":
+    before = time.time()
     load_dotenv()
     bf_score = [0.26, 0.41, 0.68, 0.42, 0.18]
     api_key = os.getenv("LASTFM_API_KEY")
     results = bf_to_track(api_key, bf_score)
     print(results)
+    after = time.time()
+    print(after-before)
     print(len(results))

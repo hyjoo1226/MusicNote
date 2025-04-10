@@ -1,5 +1,7 @@
 import json
 import os
+import asyncio
+import aiohttp
 from datetime import datetime
 from utils.music.lastfm_request import bf_to_track
 from dotenv import load_dotenv
@@ -16,7 +18,10 @@ def init_model():
     }
     return model
 
-def get_random_track(spotify):
+
+
+
+async def get_random_track(spotify):
     '''
     bf 키워드에 매칭되는 트랙이 없을 경우
     파라미터에 tag:new를 적용해서 새로 발매한 앨범에서 곡 추출
@@ -26,7 +31,7 @@ def get_random_track(spotify):
     model = init_model()
     
     # 추천할 노래가 포함될 앨범 선정
-    albums = spotify.searchNone()
+    albums = await spotify.searchNone()
     album = albums.get("albums", {}).get("items", {})[0]
 
     ## 앨범정보에서 발매일, 이미지 추출
@@ -42,7 +47,7 @@ def get_random_track(spotify):
     # 앨범 아이디로 앨범 수록곡 request
     album_id = album.get("id")
     # print(album_id)
-    album_response = spotify.get_album_tracks(album_id=album_id)
+    album_response = await spotify.get_album_tracks(album_id=album_id)
     # print(album_response)
     result = album_response.get("items")[0]
 
@@ -61,11 +66,11 @@ def get_random_track(spotify):
 
     return model
 
-def search_track(spotify, name, artist):
+async def search_track(spotify, name, artist):
     # 모델 생성
     model = init_model()
     # 쿼리를 통해 나온 제일 처음 노래 선정
-    results = spotify.search(name=name, artist=artist)
+    results = await spotify.search(name=name, artist=artist)
     result = results.get("tracks", {}).get("items", {})[0]
 
     # 모델 각 속성에 값 채워넣기

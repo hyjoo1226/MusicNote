@@ -2,6 +2,9 @@ import os
 import sys
 import random
 import requests
+import asyncio
+import aiohttp
+import time
 from dotenv import load_dotenv
 from modelschemas.request_response import BigFiveScore
 from utils.music.lastfm_request import bf_to_track
@@ -13,7 +16,7 @@ class MusicRecommender:
     def __init__(self):
         pass
 
-    def recommend_musics_from_bigfive(self, bigfive: BigFiveScore):
+    async def recommend_musics_from_bigfive(self, bigfive: BigFiveScore):
         load_dotenv()
         user_score = [
             bigfive.openness,
@@ -23,33 +26,30 @@ class MusicRecommender:
             1 - bigfive.neuroticism  # stability로 변환
         ]
         lastfm_key = os.getenv("LASTFM_API_KEY")
-        tracks = bf_to_track(lastfm_key, user_score)
-        # tracks = [{'name': 'Rock For Sustainable Capitalism', 'artist': 'Propagandhi'},
-        #     {'tag': 'new'},
-        #     {'name': 'Abteilungsleiter der Liebe', 'artist': 'K.I.Z.'},
-        #     {'name': 'Like Real People Do', 'artist': 'Hozier'},
-        #     {'name': 'To Catch a Predator', 'artist': 'Insane Clown Posse'}]
+        tracks = await bf_to_track(lastfm_key, user_score)
         
         client = os.getenv("SPOTIFY_CLIENT")
         secret = os.getenv("SPOTIFY_SECRET")
         spotify = Spotify(client, secret)
-        results = []
-
+        
+        # 비동기 작업 리스트 생성
+        tasks = []
         for track in tracks:
             if len(track) == 2:
-                song = search_track(spotify, name=track["name"], artist=track["artist"])
-                results.append(song)
-            else: # track 추천결과가 없을때 임의추천
-                song = get_random_track(spotify)
-                results.append(song)
-
-        # print(results)
-        return(results)
+                task = search_track(spotify, name=track["name"], artist=track["artist"])
+            else:
+                task = get_random_track(spotify)
+            tasks.append(task)
+        
+        # 모든 비동기 작업 동시 실행
+        results = await asyncio.gather(*tasks)
+        print(type(results))
+        return results
     
 
 if __name__ == "__main__":
     recommender = MusicRecommender()
-
+    before = time.time()
     url = "http://127.0.0.1:8000/data/api/recommend/music"  # 바꿔줘야 함
 
     def generate_random_input():
@@ -66,5 +66,7 @@ if __name__ == "__main__":
     for _ in range(10):  # 원하는 반복 횟수
         data = generate_random_input()
         response = requests.post(url, json=data)
+        after = time.time()
+        print(after-before)
         print(f"Request: {data}")
         print(f"Response: {response.status_code}, {response.json()}")
