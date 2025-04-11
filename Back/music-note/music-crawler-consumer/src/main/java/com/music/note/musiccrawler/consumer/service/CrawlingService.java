@@ -13,10 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.music.note.kafkaeventmodel.dto.MusicDto;
 import com.music.note.kafkaeventmodel.dto.MusicListEvent;
 import com.music.note.kafkaeventmodel.dto.MusicListWithMissingEvent;
+import com.music.note.kafkaeventmodel.dto.NotificationEvent;
+import com.music.note.kafkaeventmodel.type.RequestType;
 import com.music.note.musiccrawler.consumer.converter.MusicDtoConverter;
 import com.music.note.musiccrawler.consumer.converter.TrackConverter;
 import com.music.note.musiccrawler.consumer.dto.RawTrackDataResponse;
 import com.music.note.musiccrawler.consumer.dto.TrackDataResponse;
+import com.music.note.musiccrawler.consumer.kafka.producer.NotificationProducer;
 import com.music.note.musiccrawler.consumer.kafka.producer.TypeEventProducer;
 import com.music.note.musiccrawler.consumer.repository.TrackRepository;
 import com.music.note.trackdomain.domain.Track;
@@ -29,25 +32,42 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CrawlingService {
 
-	private static final String API_KEY = "11ce7f874fc9814791404199a5ae2fc100414bce";
+	private static final String API_KEY = "c2f560e2314764eec61d027bc202ab61b3080737";
 	private static final String BASE_API_URL = "https://api.zenrows.com/v1/";
 	private static final String TARGET_URL_TEMPLATE = "https://songdata.io/track/%s/";
 	private static final String CSS_EXTRACTOR = "{\"scores\":\"dd\"}";
 
 	private final TrackRepository trackRepository;
 	private final TypeEventProducer typeEventProducer;
+	private final NotificationProducer notificationProducer;
 	private final RestClient restClient;
 	private final ObjectMapper objectMapper;
 
 	public void handleMissingTrackEvent(MusicListWithMissingEvent event) {
 		//TODO: 크롤링 실패 시 처리하기
-		List<MusicDto> savedMissingTracks = saveMissingTracks(event.getMissingTracks());
-		publishRequestEvent(event, savedMissingTracks);
+		try {
+			List<MusicDto> savedMissingTracks = saveMissingTracks(event.getMissingTracks());
+			publishRequestEvent(event, savedMissingTracks);
+		} catch (Exception e) {
+			NotificationEvent notificationEvent = NotificationEvent.builder()
+				.userId(event.getUserId())
+				.message("크롤링 실패")
+				.type(RequestType.CRAWLING_ERROR)
+				.build();
+			notificationProducer.sendMusicListEvent(notificationEvent);
+		}
 	}
 
 	private void publishRequestEvent(MusicListWithMissingEvent event, List<MusicDto> savedMissingTracks) {
 		// 기존 musicList와 새로 저장된 트랙 리스트를 합침
 		List<MusicDto> combinedList = new ArrayList<>(event.getExistingTracks());
+
+		log.info("============= combinedList =============");
+		for (MusicDto musicDto : combinedList) {
+			log.info("imageUrl: {}", musicDto.getImageUrl());
+		}
+		log.info("----------------------------------------------------------------------");
+
 		combinedList.addAll(savedMissingTracks);
 
 		// 새 이벤트 생성
@@ -61,7 +81,7 @@ public class CrawlingService {
 		typeEventProducer.sendMusicListEvent(requestEvent);
 	}
 
-	public List<MusicDto> saveMissingTracks(List<MusicDto> missingTracks) {
+	public List<MusicDto> saveMissingTracks(List<MusicDto> missingTracks) throws Exception {
 		List<MusicDto> updatedMusicList = new ArrayList<>();
 		for (MusicDto musicDto : missingTracks) {
 			TrackDataResponse trackDataResponse = fetchTrackData(musicDto.getSpotifyId());
@@ -80,7 +100,7 @@ public class CrawlingService {
 		return updatedMusicList;
 	}
 
-	private TrackDataResponse fetchTrackData(String trackId) {
+	private TrackDataResponse fetchTrackData(String trackId) throws Exception {
 		URI uri = buildApiUri(trackId);
 
 		String responseBody = restClient.get()

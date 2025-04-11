@@ -19,6 +19,7 @@ import com.music.note.recommend.dto.report.ResponseReportWithTypeDto;
 import com.music.note.recommend.dto.report.ResponseReportList;
 import com.music.note.recommend.dto.report.music.MusicDto;
 import com.music.note.recommend.dto.report.music.ResponseMusicDtoList;
+import com.music.note.recommend.dto.request.RequestLatestPersonalityReportDto;
 import com.music.note.recommend.dto.type.ResponseWeeklyTypeDto;
 import com.music.note.recommend.dto.type.TrendTypeDto;
 import com.music.note.recommend.dto.type.TypeDto;
