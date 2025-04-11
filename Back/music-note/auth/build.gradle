@@ -7,6 +7,14 @@ plugins {
 group = 'com.music.note'
 version = '0.0.1-SNAPSHOT'
 
+tasks.named('bootJar'){ 
+    enabled = true
+}
+
+tasks.named('jar'){
+    enabled = false
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -21,6 +29,25 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.4'
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2024.0.0')
+
+    implementation "io.jsonwebtoken:jjwt:0.9.1"
+    // JAX-B API 의존성
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+
+    // JAX-B 구현체 의존성
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'mysql:mysql-connector-java:8.0.29'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation project(':common')
 }
 
 tasks.named('test') {
