@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
-
-import com.music.note.common.exception.exception.domain.personalityreport.PersonalityNotFoundByUserIdException;
 import com.music.note.common.exception.exception.domain.personalityreport.PersonalityNotFoundException;
 import com.music.note.recommend.dto.home.ResponseHomeDto;
 import com.music.note.recommend.dto.report.ResponseReportDto;

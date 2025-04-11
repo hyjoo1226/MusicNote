@@ -7,11 +7,11 @@ plugins {
 group = 'com.music.note'
 version = '0.0.1-SNAPSHOT'
 
-tasks.named('bootJar'){ // bootJar 세팅을 켜기
+tasks.named('bootJar'){ 
     enabled = true
 }
 
-tasks.named('jar'){ // jar 설정은 끄기
+tasks.named('jar'){
     enabled = false
 }
 
