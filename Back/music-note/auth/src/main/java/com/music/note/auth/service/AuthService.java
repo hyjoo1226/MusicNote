@@ -67,7 +67,6 @@ public class AuthService {
 
 	public ResponseLoginDto login(RequestLoginDto reqLoginDto){
 		log.info("Received code: {}", reqLoginDto.getCode());
-
 		try {
 
 			HttpHeaders headers = new HttpHeaders();
@@ -107,7 +106,6 @@ public class AuthService {
 
 			SpotifyMemberDto spotifyMemberDto = objectMapper.readValue(userInfo, SpotifyMemberDto.class);
 			Optional<Member> optionalMember = memberRepository.findBySocialId(spotifyMemberDto.getSocialId());
-
 			if (optionalMember.isPresent()) {
 				Member existingMember = optionalMember.get();
 				JwtTokenDto jwtTokenDto = generateJwtByMember(existingMember);
@@ -160,7 +158,6 @@ public class AuthService {
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 
 		ResponseEntity<String> response = restTemplate.exchange(userInfoUri, HttpMethod.GET, entity, String.class);
-		log.info("User Info: {}", response.getBody());
 		return response.getBody();
 	}
 	private JwtTokenDto generateJwtByMember(Member member){

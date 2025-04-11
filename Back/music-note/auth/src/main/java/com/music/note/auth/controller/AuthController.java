@@ -12,7 +12,6 @@ import com.music.note.auth.dto.request.RequestLoginDto;
 import com.music.note.auth.service.AuthService;
 import com.music.note.common.response.CommonResponse;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
