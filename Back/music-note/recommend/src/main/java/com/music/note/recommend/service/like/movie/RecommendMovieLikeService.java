@@ -31,7 +31,6 @@ public class RecommendMovieLikeService {
 	public void likeRecommendMovie(String userId, RequestRecommendMovieLikeDto requestRecommendMovieLikeDto) {
 
 		RecommendMovie recommendMovie = recommendMovieService.findRecommendMovieById(requestRecommendMovieLikeDto.getRecommendMovieId());
-		// RecommendMovie recommendMovie = recommendMovieService.findRecommendMovieByTmdbId(requestRecommendMovieLikeDto.getTmdbMovieID());
 		Optional<RecommendMovieLikes> optionalRecommendMovieLikes = recommendMovieLikeRepository.findByUserId(userId);
 
 		if (optionalRecommendMovieLikes.isPresent()){
