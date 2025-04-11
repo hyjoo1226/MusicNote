@@ -1,0 +1,178 @@
+.rdp-root {
+  --rdp-accent-color: #bebebe;
+  --rdp-day-width: 10px;
+  --rdp-day-height: 10px;
+  --rdp-day_button-width: 32px;
+  --rdp-day_button-height: 32px;
+}
+
+.rdp-dropdown {
+  /* position: relative; */
+  background-color: #262329;
+  font-size: 13px;
+}
+
+.rdp-caption_label {
+  /* position: relative; */
+  font-size: 16px;
+}
+
+.rdp-dropdowns {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+}
+/* /* .rdp-years_dropdown {
+  position: relative;
+} */
+
+/* background-clip: content-box; */
+/* padding-top: 1px;
+padding-bottom: 1px; */
+
+.daily-report-day {
+  border-top: 1px solid #262329;
+  border-bottom: 1px solid #262329;
+}
+
+.report-day {
+  border: 1px solid #f78888;
+  /* background-color: #f78888; */
+  /* color: white; */
+}
+
+.report-start-day {
+  /* background: linear-gradient(to right, #fe365e 20%, #f78888 100%); */
+  color: white;
+  border-right: none;
+  /* border-top-left-radius: 30%;
+  border-bottom-left-radius: 30%; */
+}
+
+.report-end-day {
+  /* background: linear-gradient(to left, #fe365e 20%, #f78888 100%); */
+  color: white;
+  border-left: none;
+  /* border-top-right-radius: 30%;
+  border-bottom-right-radius: 30%; */
+}
+
+/* .weekly-range {
+  background-color: black;
+} */
+.selected-range {
+  /* color: blue !important; */
+  background: #f78888;
+  transform: none;
+  border-left: none;
+  border-right: none;
+}
+
+.report-start-day.selected-range {
+  border-left: 1px solid #f78888;
+  background: linear-gradient(to right, #fe365e 20%, #f78888 100%);
+}
+.report-end-day.selected-range {
+  border-right: 1px solid #f78888;
+  background: linear-gradient(to left, #fe365e 20%, #f78888 100%);
+}
+
+.report-day:not(.report-start-day):not(.report-end-day):not([aria-selected="true"]) {
+  border-left: none;
+  border-right: none;
+}
+
+.rdp-outside {
+  color: #bebebe;
+}
+
+.rdp-disabled {
+  color: #7b7b7b;
+}
+
+/* .rdp-button {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.report-day:not([aria-selected="true"]) {
+  background: transparent;
+  border: 2px solid #f78888;
+  color: white;
+}
+
+.report-start-day:not([aria-selected="true"]) {
+  background: transparent;
+  border: 2px solid #fe365e;
+  border-right: none;
+  border-top-left-radius: 30%;
+  border-bottom-left-radius: 30%;
+  color: white;
+}
+
+.report-end-day:not([aria-selected="true"]) {
+  background: transparent;
+  border: 2px solid #fe365e;
+  border-left: none;
+  color: white;
+}
+
+.report-day,
+.report-start-day,
+.report-end-day {
+  background-color: #f78888;
+  color: white;
+  border: none;
+}
+
+.report-start-day {
+  background: linear-gradient(to right, #fe365e 20%, #f78888 100%);
+}
+
+.report-end-day {
+  background: linear-gradient(to left, #fe365e 20%, #f78888 100%);
+}
+
+.report-day:not(.report-start-day):not(.report-end-day):not(
+    [aria-selected="true"]
+  ) {
+  border-left: none;
+  border-right: none;
+} */
+
+@media (width > 300px) {
+  .rdp-root {
+    --rdp-day_button-width: 40px;
+  }
+}
+
+@media (width > 400px) {
+  .rdp-root {
+    --rdp-day_button-width: 48px;
+  }
+}
+
+@media (height > 800px) {
+  .rdp-root {
+    --rdp-day_button-height: 36px;
+  }
+}
+
+@media (height > 830px) {
+  .rdp-root {
+    --rdp-day_button-height: 40px;
+  }
+}
+
+@media (height > 860px) {
+  .rdp-root {
+    --rdp-day_button-height: 44px;
+  }
+}
+
+@media (height > 900px) {
+  .rdp-root {
+    --rdp-day_button-height: 48px;
+  }
+}

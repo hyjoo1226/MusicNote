@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+/* 폰트 파일 등록 */
+@font-face {
+  font-family: "GmarketSansLight";
+  src: url("../assets/fonts/GmarketSansLight.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GmarketSansMedium";
+  src: url("../assets/fonts/GmarketSansMedium.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GmarketSansBold";
+  src: url("../assets/fonts/GmarketSansBold.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 테마 변수 */
+@theme {
+  /* 폰트 */
+  --font-light: "GmarketSansLight";
+  --font-medium: "GmarketSansMedium";
+  --font-bold: "GmarketSansBold";
+
+  /* 성격 특성 색상 */
+  --color-openness: #a97eff;
+  --color-conscientiousness: #ef8aff;
+  --color-extraversion: #ff7e81;
+  --color-agreeableness: #ffb683;
+  --color-neuroticism: #ffd883;
+
+  /* 텍스트 색상 */
+  --color-dark: #000000;
+  --color-gray: #7b7b7b;
+  --color-light-gray: #bebebe;
+
+  /* 배경색 */
+  --color-level1: #19171b;
+  --color-level2: #262329;
+  --color-level3: #3f3a44;
+
+  /* 강조색 */
+  --color-main: #fe365e;
+  --color-sub: #f78888;
+
+  /* 구분선 색 */
+  --color-border: #443a3a;
+
+  /* 브레이크 포인트 */
+  --breakpoint-xs: 361px;
+  --breakpoint-sm: 420px;
+  --breakpoint-md: 500px;
+
+  /* 애니메이션 */
+  --animate-fade-in: fade-in 0.2s ease-in forwards;
+  @keyframes fade-in {
+    from {
+      background-color: rgb(0 0 0 / 0);
+    }
+    to {
+      background-color: rgb(0 0 0 / 0.5);
+    }
+  }
+
+  --animate-slide-up: slide-up 0.5s ease-in-out;
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* NavBar가 표시될 때만 패딩 적용 */
+#root.has-navbar {
+  padding-bottom: 80px;
+}
+
+:root {
+  --app-height: 100svh; /* 기본값 설정 */
+}
+
+body {
+  width: 100vw;
+  height: var(--app-height);
+  background-color: #19171b;
+  overflow-y: auto;
+}
+
+#root {
+  width: 100%;
+  height: var(--app-height);
+  min-width: 320px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--color-level1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* NavBar가 표시될 때만 패딩 적용 */
+#root.has-navbar {
+  padding-bottom: 80px;
+}
+
+#root {
+  font-family: var(--font-medium);
+}
+
+/* 모든 스크롤바 숨기기 */
+html,
+body,
+#root {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Chrome, Safari 등 Webkit 기반 브라우저용 */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar {
+  display: none;
+}
+
+/* 앱 내의 모든 요소에 스크롤바 숨기기 (선택적) */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
