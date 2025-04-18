@@ -1,6 +1,6 @@
 # MusicNote
 
-![소개사진](exec/소개사진.png)
+<img src="exec/소개사진.png" alt="소개사진" width="1203"/>
 
 ## 📌 프로젝트 소개
 
